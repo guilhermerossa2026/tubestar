@@ -649,6 +649,11 @@
     <Resource Include="Resources\avatar_cabelolongo_2.png" />
     <Resource Include="Resources\avatar_cabelocurto_1.png" />
     <Resource Include="Resources\avatar_cabelocurto_2.png" />
+    <Resource Include="Resources\avatar_trap_3.jpg" />
+    <Resource Include="Resources\avatar_casual_3.png" />
+    <Resource Include="Resources\avatar_casual_4.png" />
+    <Resource Include="Resources\avatar_casual_5.png" />
+    <Resource Include="Resources\avatar_casual_6.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

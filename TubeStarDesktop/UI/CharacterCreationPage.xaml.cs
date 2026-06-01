@@ -24,7 +24,12 @@ namespace TubeStar
             "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_1.png",
             "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_2.png",
             "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_1.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_2.png"
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_2.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_trap_3.jpg",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_3.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_4.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_5.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_6.png"
         };
 
         private readonly string[] _avatarNames = new string[] {
@@ -37,7 +42,12 @@ namespace TubeStar
             "Casual E-boy",
             "Casual Rocker",
             "Casual Cyberpunk",
-            "Casual Contemporâneo"
+            "Casual Contemporâneo",
+            "Trap Platinado",
+            "Casual Cachos",
+            "Casual Bigode",
+            "Casual Óculos",
+            "Casual Jaqueta Couro"
         };
 
         private readonly string[] _avatarStyles = new string[] {
@@ -50,7 +60,12 @@ namespace TubeStar
             "Jaqueta Jeans com Ovelha",
             "Jaqueta de Couro Rocker",
             "Windbreaker Neon Militar",
-            "Moletom Oversized Branco"
+            "Moletom Oversized Branco",
+            "Jaqueta Corta Vento & Correntes",
+            "Camiseta Branca Básica de Grife",
+            "Camiseta Algodão Egípcio Branca",
+            "Camisa Flanela Xadrez Clássica",
+            "Jaqueta de Couro Rocker Preta"
         };
 
         private readonly string[] _avatarTattoos = new string[] {
@@ -63,7 +78,12 @@ namespace TubeStar
             "Colar de Couro (Estilo Indie)",
             "Cavanhaque Moderno",
             "Riscos no Buzzcut Verde",
-            "Barba de Linha Fina"
+            "Barba de Linha Fina",
+            "Loiro Platinado & Tatuado",
+            "Cachos Naturais & Aparelho",
+            "Cabelo Ondulado & Bigode Retrô",
+            "Cabelo Social & Barba Curta",
+            "Expressão Confusa & Atitude"
         };
 
         private readonly string[] _avatarAccessories = new string[] {
@@ -76,7 +96,12 @@ namespace TubeStar
             "Cabelo Longo Despojado",
             "Cabelo Longo Platinado",
             "Windbreaker Neon de Rua",
-            "Corte Degradê Contemporâneo"
+            "Corte Degradê Contemporâneo",
+            "Correntes de Prata Premium",
+            "Fundo Rosa Alegre Contemporâneo",
+            "Visual Despojado Confiante",
+            "Óculos de Grau Intelectuais",
+            "Camiseta Preta Básica"
         };
 
         private readonly string[] _avatarProfiles = new string[] {
@@ -89,7 +114,12 @@ namespace TubeStar
             "Casual Moderno com Vibe Indie",
             "Casual com Atitude Alternativa",
             "Casual Streetwear de Vanguarda",
-            "Casual Urbano Contemporâneo"
+            "Casual Urbano Contemporâneo",
+            "Trap Star Platinado e Ousado",
+            "YouTuber Casual Jovem e Sorridente",
+            "YouTuber Casual Temático e Simpático",
+            "YouTuber Casual Intelectual e Carismático",
+            "YouTuber Ousado e Espontâneo"
         };
 
         private readonly string[] _avatarGlowColors = new string[] {
@@ -102,7 +132,12 @@ namespace TubeStar
             "#00FF00", // E-boy - Verde Neon
             "#FFFFFF", // Rocker - Branco Puro
             "#00FF00", // Cyberpunk - Verde Neon
-            "#8A2BE2"  // Contemporâneo - Roxo Neon
+            "#8A2BE2", // Contemporâneo - Roxo Neon
+            "#FFFFFF", // Trap Platinado - Prata/Branco
+            "#FF00FF", // Casual Cachos - Pink
+            "#00FFFF", // Casual Bigode - Cyan
+            "#FF5500", // Casual Óculos - Laranja
+            "#FFFFFF"  // Casual Jaqueta - Branco
         };
 
         public CharacterCreationPage()
@@ -116,7 +151,8 @@ namespace TubeStar
             Button[] buttons = new Button[] {
                 btnAvatar1, btnAvatar2, btnAvatar3, btnAvatar4,
                 btnAvatar5, btnAvatar6,
-                btnAvatar7, btnAvatar8, btnAvatar9, btnAvatar10
+                btnAvatar7, btnAvatar8, btnAvatar9, btnAvatar10,
+                btnAvatar11, btnAvatar12, btnAvatar13, btnAvatar14, btnAvatar15
             };
 
             for (int i = 0; i < buttons.Length; i++)
@@ -188,7 +224,7 @@ namespace TubeStar
             }
 
             if (txtSummaryChannel != null)
-                txtSummaryChannel.Text = "CANAL: " + (string.IsNullOrEmpty(txtYoutuberName.Text) ? "Gamer Pro" : txtYoutuberName.Text);
+                txtSummaryChannel.Text = "YOUTUBER: " + (string.IsNullOrEmpty(txtYoutuberName.Text) ? "Gamer Pro" : txtYoutuberName.Text);
 
             if (txtSummaryOutfit != null)
                 txtSummaryOutfit.Text = "👕 Estilo: " + _avatarStyles[_selectedAvatarIndex];
@@ -213,9 +249,12 @@ namespace TubeStar
             Player.Current.YoutuberAccessories = _avatarAccessories[_selectedAvatarIndex];
             Player.Current.YoutuberTattoos = _avatarTattoos[_selectedAvatarIndex];
 
+            // Para manter a estabilidade absoluta do motor legado de TubeStar (que exige pelo menos 1 canal ativo no Save/Load),
+            // criamos o canal inicial técnico obrigatório com o nome neutro de "Meu Canal". 
+            // O personagem é quem você é (YouTuber), e os canais são independentes, permitindo criar novos canais no mid-game!
             Channel realChannel = new Channel()
             {
-                Name = Player.Current.YoutuberName,
+                Name = "Meu Canal",
                 Advertising = AdvertisingStrategy.Normal
             };
 

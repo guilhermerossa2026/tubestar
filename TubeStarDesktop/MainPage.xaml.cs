@@ -128,7 +128,7 @@ namespace TubeStar
                 if (imgProfileAvatarMini != null)
                 {
                     int avatarIdx = Player.Current.YoutuberAvatarId;
-                    if (avatarIdx < 0 || avatarIdx >= 10) avatarIdx = 0;
+                    if (avatarIdx < 0 || avatarIdx >= 15) avatarIdx = 0;
 
                     string[] avatarUris = new string[] {
                         "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_1.png",
@@ -140,7 +140,12 @@ namespace TubeStar
                         "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_1.png",
                         "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_2.png",
                         "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_1.png",
-                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_2.png"
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_2.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_trap_3.jpg",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_3.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_4.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_5.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_6.png"
                     };
 
                     imgProfileAvatarMini.Source = new BitmapImage(new Uri(avatarUris[avatarIdx], UriKind.Absolute));
@@ -425,7 +430,12 @@ namespace TubeStar
                 "Casual E-boy",
                 "Casual Rocker",
                 "Casual Cyberpunk",
-                "Casual Contemporâneo"
+                "Casual Contemporâneo",
+                "Trap Platinado",
+                "Casual Cachos",
+                "Casual Bigode",
+                "Casual Óculos",
+                "Casual Jaqueta Couro"
             };
 
             for (int i = 0; i < avatarNames.Length; i++)
@@ -433,32 +443,36 @@ namespace TubeStar
                 cbAvatar.Items.Add(avatarNames[i]);
             }
 
-            cbAvatar.SelectedIndex = Math.Min(9, Math.Max(0, Player.Current.YoutuberAvatarId));
+            cbAvatar.SelectedIndex = Math.Min(14, Math.Max(0, Player.Current.YoutuberAvatarId));
             panel.Children.Add(cbAvatar);
 
             Button btnSave = new Button { Content = "SALVAR ESTILO GAMER", Height = 35, Background = new SolidColorBrush(Colors.Red), Foreground = new SolidColorBrush(Colors.White), FontWeight = FontWeights.Bold };
             btnSave.Click += (s, ev) =>
             {
                 int index = cbAvatar.SelectedIndex;
-                if (index < 0 || index >= 10) index = 0;
+                if (index < 0 || index >= 15) index = 0;
 
                 string[] avatarGlowColors = new string[] {
-                    "#FFDD44", "#00FFFF", "#FF2222", "#FF5500", "#FF00FF", "#FF2222", "#00FF00", "#FFFFFF", "#00FF00", "#8A2BE2"
+                    "#FFDD44", "#00FFFF", "#FF2222", "#FF5500", "#FF00FF", "#FF2222", "#00FF00", "#FFFFFF", "#00FF00", "#8A2BE2",
+                    "#FFFFFF", "#FF00FF", "#00FFFF", "#FF5500", "#FFFFFF"
                 };
                 string[] avatarStyles = new string[] {
                     "Terno Premium Cinza", "Suéter de Lã Azul Premium", "Terno Azul de Fino Trato", "Camisa Preta de Sucesso",
                     "Jaqueta Puffer Preta de Grife", "Jaqueta Bomber Vermelha", "Jaqueta Jeans com Ovelha", "Jaqueta de Couro Rocker",
-                    "Windbreaker Neon Militar", "Moletom Oversized Branco"
+                    "Windbreaker Neon Militar", "Moletom Oversized Branco",
+                    "Jaqueta Corta Vento & Correntes", "Camiseta Branca Básica de Grife", "Camiseta Algodão Egípcio Branca", "Camisa Flanela Xadrez Clássica", "Jaqueta de Couro Rocker Preta"
                 };
                 string[] avatarAccessories = new string[] {
                     "Óculos Escuros Italianos", "Colarinho de Lã Fina", "Gravata de Seda Fina", "Gola Aberta Confiante",
                     "Corrente de Ouro com Pingente $", "Correntes de Prata de Grife", "Cabelo Longo Despojado", "Cabelo Longo Platinado",
-                    "Windbreaker Neon de Rua", "Corte Degradê Contemporâneo"
+                    "Windbreaker Neon de Rua", "Corte Degradê Contemporâneo",
+                    "Correntes de Prata Premium", "Fundo Rosa Alegre Contemporâneo", "Visual Despojado Confiante", "Óculos de Grau Intelectuais", "Camiseta Preta Básica"
                 };
                 string[] avatarTattoos = new string[] {
                     "Nenhuma (Barba Alinhada)", "Nenhuma (Cabelo Social)", "Nenhuma (Fade Degradê)", "Nenhuma (Barba Cerrada)",
                     "Trevo no Pescoço & Face", "Tranças com Dreads Dourados", "Colar de Couro (Estilo Indie)", "Cavanhaque Moderno",
-                    "Riscos no Buzzcut Verde", "Barba de Linha Fina"
+                    "Riscos no Buzzcut Verde", "Barba de Linha Fina",
+                    "Loiro Platinado & Tatuado", "Cachos Naturais & Aparelho", "Cabelo Ondulado & Bigode Retrô", "Cabelo Social & Barba Curta", "Expressão Confusa & Atitude"
                 };
 
                 Player.Current.YoutuberAvatarId = index;

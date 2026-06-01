@@ -638,6 +638,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\update2016.jpg" />
+    <Resource Include="Resources\character_preview_3d.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1000"
-             Background="#0C0C0C">
+             Background="#080808">
     
     <UserControl.Resources>
         <ResourceDictionary>
@@ -21,96 +21,121 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
+        <!-- Header Next-Gen -->
         <StackPanel Grid.Row="0" Margin="0,0,0,15">
-            <TextBlock Text="CRIE SEU YOUTUBER" FontSize="32" FontWeight="Black" Foreground="#FF2222"/>
-            <TextBlock Text="Monte a identidade visual e o estilo do seu personagem antes de iniciar a sua carreira de sucesso." FontSize="13" Foreground="#AAAAAA" Margin="0,3,0,0"/>
+            <TextBlock Text="CRIADOR DE PERSONAGEM - CUSTOM" FontSize="26" FontWeight="Black" Foreground="#FF2222"/>
+            <TextBlock Text="O personagem inicia apenas de cueca e careca! Selecione os itens abaixo para criar o youtuber ideal de forma 100% interativa." FontSize="12" Foreground="#888888" Margin="0,3,0,0"/>
         </StackPanel>
 
-        <!-- Main Workspace -->
+        <!-- Main Workspace: Two-Column Layout -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1.1*"/>
+                <ColumnDefinition Width="0.9*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Left Pane: Options -->
+            <!-- Left Column: Complex RPG Customization Panels -->
             <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Padding="0,0,15,0">
                 <StackPanel Orientation="Vertical">
                     
-                    <!-- Channel & Name Selection -->
+                    <!-- CATEGORY 1: SOCIAL IDENTITY -->
                     <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock Text="IDENTIDADE SOCIAL" FontSize="14" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,8"/>
-                            <TextBlock Text="Nome Artístico / Canal" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,5"/>
-                            <TextBox x:Name="txtYoutuberName" Text="Gamer Pro" FontSize="15" Height="36" VerticalContentAlignment="Center" Background="#1E1E1E" Foreground="White" BorderBrush="#2E2E2E" Margin="0,0,0,5" TextChanged="InputChanged"/>
+                            <TextBlock Text="SOCIAL IDENTITY" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            <TextBlock Text="Nome do Canal / YouTuber" FontSize="11" Foreground="#888888" Margin="0,0,0,5"/>
+                            <TextBox x:Name="txtYoutuberName" Text="Gamer Pro" FontSize="15" Height="36" VerticalContentAlignment="Center" Padding="8,0" Background="#1E1E1E" Foreground="White" BorderBrush="#2E2E2E" Margin="0,0,0,5" TextChanged="InputChanged"/>
                         </StackPanel>
                     </Border>
 
-                    <!-- Hair Style & Neon Color Selection (Grid RPG) -->
+                    <!-- CATEGORY 2: NEON HAIR STYLE -->
                     <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock Text="ESTILO E COR DO CABELO NEON" FontSize="14" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            <TextBlock Text="NEON HAIR STYLE" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
                             
-                            <TextBlock Text="Escolha o estilo de corte de cabelo:" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,6"/>
-                            <UniformGrid Columns="5" Margin="0,0,0,10">
+                            <TextBlock Text="Escolha o Penteado:" FontSize="11" Foreground="#888888" Margin="0,0,0,6"/>
+                            <UniformGrid Columns="4" Margin="0,0,0,10">
+                                <Button x:Name="btnHairNone" Content="Careca" Height="35" Margin="2" Click="HairStyle_Click" Tag="0"/>
+                                <Button x:Name="btnHairMessy" Content="Messy Pink" Height="35" Margin="2" Click="HairStyle_Click" Tag="5"/>
                                 <Button x:Name="btnHairSpiky" Content="Arrepiado" Height="35" Margin="2" Click="HairStyle_Click" Tag="1"/>
                                 <Button x:Name="btnHairMohawk" Content="Mohawk" Height="35" Margin="2" Click="HairStyle_Click" Tag="2"/>
                                 <Button x:Name="btnHairPompadour" Content="Topete" Height="35" Margin="2" Click="HairStyle_Click" Tag="3"/>
                                 <Button x:Name="btnHairGamer" Content="Gamer" Height="35" Margin="2" Click="HairStyle_Click" Tag="4"/>
-                                <Button x:Name="btnHairWavy" Content="Longos" Height="35" Margin="2" Click="HairStyle_Click" Tag="5"/>
+                                <Button x:Name="btnHairWavy" Content="Longos" Height="35" Margin="2" Click="HairStyle_Click" Tag="6"/>
                             </UniformGrid>
 
-                            <TextBlock Text="Selecione a cor Neon do cabelo:" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,6"/>
-                            <WrapPanel x:Name="panelHairColors">
+                            <TextBlock Text="Selecione a Cor Neon do Cabelo:" FontSize="11" Foreground="#888888" Margin="0,0,0,6"/>
+                            <WrapPanel x:Name="panelHairColors" Margin="0,0,0,2">
                                 <!-- Colors added dynamically in code -->
                             </WrapPanel>
                         </StackPanel>
                     </Border>
 
-                    <!-- Clothing Selection (Grid RPG) -->
+                    <!-- CATEGORY 3: BEARD STYLE -->
                     <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock Text="VESTUÁRIO DO JOGADOR (OUTFIT)" FontSize="14" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,8"/>
-                            <UniformGrid Columns="4">
-                                <Button x:Name="btnOutfitTshirt" Content="Camiseta" Height="40" Margin="3" Click="Outfit_Click" Tag="0"/>
-                                <Button x:Name="btnOutfitHoodie" Content="Moletom" Height="40" Margin="3" Click="Outfit_Click" Tag="1"/>
-                                <Button x:Name="btnOutfitJacket" Content="Jaqueta" Height="40" Margin="3" Click="Outfit_Click" Tag="2"/>
-                                <Button x:Name="btnOutfitSuit" Content="Terno" Height="40" Margin="3" Click="Outfit_Click" Tag="3"/>
+                            <TextBlock Text="BEARD STYLE" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            <UniformGrid Columns="3">
+                                <Button x:Name="btnBeardNone" Content="Sem Barba" Height="38" Margin="3" Click="Beard_Click" Tag="0"/>
+                                <Button x:Name="btnBeardFull" Content="Barba Fechada" Height="38" Margin="3" Click="Beard_Click" Tag="1"/>
+                                <Button x:Name="btnBeardGoatee" Content="Cavanhaque" Height="38" Margin="3" Click="Beard_Click" Tag="2"/>
                             </UniformGrid>
                         </StackPanel>
                     </Border>
 
-                    <!-- Accessories & Tattoos Selection (Grid RPG) -->
+                    <!-- CATEGORY 4: OUTFIT -->
                     <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock Text="ACESSÓRIOS &amp; PELE GAMER" FontSize="14" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,8"/>
-                            
-                            <TextBlock Text="Acessórios Gamer (Headphones/Óculos/Boné):" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,5"/>
-                            <UniformGrid Columns="4" Margin="0,0,0,10">
-                                <Button x:Name="btnAccNone" Content="Nenhum" Height="40" Margin="3" Click="Accessory_Click" Tag="0"/>
-                                <Button x:Name="btnAccPhones" Content="Headphones" Height="40" Margin="3" Click="Accessory_Click" Tag="1"/>
-                                <Button x:Name="btnAccGlasses" Content="Óculos" Height="40" Margin="3" Click="Accessory_Click" Tag="2"/>
-                                <Button x:Name="btnAccCap" Content="Boné" Height="40" Margin="3" Click="Accessory_Click" Tag="3"/>
-                            </UniformGrid>
-
-                            <TextBlock Text="Tatuagens e Cobertura Corporal:" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,5"/>
-                            <UniformGrid Columns="4">
-                                <Button x:Name="btnTattooNone" Content="Nenhuma" Height="40" Margin="3" Click="Tattoo_Click" Tag="0"/>
-                                <Button x:Name="btnTattooTribal" Content="Tribal" Height="40" Margin="3" Click="Tattoo_Click" Tag="1"/>
-                                <Button x:Name="btnTattooGeek" Content="Geek" Height="40" Margin="3" Click="Tattoo_Click" Tag="2"/>
-                                <Button x:Name="btnTattooGamer" Content="Gamer" Height="40" Margin="3" Click="Tattoo_Click" Tag="3"/>
+                            <TextBlock Text="OUTFIT" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            <UniformGrid Columns="2">
+                                <Button x:Name="btnOutfitNone" Content="Só Cueca" Height="38" Margin="3" Click="Outfit_Click" Tag="-1"/>
+                                <Button x:Name="btnOutfitJacket" Content="Jaqueta Puffer Preta" Height="38" Margin="3" Click="Outfit_Click" Tag="2"/>
+                                <Button x:Name="btnOutfitTshirt" Content="Camiseta Gamer" Height="38" Margin="3" Click="Outfit_Click" Tag="0"/>
+                                <Button x:Name="btnOutfitHoodie" Content="Moletom de Rua" Height="38" Margin="3" Click="Outfit_Click" Tag="1"/>
+                                <Button x:Name="btnOutfitSuit" Content="Terno Premium" Height="38" Margin="3" Click="Outfit_Click" Tag="3"/>
                             </UniformGrid>
                         </StackPanel>
                     </Border>
 
-                    <!-- Start Button -->
-                    <Button x:Name="btnStartGame" Content="INICIAR CARREIRA GAMER" Height="48" FontSize="16" FontWeight="Bold" Background="#FF2222" Foreground="White" BorderThickness="0" Margin="0,8,0,25" Click="BtnStartGame_Click"/>
+                    <!-- CATEGORY 5: ACCESSORIES -->
+                    <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="ACCESSORIES &amp; JEWELRY" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            <UniformGrid Columns="2">
+                                <Button x:Name="btnAccNone" Content="Nenhum" Height="38" Margin="3" Click="Accessory_Click" Tag="0"/>
+                                <Button x:Name="btnAccChain" Content="Corrente de Ouro $" Height="38" Margin="3" Click="Accessory_Click" Tag="3"/>
+                                <Button x:Name="btnAccPhones" Content="Headphones Pro" Height="38" Margin="3" Click="Accessory_Click" Tag="1"/>
+                                <Button x:Name="btnAccGlasses" Content="Óculos Escuros" Height="38" Margin="3" Click="Accessory_Click" Tag="2"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- CATEGORY 6: TATTOOS -->
+                    <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="TATTOOS" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            <UniformGrid Columns="2">
+                                <Button x:Name="btnTattooNone" Content="Nenhuma" Height="38" Margin="3" Click="Tattoo_Click" Tag="0"/>
+                                <Button x:Name="btnTattooClover" Content="Trevo no Pescoço" Height="38" Margin="3" Click="Tattoo_Click" Tag="1"/>
+                                <Button x:Name="btnTattooTribal" Content="Tribal Manga" Height="38" Margin="3" Click="Tattoo_Click" Tag="2"/>
+                                <Button x:Name="btnTattooGeek" Content="Símbolos Geek" Height="38" Margin="3" Click="Tattoo_Click" Tag="3"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Large Prominent Neon Red Button -->
+                    <Grid Height="55" Margin="0,8,0,25">
+                        <Border CornerRadius="6" Background="#FF2222" Opacity="0.15" Margin="-2">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Color="#FF2222" Opacity="0.9"/>
+                            </Border.Effect>
+                        </Border>
+                        <Button x:Name="btnStartGame" Content="INICIAR CARREIRA GAMER" FontSize="16" FontWeight="Black" Background="#FF2222" Foreground="White" BorderThickness="0" Cursor="Hand" Click="BtnStartGame_Click"/>
+                    </Grid>
 
                 </StackPanel>
             </ScrollViewer>
 
-            <!-- Right Pane: Realtime Preview -->
+            <!-- Right Column: Immersive Vector Avatar Customizer Preview -->
             <Border Grid.Column="1" Background="#121212" CornerRadius="12" BorderBrush="#2E2E2E" BorderThickness="1.5" Margin="8,0,0,25" Padding="15">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -119,71 +144,167 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="PREVIEW DO AVATAR XAML" FontSize="13" FontWeight="Bold" Foreground="#AAAAAA" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Text="PREVIEW DO AVATAR EM TEMPO REAL" FontSize="12" FontWeight="Black" Foreground="#888888" HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
-                    <!-- Circular Glow Avatar Container -->
-                    <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <!-- Neon Glowing Aura -->
-                        <Border x:Name="avatarGlowBorder" Width="200" Height="200" CornerRadius="100" BorderThickness="4" BorderBrush="#00FFFF">
+                    <!-- Circular Glowing Aura circular -->
+                    <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10">
+                        <Border x:Name="avatarGlowBorder" Width="260" Height="260" CornerRadius="130" BorderThickness="4" BorderBrush="#FF2222">
                             <Border.Effect>
-                                <DropShadowEffect x:Name="glowShadow" BlurRadius="30" ShadowDepth="0" Color="#00FFFF" Opacity="0.8"/>
+                                <DropShadowEffect x:Name="glowShadow" BlurRadius="35" ShadowDepth="0" Color="#FF2222" Opacity="0.8"/>
                             </Border.Effect>
                             
-                            <!-- Inner Avatar Area -->
+                            <!-- Inner Avatar Design Area: Native XAML Vector Layers -->
                             <Grid>
-                                <Border CornerRadius="100" Background="#1E1E1E" ClipToBounds="True">
-                                    <Canvas x:Name="avatarCanvas" Width="180" Height="180" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Border CornerRadius="126" Background="#0A0F1A" ClipToBounds="True">
+                                    <Canvas x:Name="avatarCanvas" Width="220" Height="220" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         
-                                        <!-- Camada de Tatuagens (Fundo) -->
-                                        <Path x:Name="tattooGeek" Data="M 30,130 L 50,110 L 60,120 M 120,120 L 130,110 L 150,130" Stroke="#44FF2222" StrokeThickness="3" Visibility="Collapsed" />
-                                        <Path x:Name="tattooTribal" Data="M 35,125 Q 50,115 65,128 M 115,128 Q 130,115 145,125" Stroke="#4400FFFF" StrokeThickness="3" StrokeDashArray="2,2" Visibility="Collapsed" />
-                                        <Path x:Name="tattooGamer" Data="M 40,135 L 60,130 L 70,145 M 110,145 L 120,130 L 140,135" Stroke="#44FFFF00" StrokeThickness="4" Visibility="Collapsed" />
-
-                                        <!-- Corpo (Vestuário) -->
-                                        <Path x:Name="bodyBase" Data="M 30,160 C 30,125 60,105 90,105 C 120,105 150,125 150,160 Z" Fill="#2D2D2D" Stroke="#3D3D3D" StrokeThickness="2" />
+                                        <!-- BASE LAYER: Male Body Model -->
+                                        <!-- Neck Base -->
+                                        <Path x:Name="neckBase" Data="M 98,110 L 98,125 L 122,125 L 122,110 Z" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="1"/>
                                         
-                                        <!-- Linhas e preenchimentos extras do Outfit -->
-                                        <Path x:Name="clothingTshirt" Data="M 65,105 Q 90,125 115,105" Stroke="#E74C3C" StrokeThickness="4" Visibility="Visible" />
-                                        <Path x:Name="clothingHoodie" Data="M 60,103 Q 90,120 120,103 L 110,128 L 70,128 Z" Fill="#FF2222" Stroke="#880000" StrokeThickness="1" Visibility="Collapsed" />
-                                        <Path x:Name="clothingJacket" Data="M 55,105 L 75,135 M 125,105 L 105,135" Stroke="#D4AC0D" StrokeThickness="3" Visibility="Collapsed" />
-                                        <Path x:Name="clothingSuit" Data="M 60,105 L 90,135 L 120,105 M 90,135 L 90,160" Stroke="#FFFFFF" StrokeThickness="2" Visibility="Collapsed" />
+                                        <!-- Upper Chest and Shoulders (Naked base model) -->
+                                        <Path x:Name="bodyBase" Data="M 40,200 C 40,150 70,123 110,123 C 150,123 180,150 180,200 Z" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="1" />
+                                        
+                                        <!-- Cueca Boxer (Underwear) - visible when naked -->
+                                        <Path x:Name="underwear" Data="M 68,170 C 68,170 80,165 110,165 C 140,165 152,170 152,170 L 158,200 L 62,200 Z" Fill="#252525" Stroke="#151515" StrokeThickness="1" />
 
-                                        <!-- Rosto -->
-                                        <Ellipse x:Name="headBase" Width="70" Height="80" Canvas.Left="55" Canvas.Top="35" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="1"/>
+                                        <!-- TATTOOS LAYER (Drawn on Skin) -->
+                                        <!-- Neck Clover Tattoo (from reference image) -->
+                                        <Canvas x:Name="tattooClover" Canvas.Left="106" Canvas.Top="112" Visibility="Collapsed">
+                                            <!-- Clover shape (small 4-leaf black clover) -->
+                                            <Path Data="M 4,4 C 2,2 2,0 4,0 C 6,0 6,2 4,4 M 4,4 C 6,6 8,6 8,4 C 8,2 6,2 4,4 M 4,4 C 2,6 2,8 4,8 C 6,8 6,6 4,4 M 4,4 C 2,2 0,2 0,4 C 0,6 2,6 4,4 M 4,4 L 4,11" Stroke="Black" StrokeThickness="1.5" Fill="Black" />
+                                        </Canvas>
+                                        
+                                        <!-- Other tattoos -->
+                                        <Path x:Name="tattooTribal" Data="M 46,160 Q 60,150 75,165" Stroke="#33000000" StrokeThickness="3.5" StrokeDashArray="1,2" Visibility="Collapsed"/>
+                                        <Path x:Name="tattooGeek" Data="M 145,160 L 155,150 L 165,165" Stroke="#33000000" StrokeThickness="2" Visibility="Collapsed"/>
 
-                                        <!-- Olhos -->
-                                        <Ellipse Width="6" Height="6" Canvas.Left="75" Canvas.Top="60" Fill="#1E1E1E" />
-                                        <Ellipse Width="6" Height="6" Canvas.Left="99" Canvas.Top="60" Fill="#1E1E1E" />
-                                        <Path Data="M 82,78 Q 90,86 98,78" Stroke="#1E1E1E" StrokeThickness="2" Fill="Transparent" />
+                                        <!-- HEAD BASE LAYER -->
+                                        <!-- Head Oval, Ears and Nose -->
+                                        <Ellipse Width="18" Height="28" Canvas.Left="64" Canvas.Top="60" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="0.5"/> <!-- Left Ear -->
+                                        <Ellipse Width="18" Height="28" Canvas.Left="138" Canvas.Top="60" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="0.5"/> <!-- Right Ear -->
+                                        <Ellipse x:Name="headBase" Width="82" Height="92" Canvas.Left="69" Canvas.Top="32" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="1"/>
+                                        <Path Data="M 106,78 Q 110,81 114,78" Stroke="#D2996E" StrokeThickness="2" Fill="Transparent" /> <!-- Nose -->
 
-                                        <!-- Acessório Óculos -->
-                                        <Canvas x:Name="accGlassesCanvas" Visibility="Collapsed" Canvas.Left="55" Canvas.Top="35">
-                                            <Path Data="M 12,23 L 30,23 M 40,23 L 58,23" Stroke="#00FFFF" StrokeThickness="2" />
-                                            <Ellipse Width="16" Height="16" Canvas.Left="14" Canvas.Top="15" Stroke="#00FFFF" StrokeThickness="2" Fill="#3300FFFF" />
-                                            <Ellipse Width="16" Height="16" Canvas.Left="40" Canvas.Top="15" Stroke="#00FFFF" StrokeThickness="2" Fill="#3300FFFF" />
+                                        <!-- EXPRESSION LAYER (Eyes & Mouth) -->
+                                        <Ellipse Width="8" Height="8" Canvas.Left="90" Canvas.Top="65" Fill="#1E1E1E" /> <!-- Left Eye -->
+                                        <Ellipse Width="8" Height="8" Canvas.Left="122" Canvas.Top="65" Fill="#1E1E1E" /> <!-- Right Eye -->
+                                        <Path Data="M 86,59 Q 94,56 99,61" Stroke="Black" StrokeThickness="2" Fill="Transparent" /> <!-- Left Eyebrow -->
+                                        <Path Data="M 121,61 Q 126,56 134,59" Stroke="Black" StrokeThickness="2" Fill="Transparent" /> <!-- Right Eyebrow -->
+                                        <Path Data="M 100,94 Q 110,102 120,94" Stroke="#8A4A4A" StrokeThickness="3.5" Fill="Transparent" /> <!-- Mouth/Lips -->
+
+                                        <!-- BEARD LAYER -->
+                                        <!-- Cavanhaque (Goatee) -->
+                                        <Path x:Name="beardGoatee" Data="M 98,90 Q 110,108 122,90 L 117,112 L 103,112 Z" Fill="#222222" Stroke="Black" StrokeThickness="0.5" Visibility="Collapsed" />
+                                        
+                                        <!-- Barba Fechada (Full Beard - from reference image) -->
+                                        <Path x:Name="beardFull" Data="M 70,72 C 70,72 68,96 82,108 C 94,118 126,118 138,108 C 152,96 150,72 150,72 C 150,72 144,98 132,105 Q 110,111 88,105 C 76,98 70,72 70,72 Z M 95,90 Q 110,95 125,90 Q 110,106 95,90 Z" Fill="#181818" Stroke="Black" StrokeThickness="0.5" Visibility="Collapsed" />
+
+                                        <!-- CLOTHING LAYER -->
+                                        <!-- Camiseta Gamer (T-shirt) -->
+                                        <Canvas x:Name="clothingTshirt" Visibility="Collapsed">
+                                            <Path Data="M 40,200 C 40,150 70,123 110,123 C 150,123 180,200 180,200 Z" Fill="#1A1A1A" Stroke="#2A2A2A" StrokeThickness="1"/>
+                                            <Path Data="M 90,123 Q 110,142 130,123" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="0.5" /> <!-- Neck cutout -->
+                                            <!-- Simple logo on chest -->
+                                            <Rectangle Width="20" Height="14" Canvas.Left="100" Canvas.Top="145" Fill="#FF2222" RadiusX="3" RadiusY="3" />
+                                            <Path Data="M 107,152 L 113,152 M 110,149 L 110,155" Stroke="White" StrokeThickness="2" />
+                                        </Canvas>
+                                        
+                                        <!-- Moletom de Rua (Hoodie) -->
+                                        <Canvas x:Name="clothingHoodie" Visibility="Collapsed">
+                                            <Path Data="M 40,200 C 40,146 66,120 110,120 C 154,120 180,146 180,200 Z" Fill="#3E4E5E" Stroke="#2A3A4A" StrokeThickness="1" />
+                                            <!-- Big thick collar for hoodie -->
+                                            <Path Data="M 75,120 Q 110,145 145,120 L 132,145 L 88,145 Z" Fill="#2E3E4E" Stroke="#1E2E3E" StrokeThickness="1" />
                                         </Canvas>
 
-                                        <!-- Cabelos -->
-                                        <Path x:Name="hairSpiky" Data="M 55,45 L 60,25 L 70,35 L 80,20 L 90,35 L 100,20 L 110,35 L 120,25 L 125,45 L 120,53 L 60,53 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Visible" />
-                                        <Path x:Name="hairMohawk" Data="M 85,35 L 90,5 L 95,35 Z M 88,35 L 90,10 L 92,35 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
-                                        <Path x:Name="hairPompadour" Data="M 55,45 C 55,15 125,15 125,45 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
-                                        <Path x:Name="hairGamer" Data="M 55,45 Q 90,15 125,45 L 115,58 Q 90,45 65,58 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
-                                        <Path x:Name="hairWavy" Data="M 55,45 C 40,55 45,95 45,95 L 60,85 Q 55,60 65,55 M 125,45 C 140,55 135,95 135,95 L 120,85 Q 125,60 115,55" Stroke="#00FFFF" StrokeThickness="5" Fill="Transparent" Visibility="Collapsed" />
-
-                                        <!-- Acessório Headphones -->
-                                        <Canvas x:Name="accHeadphonesCanvas" Visibility="Collapsed" Canvas.Left="55" Canvas.Top="35">
-                                            <Path Data="M 5,25 A 30,30 0 0,1 65,25" Stroke="#FF2222" StrokeThickness="4" Fill="Transparent" />
-                                            <Ellipse Width="12" Height="24" Canvas.Left="-2" Canvas.Top="18" Fill="#FF2222" Stroke="#FFFFFF" StrokeThickness="1"/>
-                                            <Ellipse Width="6" Height="14" Canvas.Left="1" Canvas.Top="23" Fill="#1E1E1E" />
-                                            <Ellipse Width="12" Height="24" Canvas.Left="60" Canvas.Top="18" Fill="#FF2222" Stroke="#FFFFFF" StrokeThickness="1"/>
-                                            <Ellipse Width="6" Height="14" Canvas.Left="63" Canvas.Top="23" Fill="#1E1E1E" />
+                                        <!-- Terno Premium (Suit) -->
+                                        <Canvas x:Name="clothingSuit" Visibility="Collapsed">
+                                            <Path Data="M 40,200 C 40,146 66,120 110,120 C 154,120 180,146 180,200 Z" Fill="#1E1E24" Stroke="#111" StrokeThickness="1"/>
+                                            <!-- White shirt collar and red tie -->
+                                            <Path Data="M 85,120 L 110,155 L 135,120" Fill="White" />
+                                            <Path Data="M 106,132 L 114,132 L 116,165 L 110,172 L 104,165 Z" Fill="#FF2222" /> <!-- Tie -->
+                                            <Path Data="M 68,120 L 98,175 L 110,155 L 122,175 L 152,120" Fill="Transparent" Stroke="#111" StrokeThickness="2" /> <!-- Suit lapels -->
                                         </Canvas>
 
-                                        <!-- Acessório Boné -->
-                                        <Canvas x:Name="accCapCanvas" Visibility="Collapsed" Canvas.Left="55" Canvas.Top="35">
-                                            <Path Data="M 6,18 C 6,-2 64,-2 64,18 Z" Fill="#FFCC00" Stroke="#B38F00" StrokeThickness="1" />
-                                            <Path Data="M 50,18 L 78,13 L 64,25 Z" Fill="#E5E5E5" Stroke="#B3B3B3" StrokeThickness="1" />
+                                        <!-- Jaqueta Puffer Preta (Puffer Jacket - Open - from reference image) -->
+                                        <Canvas x:Name="clothingJacket" Visibility="Collapsed">
+                                            <!-- Left side of open puffer jacket (voluminous rounded sections) -->
+                                            <Path Data="M 40,200 L 40,145 C 40,145 42,120 70,120 C 70,120 85,120 90,135 L 75,200 Z" Fill="#1D1D21" Stroke="#111" StrokeThickness="1"/>
+                                            <!-- Left puffer segments (horizontal bulging lines) -->
+                                            <Path Data="M 40,165 Q 60,160 83,165 M 40,185 Q 60,180 78,185" Stroke="#2D2D32" StrokeThickness="2"/>
+
+                                            <!-- Right side of open puffer jacket -->
+                                            <Path Data="M 180,200 L 180,145 C 180,145 178,120 150,120 C 150,120 135,120 130,135 L 145,200 Z" Fill="#1D1D21" Stroke="#111" StrokeThickness="1"/>
+                                            <!-- Right puffer segments -->
+                                            <Path Data="M 180,165 Q 160,160 137,165 M 180,185 Q 160,180 142,185" Stroke="#2D2D32" StrokeThickness="2"/>
+
+                                            <!-- High thick rounded puffer collar (back of neck) -->
+                                            <Path Data="M 68,122 C 68,98 152,98 152,122 C 142,110 78,110 68,122 Z" Fill="#121215" Stroke="Black" StrokeThickness="1" />
+                                            
+                                            <!-- Black t-shirt inside open jacket -->
+                                            <Path Data="M 90,135 Q 110,146 130,135 L 137,200 L 83,200 Z" Fill="#121212" />
+                                            <Path Data="M 92,135 Q 110,145 128,135" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="0.5" /> <!-- skin neck exposure -->
                                         </Canvas>
+
+                                        <!-- JOIAS & ACCESSORIES LAYER -->
+                                        <!-- Corrente de Ouro com Pingente de Cifrão $ -->
+                                        <Canvas x:Name="accChain" Visibility="Collapsed">
+                                            <!-- Golden link path (draped around neck/chest) -->
+                                            <Path Data="M 88,130 Q 110,162 132,130 Q 110,169 88,130" StrokeThickness="4" Fill="Transparent">
+                                                <Path.Stroke>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                        <GradientStop Color="#FFE066" Offset="0"/>
+                                                        <GradientStop Color="#D4AC0D" Offset="0.5"/>
+                                                        <GradientStop Color="#8C6B00" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Path.Stroke>
+                                            </Path>
+                                            <!-- Dollar Sign Pendant ($) -->
+                                            <Canvas Canvas.Left="104" Canvas.Top="156">
+                                                <!-- Dollar background circle or just sign -->
+                                                <TextBlock Text="$" FontSize="18" FontWeight="Black" Foreground="#FFE066">
+                                                    <TextBlock.Effect>
+                                                        <DropShadowEffect BlurRadius="4" Color="#D4AC0D" ShadowDepth="0"/>
+                                                    </TextBlock.Effect>
+                                                </TextBlock>
+                                            </Canvas>
+                                        </Canvas>
+
+                                        <!-- Headphones Pro -->
+                                        <Canvas x:Name="accPhones" Canvas.Left="69" Canvas.Top="32" Visibility="Collapsed">
+                                            <!-- Headband -->
+                                            <Path Data="M 5,22 A 36,36 0 0,1 77,22" Stroke="#FF2222" StrokeThickness="4.5" Fill="Transparent" />
+                                            <!-- Earcups -->
+                                            <Ellipse Width="15" Height="28" Canvas.Left="-5" Canvas.Top="15" Fill="#FF2222" Stroke="#111" StrokeThickness="1"/>
+                                            <Ellipse Width="6" Height="16" Canvas.Left="-2" Canvas.Top="21" Fill="#111" />
+                                            <Ellipse Width="15" Height="28" Canvas.Left="72" Canvas.Top="15" Fill="#FF2222" Stroke="#111" StrokeThickness="1"/>
+                                            <Ellipse Width="6" Height="16" Canvas.Left="78" Canvas.Top="21" Fill="#111" />
+                                        </Canvas>
+
+                                        <!-- Óculos Escuros -->
+                                        <Canvas x:Name="accGlasses" Canvas.Left="69" Canvas.Top="32" Visibility="Collapsed">
+                                            <!-- Frame connection -->
+                                            <Path Data="M 16,33 L 36,33 M 46,33 L 66,33" Stroke="#111" StrokeThickness="2.5" />
+                                            <!-- Lenses -->
+                                            <Rectangle Width="22" Height="18" Canvas.Left="16" Canvas.Top="25" RadiusX="6" RadiusY="6" Fill="#CC00FFFF" Stroke="#111" StrokeThickness="1.5" />
+                                            <Rectangle Width="22" Height="18" Canvas.Left="44" Canvas.Top="25" RadiusX="6" RadiusY="6" Fill="#CC00FFFF" Stroke="#111" StrokeThickness="1.5" />
+                                        </Canvas>
+
+                                        <!-- NEON HAIR LAYER -->
+                                        <!-- 1. Arrepiado (Spiky) -->
+                                        <Path x:Name="hairSpiky" Data="M 68,48 L 74,25 L 86,37 L 98,20 L 110,37 L 122,20 L 134,37 L 146,25 L 152,48 L 146,58 L 74,58 Z" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
+                                        <!-- 2. Mohawk -->
+                                        <Path x:Name="hairMohawk" Data="M 103,34 L 110,4 L 117,34 Z M 106,34 L 110,10 L 114,34 Z" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
+                                        <!-- 3. Topete (Pompadour) -->
+                                        <Path x:Name="hairPompadour" Data="M 68,48 C 68,12 152,12 152,48 Z" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
+                                        <!-- 4. Gamer -->
+                                        <Path x:Name="hairGamer" Data="M 68,48 Q 110,15 152,48 L 140,62 Q 110,48 80,62 Z" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
+                                        
+                                        <!-- 5. Messy Pink (From reference image) -->
+                                        <Path x:Name="hairMessy" Data="M 66,50 C 66,50 62,30 78,22 C 94,14 90,30 102,18 C 114,6 122,24 132,18 C 142,12 144,30 154,34 C 164,38 152,54 152,54 L 142,61 C 142,61 110,50 78,61 Z" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
+                                        
+                                        <!-- 6. Longos (Wavy) -->
+                                        <Path x:Name="hairWavy" Data="M 68,48 C 50,60 55,108 55,108 L 72,96 Q 68,68 80,62 M 152,48 C 170,60 165,108 165,108 L 148,96 Q 152,68 140,62" StrokeThickness="5.5" Fill="Transparent" Visibility="Collapsed" />
 
                                     </Canvas>
                                 </Border>
@@ -192,22 +313,22 @@
                     </Grid>
 
                     <!-- Customization Summary Info Card -->
-                    <Border Grid.Row="2" Background="#1A1A1A" CornerRadius="8" Padding="12" BorderBrush="#2A2A2A" BorderThickness="1">
+                    <Border Grid.Row="2" Background="#181818" CornerRadius="8" Padding="12" BorderBrush="#2A2A2A" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock x:Name="txtSummaryChannel" Text="CANAL: Gamer Pro" FontSize="14" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,6"/>
-                            <Separator Background="#333333" Margin="0,0,0,6"/>
+                            <TextBlock x:Name="txtSummaryChannel" Text="CANAL: Gamer Pro" FontSize="14" FontWeight="Black" Foreground="#FF2222" HorizontalAlignment="Center" Margin="0,0,0,6"/>
+                            <Separator Background="#2A2A2A" Margin="0,0,0,8"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0">
-                                    <TextBlock x:Name="txtSummaryOutfit" Text="👕 Camiseta Gamer" FontSize="10" Foreground="#AAAAAA" Margin="0,1"/>
-                                    <TextBlock x:Name="txtSummaryTattoo" Text="💉 Nenhuma" FontSize="10" Foreground="#AAAAAA" Margin="0,1"/>
+                                    <TextBlock x:Name="txtSummaryOutfit" Text="👕 Só Cueca" FontSize="11" Foreground="#CCCCCC" Margin="0,2" FontWeight="Bold"/>
+                                    <TextBlock x:Name="txtSummaryTattoo" Text="💉 Nenhuma" FontSize="11" Foreground="#CCCCCC" Margin="0,2" FontWeight="Bold"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock x:Name="txtSummaryAccessory" Text="🎧 Nenhum" FontSize="10" Foreground="#AAAAAA" Margin="0,1"/>
-                                    <TextBlock x:Name="txtSummaryHair" Text="⚡ Cabelo Cyan" FontSize="10" Foreground="#AAAAAA" Margin="0,1"/>
+                                    <TextBlock x:Name="txtSummaryAccessory" Text="💍 Nenhum" FontSize="11" Foreground="#CCCCCC" Margin="0,2" FontWeight="Bold"/>
+                                    <TextBlock x:Name="txtSummaryHair" Text="⚡ Careca" FontSize="11" Foreground="#CCCCCC" Margin="0,2" FontWeight="Bold"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>

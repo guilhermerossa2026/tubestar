@@ -12,19 +12,21 @@ namespace TubeStar
     {
         public event Action StartGameClicked;
 
-        private int _selectedHairStyle = 1; // 1=Spiky, 2=Mohawk, 3=Pompadour, 4=Gamer, 5=Wavy
-        private string _selectedHairColor = "#00FFFF"; // default Cyan
-        private string _selectedHairName = "Cyan";
+        // RPG Base Limpa: O personagem inicia careca, sem barba, de cueca, sem acessórios e sem tatuagens!
+        private int _selectedHairStyle = 0; // 0=Careca/Nenhum
+        private string _selectedHairColor = "#FF00FF"; // default Pink
+        private string _selectedHairName = "Pink";
 
-        private int _selectedOutfit = 0; // 0=Tshirt, 1=Hoodie, 2=Jacket, 3=Suit
-        private int _selectedAccessory = 0; // 0=None, 1=Headphones, 2=Glasses, 3=Cap
-        private int _selectedTattoo = 0; // 0=None, 1=Tribal, 2=Geek, 3=Gamer
+        private int _selectedBeard = 0; // 0=Sem Barba, 1=Barba Fechada, 2=Cavanhaque
+        private int _selectedOutfit = -1; // -1=Só Cueca, 0=Tshirt, 1=Hoodie, 2=Jacket, 3=Suit
+        private int _selectedAccessory = 0; // 0=Nenhum, 1=Headphones, 2=Glasses, 3=Chain
+        private int _selectedTattoo = 0; // 0=Nenhuma, 1=Clover, 2=Tribal, 3=Geek
 
         // Neon color palette definitions
         private readonly Tuple<string, string>[] _hairColors = new Tuple<string, string>[]
         {
-            Tuple.Create("#00FFFF", "Cyan"),
             Tuple.Create("#FF00FF", "Pink"),
+            Tuple.Create("#00FFFF", "Cyan"),
             Tuple.Create("#00FF00", "Green"),
             Tuple.Create("#FF5500", "Orange"),
             Tuple.Create("#FFDD44", "Yellow"),
@@ -33,10 +35,11 @@ namespace TubeStar
             Tuple.Create("#FFFFFF", "White")
         };
 
-        private readonly string[] _outfits = new string[] { "Camiseta Gamer", "Moletom Gamer", "Jaqueta de Couro", "Terno Elegante" };
-        private readonly string[] _accessories = new string[] { "Nenhum", "Headphone Pro Neon", "Óculos Gamer Escuros", "Boné Virado" };
-        private readonly string[] _tattoos = new string[] { "Nenhuma", "Tribal Manga", "Símbolos Geek / Códigos", "Gamer Completa (Braço)" };
-        private readonly string[] _hairNames = new string[] { "", "Arrepiado", "Mohawk", "Topete", "Gamer", "Longos" };
+        private readonly string[] _outfits = new string[] { "Camiseta Gamer", "Moletom de Rua", "Jaqueta Puffer Preta", "Terno Premium" };
+        private readonly string[] _accessories = new string[] { "Nenhum", "Headphones Pro", "Óculos Escuros", "Corrente de Ouro $" };
+        private readonly string[] _tattoos = new string[] { "Nenhuma", "Trevo no Pescoço", "Tribal Manga", "Símbolos Geek" };
+        private readonly string[] _beards = new string[] { "Sem Barba", "Barba Fechada", "Cavanhaque" };
+        private readonly string[] _hairNames = new string[] { "Careca", "Arrepiado", "Mohawk", "Topete", "Gamer", "Messy Pink", "Longos" };
 
         private List<Button> _colorButtons = new List<Button>();
 
@@ -45,9 +48,10 @@ namespace TubeStar
             InitializeComponent();
             SetupHairColorPanel();
             
-            // Set initial highlights on RPG grids
-            HighlightSelectedButton(btnHairSpiky);
-            HighlightSelectedButton(btnOutfitTshirt);
+            // Set initial highlights on RPG grids to align with the "Naked/Clean" default state
+            HighlightSelectedButton(btnHairNone);
+            HighlightSelectedButton(btnBeardNone);
+            HighlightSelectedButton(btnOutfitNone);
             HighlightSelectedButton(btnAccNone);
             HighlightSelectedButton(btnTattooNone);
 
@@ -87,7 +91,7 @@ namespace TubeStar
                 _colorButtons.Add(btn);
             }
 
-            SelectColorButton("#00FFFF");
+            SelectColorButton("#FF00FF"); // default Pink
         }
 
         private void SelectColorButton(string selectedHex)
@@ -148,6 +152,17 @@ namespace TubeStar
             }
         }
 
+        private void Beard_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null && btn.Tag != null)
+            {
+                _selectedBeard = int.Parse(btn.Tag.ToString());
+                HighlightSelectedButton(btn);
+                UpdatePreview();
+            }
+        }
+
         private void Outfit_Click(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
@@ -191,7 +206,7 @@ namespace TubeStar
             // Ensure visual elements exist
             if (avatarCanvas == null) return;
 
-            // 1. Update Hair Style Visibilities & Colors
+            // 1. Update Hair Style Visibilities & Neon Colors
             var neonColor = (Color)ColorConverter.ConvertFromString(_selectedHairColor);
             var hairBrush = new SolidColorBrush(neonColor);
 
@@ -199,44 +214,76 @@ namespace TubeStar
             hairMohawk.Visibility = (_selectedHairStyle == 2) ? Visibility.Visible : Visibility.Collapsed;
             hairPompadour.Visibility = (_selectedHairStyle == 3) ? Visibility.Visible : Visibility.Collapsed;
             hairGamer.Visibility = (_selectedHairStyle == 4) ? Visibility.Visible : Visibility.Collapsed;
-            hairWavy.Visibility = (_selectedHairStyle == 5) ? Visibility.Visible : Visibility.Collapsed;
+            hairMessy.Visibility = (_selectedHairStyle == 5) ? Visibility.Visible : Visibility.Collapsed;
+            hairWavy.Visibility = (_selectedHairStyle == 6) ? Visibility.Visible : Visibility.Collapsed;
 
-            // Apply Neon color to active hair
+            // Apply active Neon color brush to hair styles
             hairSpiky.Fill = hairBrush;
             hairMohawk.Fill = hairBrush;
             hairPompadour.Fill = hairBrush;
             hairGamer.Fill = hairBrush;
-            hairWavy.Stroke = hairBrush; // Wavy is drawn as thick stroke
+            hairMessy.Fill = hairBrush;
+            hairWavy.Stroke = hairBrush; // Wavy long hair uses thick stroke
 
-            // Update Aura Color
-            avatarGlowBorder.BorderBrush = hairBrush;
+            // Update Aura surrounding frame to sintonize with Neon hair color (if has hair, otherwise default red neon)
             if (glowShadow != null)
             {
-                glowShadow.Color = neonColor;
+                if (_selectedHairStyle == 0)
+                {
+                    avatarGlowBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2222"));
+                    glowShadow.Color = (Color)ColorConverter.ConvertFromString("#FF2222");
+                }
+                else
+                {
+                    avatarGlowBorder.BorderBrush = hairBrush;
+                    glowShadow.Color = neonColor;
+                }
             }
 
-            // 2. Update Clothing Visibilities
+            // 2. Update Beard Visibilities
+            beardFull.Visibility = (_selectedBeard == 1) ? Visibility.Visible : Visibility.Collapsed;
+            beardGoatee.Visibility = (_selectedBeard == 2) ? Visibility.Visible : Visibility.Collapsed;
+
+            // 3. Update Clothing Visibilities
             clothingTshirt.Visibility = (_selectedOutfit == 0) ? Visibility.Visible : Visibility.Collapsed;
             clothingHoodie.Visibility = (_selectedOutfit == 1) ? Visibility.Visible : Visibility.Collapsed;
             clothingJacket.Visibility = (_selectedOutfit == 2) ? Visibility.Visible : Visibility.Collapsed;
             clothingSuit.Visibility = (_selectedOutfit == 3) ? Visibility.Visible : Visibility.Collapsed;
 
-            // 3. Update Accessories Visibilities
-            accHeadphonesCanvas.Visibility = (_selectedAccessory == 1) ? Visibility.Visible : Visibility.Collapsed;
-            accGlassesCanvas.Visibility = (_selectedAccessory == 2) ? Visibility.Visible : Visibility.Collapsed;
-            accCapCanvas.Visibility = (_selectedAccessory == 3) ? Visibility.Visible : Visibility.Collapsed;
+            // 4. Update Accessories Visibilities
+            accPhones.Visibility = (_selectedAccessory == 1) ? Visibility.Visible : Visibility.Collapsed;
+            accGlasses.Visibility = (_selectedAccessory == 2) ? Visibility.Visible : Visibility.Collapsed;
+            accChain.Visibility = (_selectedAccessory == 3) ? Visibility.Visible : Visibility.Collapsed;
 
-            // 4. Update Tattoos Visibilities
-            tattooGeek.Visibility = (_selectedTattoo == 2) ? Visibility.Visible : Visibility.Collapsed;
-            tattooTribal.Visibility = (_selectedTattoo == 1) ? Visibility.Visible : Visibility.Collapsed;
-            tattooGamer.Visibility = (_selectedTattoo == 3) ? Visibility.Visible : Visibility.Collapsed;
+            // 5. Update Tattoos Visibilities
+            tattooClover.Visibility = (_selectedTattoo == 1) ? Visibility.Visible : Visibility.Collapsed;
+            tattooTribal.Visibility = (_selectedTattoo == 2) ? Visibility.Visible : Visibility.Collapsed;
+            tattooGeek.Visibility = (_selectedTattoo == 3) ? Visibility.Visible : Visibility.Collapsed;
 
-            // 5. Update Texts
-            txtSummaryChannel.Text = "CANAL: " + (string.IsNullOrEmpty(txtYoutuberName.Text) ? "Gamer Pro" : txtYoutuberName.Text);
-            txtSummaryOutfit.Text = "👕 " + _outfits[_selectedOutfit];
-            txtSummaryAccessory.Text = "🎧 " + _accessories[_selectedAccessory];
-            txtSummaryTattoo.Text = "💉 " + _tattoos[_selectedTattoo];
-            txtSummaryHair.Text = "⚡ Cabelo " + _hairNames[_selectedHairStyle] + " " + _selectedHairName;
+            // 6. Update Texts on the Summary Card
+            if (txtSummaryChannel != null)
+                txtSummaryChannel.Text = "CANAL: " + (string.IsNullOrEmpty(txtYoutuberName.Text) ? "Gamer Pro" : txtYoutuberName.Text);
+            
+            if (txtSummaryOutfit != null)
+                txtSummaryOutfit.Text = "👕 " + (_selectedOutfit == -1 ? "Só Cueca" : _outfits[_selectedOutfit]);
+            
+            if (txtSummaryAccessory != null)
+                txtSummaryAccessory.Text = "💍 " + _accessories[_selectedAccessory];
+            
+            if (txtSummaryTattoo != null)
+                txtSummaryTattoo.Text = "💉 " + _tattoos[_selectedTattoo];
+            
+            if (txtSummaryHair != null)
+            {
+                if (_selectedHairStyle == 0)
+                {
+                    txtSummaryHair.Text = "⚡ Careca";
+                }
+                else
+                {
+                    txtSummaryHair.Text = "⚡ Cabelo " + _hairNames[_selectedHairStyle] + " " + _selectedHairName;
+                }
+            }
         }
 
         private void BtnStartGame_Click(object sender, RoutedEventArgs e)
@@ -244,10 +291,9 @@ namespace TubeStar
             // Apply customization details to current Player instance
             Player.Current.YoutuberName = string.IsNullOrEmpty(txtYoutuberName.Text) ? "Gamer Pro" : txtYoutuberName.Text;
             
-            // In Phase 2, AvatarId represents the chosen hair style index
             Player.Current.YoutuberAvatarId = _selectedHairStyle;
             Player.Current.YoutuberHairColor = _selectedHairColor;
-            Player.Current.YoutuberOutfit = _outfits[_selectedOutfit];
+            Player.Current.YoutuberOutfit = (_selectedOutfit == -1 ? "Só Cueca" : _outfits[_selectedOutfit]);
             Player.Current.YoutuberAccessories = _accessories[_selectedAccessory];
             Player.Current.YoutuberTattoos = _tattoos[_selectedTattoo];
 

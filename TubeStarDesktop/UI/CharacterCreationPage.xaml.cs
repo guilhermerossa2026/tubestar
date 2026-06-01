@@ -249,19 +249,12 @@ namespace TubeStar
             Player.Current.YoutuberAccessories = _avatarAccessories[_selectedAvatarIndex];
             Player.Current.YoutuberTattoos = _avatarTattoos[_selectedAvatarIndex];
 
-            // Para manter a estabilidade absoluta do motor legado de TubeStar (que exige pelo menos 1 canal ativo no Save/Load),
-            // criamos o canal inicial técnico obrigatório com o nome neutro de "Meu Canal". 
-            // O personagem é quem você é (YouTuber), e os canais são independentes, permitindo criar novos canais no mid-game!
-            Channel realChannel = new Channel()
-            {
-                Name = "Meu Canal",
-                Advertising = AdvertisingStrategy.Normal
-            };
-
+            // Garantimos que a lista de canais criados comece 100% vazia (nenhum canal criado automaticamente),
+            // mas mantemos obrigatoriamente o canal técnico interno UnreleasedVideos na lista para que o fluxo de rascunhos de vídeos funcione perfeitamente.
             if (Player.Current.Channels != null)
             {
-                Player.Current.Channels.Clear(); // Limpar canais gerados incorretamente por fallbacks
-                Player.Current.Channels.Add(realChannel);
+                Player.Current.Channels.Clear(); 
+                Player.Current.Channels.Add(Channel.UnreleasedVideos);
             }
 
             if (StartGameClicked != null)

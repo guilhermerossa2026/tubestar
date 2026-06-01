@@ -124,50 +124,38 @@ namespace TubeStar
             {
                 txtProfileName.Text = string.IsNullOrEmpty(Player.Current.YoutuberName) ? "Gamer Pro" : Player.Current.YoutuberName;
 
-                // 1. Atualizar Mini Avatar Vetorial
-                int selectedHairStyle = Player.Current.YoutuberAvatarId;
-                if (selectedHairStyle < 1 || selectedHairStyle > 5) selectedHairStyle = 1;
-
-                string hairColorHex = string.IsNullOrEmpty(Player.Current.YoutuberHairColor) ? "#00FFFF" : Player.Current.YoutuberHairColor;
-                var neonColor = ColorConverter.ConvertFromString(hairColorHex) as Color? ?? Colors.Cyan;
-                var hairBrush = new SolidColorBrush(neonColor);
-
-                if (miniAvatarCanvas != null)
+                // 1. Atualizar Mini Avatar de Alta Definição
+                if (imgProfileAvatarMini != null)
                 {
-                    miniHairSpiky.Visibility = (selectedHairStyle == 1) ? Visibility.Visible : Visibility.Collapsed;
-                    miniHairMohawk.Visibility = (selectedHairStyle == 2) ? Visibility.Visible : Visibility.Collapsed;
-                    miniHairPompadour.Visibility = (selectedHairStyle == 3) ? Visibility.Visible : Visibility.Collapsed;
-                    miniHairGamer.Visibility = (selectedHairStyle == 4) ? Visibility.Visible : Visibility.Collapsed;
-                    miniHairWavy.Visibility = (selectedHairStyle == 5) ? Visibility.Visible : Visibility.Collapsed;
+                    int avatarIdx = Player.Current.YoutuberAvatarId;
+                    if (avatarIdx < 0 || avatarIdx >= 10) avatarIdx = 0;
 
-                    miniHairSpiky.Fill = hairBrush;
-                    miniHairMohawk.Fill = hairBrush;
-                    miniHairPompadour.Fill = hairBrush;
-                    miniHairGamer.Fill = hairBrush;
-                    miniHairWavy.Stroke = hairBrush;
+                    string[] avatarUris = new string[] {
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_1.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_2.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_3.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_4.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_gangstar_1.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_gangstar_2.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_1.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_2.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_1.png",
+                        "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_2.png"
+                    };
 
-                    // Atualizar Roupas Vetoriais
-                    string selectedOutfit = Player.Current.YoutuberOutfit ?? "Camiseta Gamer";
-                    miniClothingTshirt.Visibility = (selectedOutfit == "Camiseta Gamer") ? Visibility.Visible : Visibility.Collapsed;
-                    miniClothingHoodie.Visibility = (selectedOutfit == "Moletom Gamer") ? Visibility.Visible : Visibility.Collapsed;
-                    miniClothingJacket.Visibility = (selectedOutfit == "Jaqueta de Couro") ? Visibility.Visible : Visibility.Collapsed;
-                    miniClothingSuit.Visibility = (selectedOutfit == "Terno Elegante") ? Visibility.Visible : Visibility.Collapsed;
-
-                    // Atualizar Acessórios Vetoriais
-                    string selectedAccessory = Player.Current.YoutuberAccessories ?? "Nenhum";
-                    miniAccHeadphonesCanvas.Visibility = (selectedAccessory == "Headphone Pro Neon") ? Visibility.Visible : Visibility.Collapsed;
-                    miniAccGlassesCanvas.Visibility = (selectedAccessory == "Óculos Gamer Escuros") ? Visibility.Visible : Visibility.Collapsed;
-                    miniAccCapCanvas.Visibility = (selectedAccessory == "Boné Virado") ? Visibility.Visible : Visibility.Collapsed;
-
-                    // Atualizar Tatuagens Vetoriais
-                    string selectedTattoo = Player.Current.YoutuberTattoos ?? "Nenhuma";
-                    miniTattooGeek.Visibility = (selectedTattoo == "Símbolos Geek / Códigos") ? Visibility.Visible : Visibility.Collapsed;
-                    miniTattooTribal.Visibility = (selectedTattoo == "Tribal Manga") ? Visibility.Visible : Visibility.Collapsed;
-                    miniTattooGamer.Visibility = (selectedTattoo == "Gamer Completa (Braço)") ? Visibility.Visible : Visibility.Collapsed;
+                    imgProfileAvatarMini.Source = new BitmapImage(new Uri(avatarUris[avatarIdx], UriKind.Absolute));
                 }
 
-                // 2. Atualizar Aura de Brilho
-                profileAvatarGlow.BorderBrush = hairBrush;
+                // 2. Atualizar Aura de Brilho Dinâmica
+                string hairColorHex = string.IsNullOrEmpty(Player.Current.YoutuberHairColor) ? "#FF2222" : Player.Current.YoutuberHairColor;
+                var neonColor = ColorConverter.ConvertFromString(hairColorHex) as Color? ?? Colors.Red;
+                var hairBrush = new SolidColorBrush(neonColor);
+
+                if (profileAvatarGlow != null)
+                {
+                    profileAvatarGlow.BorderBrush = hairBrush;
+                }
+                
                 if (profileAvatarGlowEffect != null)
                 {
                     profileAvatarGlowEffect.Color = neonColor;
@@ -422,80 +410,63 @@ namespace TubeStar
             panel.Children.Add(lblTitle);
 
             // Cabelo
-            TextBlock lblHair = new TextBlock { Text = "Corte de Cabelo", FontSize = 11, Foreground = new SolidColorBrush(Colors.Gray), Margin = new Thickness(0, 5, 0, 2) };
-            panel.Children.Add(lblHair);
+            // Seleção de Avatar
+            TextBlock lblAvatar = new TextBlock { Text = "Selecione seu Avatar Gamer AAA", FontSize = 11, Foreground = new SolidColorBrush(Colors.Gray), Margin = new Thickness(0, 5, 0, 4) };
+            panel.Children.Add(lblAvatar);
 
-            ComboBox cbHair = new ComboBox { Height = 28, Margin = new Thickness(0, 0, 0, 10) };
-            cbHair.Items.Add("Arrepiado");
-            cbHair.Items.Add("Mohawk");
-            cbHair.Items.Add("Topete");
-            cbHair.Items.Add("Gamer");
-            cbHair.Items.Add("Longos");
-            cbHair.SelectedIndex = Math.Max(0, Player.Current.YoutuberAvatarId - 1);
-            panel.Children.Add(cbHair);
+            ComboBox cbAvatar = new ComboBox { Height = 28, Margin = new Thickness(0, 0, 0, 15) };
+            string[] avatarNames = new string[] {
+                "Mauricinho Executivo",
+                "Mauricinho Casual",
+                "Empresário Jovem",
+                "Empresário Maduro",
+                "Trap Messy Pink",
+                "Trap Hip-Hop",
+                "Casual E-boy",
+                "Casual Rocker",
+                "Casual Cyberpunk",
+                "Casual Contemporâneo"
+            };
 
-            // Cor Cabelo
-            TextBlock lblHairColor = new TextBlock { Text = "Cor do Cabelo Neon", FontSize = 11, Foreground = new SolidColorBrush(Colors.Gray), Margin = new Thickness(0, 5, 0, 2) };
-            panel.Children.Add(lblHairColor);
-
-            ComboBox cbHairColor = new ComboBox { Height = 28, Margin = new Thickness(0, 0, 0, 10) };
-            var colorNames = new string[] { "Cyan", "Pink", "Green", "Orange", "Yellow", "Red", "Purple", "White" };
-            var colorHexes = new string[] { "#00FFFF", "#FF00FF", "#00FF00", "#FF5500", "#FFDD44", "#FF2222", "#8A2BE2", "#FFFFFF" };
-
-            for (int i = 0; i < colorNames.Length; i++)
+            for (int i = 0; i < avatarNames.Length; i++)
             {
-                cbHairColor.Items.Add(colorNames[i]);
+                cbAvatar.Items.Add(avatarNames[i]);
             }
 
-            int colorIdx = Array.IndexOf(colorHexes, Player.Current.YoutuberHairColor);
-            if (colorIdx == -1) colorIdx = 0;
-            cbHairColor.SelectedIndex = colorIdx;
-            panel.Children.Add(cbHairColor);
-
-            TextBlock lblOutfit = new TextBlock { Text = "Vestuário (Outfit)", FontSize = 11, Foreground = new SolidColorBrush(Colors.Gray), Margin = new Thickness(0, 5, 0, 2) };
-            panel.Children.Add(lblOutfit);
-
-            ComboBox cbOutfit = new ComboBox { Height = 28, Margin = new Thickness(0, 0, 0, 10) };
-            cbOutfit.Items.Add("Camiseta Gamer");
-            cbOutfit.Items.Add("Moletom Gamer");
-            cbOutfit.Items.Add("Jaqueta de Couro");
-            cbOutfit.Items.Add("Terno Elegante");
-            cbOutfit.SelectedItem = Player.Current.YoutuberOutfit;
-            if (cbOutfit.SelectedItem == null) cbOutfit.SelectedIndex = 0;
-            panel.Children.Add(cbOutfit);
-
-            TextBlock lblAcc = new TextBlock { Text = "Acessório Especial", FontSize = 11, Foreground = new SolidColorBrush(Colors.Gray), Margin = new Thickness(0, 5, 0, 2) };
-            panel.Children.Add(lblAcc);
-
-            ComboBox cbAcc = new ComboBox { Height = 28, Margin = new Thickness(0, 0, 0, 10) };
-            cbAcc.Items.Add("Nenhum");
-            cbAcc.Items.Add("Headphone Pro Neon");
-            cbAcc.Items.Add("Óculos Gamer Escuros");
-            cbAcc.Items.Add("Boné Virado");
-            cbAcc.SelectedItem = Player.Current.YoutuberAccessories;
-            if (cbAcc.SelectedItem == null) cbAcc.SelectedIndex = 0;
-            panel.Children.Add(cbAcc);
-
-            TextBlock lblTattoo = new TextBlock { Text = "Tatuagem Corporal", FontSize = 11, Foreground = new SolidColorBrush(Colors.Gray), Margin = new Thickness(0, 5, 0, 2) };
-            panel.Children.Add(lblTattoo);
-
-            ComboBox cbTattoo = new ComboBox { Height = 28, Margin = new Thickness(0, 0, 0, 15) };
-            cbTattoo.Items.Add("Nenhuma");
-            cbTattoo.Items.Add("Tribal Manga");
-            cbTattoo.Items.Add("Símbolos Geek / Códigos");
-            cbTattoo.Items.Add("Gamer Completa (Braço)");
-            cbTattoo.SelectedItem = Player.Current.YoutuberTattoos;
-            if (cbTattoo.SelectedItem == null) cbTattoo.SelectedIndex = 0;
-            panel.Children.Add(cbTattoo);
+            cbAvatar.SelectedIndex = Math.Min(9, Math.Max(0, Player.Current.YoutuberAvatarId));
+            panel.Children.Add(cbAvatar);
 
             Button btnSave = new Button { Content = "SALVAR ESTILO GAMER", Height = 35, Background = new SolidColorBrush(Colors.Red), Foreground = new SolidColorBrush(Colors.White), FontWeight = FontWeights.Bold };
             btnSave.Click += (s, ev) =>
             {
-                Player.Current.YoutuberAvatarId = cbHair.SelectedIndex + 1;
-                Player.Current.YoutuberHairColor = colorHexes[cbHairColor.SelectedIndex];
-                Player.Current.YoutuberOutfit = cbOutfit.SelectedItem.ToString();
-                Player.Current.YoutuberAccessories = cbAcc.SelectedItem.ToString();
-                Player.Current.YoutuberTattoos = cbTattoo.SelectedItem.ToString();
+                int index = cbAvatar.SelectedIndex;
+                if (index < 0 || index >= 10) index = 0;
+
+                string[] avatarGlowColors = new string[] {
+                    "#FFDD44", "#00FFFF", "#FF2222", "#FF5500", "#FF00FF", "#FF2222", "#00FF00", "#FFFFFF", "#00FF00", "#8A2BE2"
+                };
+                string[] avatarStyles = new string[] {
+                    "Terno Premium Cinza", "Suéter de Lã Azul Premium", "Terno Azul de Fino Trato", "Camisa Preta de Sucesso",
+                    "Jaqueta Puffer Preta de Grife", "Jaqueta Bomber Vermelha", "Jaqueta Jeans com Ovelha", "Jaqueta de Couro Rocker",
+                    "Windbreaker Neon Militar", "Moletom Oversized Branco"
+                };
+                string[] avatarAccessories = new string[] {
+                    "Óculos Escuros Italianos", "Colarinho de Lã Fina", "Gravata de Seda Fina", "Gola Aberta Confiante",
+                    "Corrente de Ouro com Pingente $", "Correntes de Prata de Grife", "Cabelo Longo Despojado", "Cabelo Longo Platinado",
+                    "Windbreaker Neon de Rua", "Corte Degradê Contemporâneo"
+                };
+                string[] avatarTattoos = new string[] {
+                    "Nenhuma (Barba Alinhada)", "Nenhuma (Cabelo Social)", "Nenhuma (Fade Degradê)", "Nenhuma (Barba Cerrada)",
+                    "Trevo no Pescoço & Face", "Tranças com Dreads Dourados", "Colar de Couro (Estilo Indie)", "Cavanhaque Moderno",
+                    "Riscos no Buzzcut Verde", "Barba de Linha Fina"
+                };
+
+                Player.Current.YoutuberAvatarId = index;
+                Player.Current.YoutuberHairColor = avatarGlowColors[index];
+                Player.Current.YoutuberOutfit = avatarStyles[index];
+                Player.Current.YoutuberAccessories = avatarAccessories[index];
+                Player.Current.YoutuberTattoos = avatarTattoos[index];
+
                 UpdateYoutuberProfile();
                 dialog.Close();
             };

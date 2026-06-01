@@ -105,60 +105,7 @@
                                 <DropShadowEffect x:Name="profileAvatarGlowEffect" BlurRadius="8" ShadowDepth="0" Color="#00FFFF" Opacity="0.7"/>
                             </Border.Effect>
                             <Border CornerRadius="25" Background="#282828" ClipToBounds="True">
-                                <Viewbox Width="44" Height="44" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Canvas x:Name="miniAvatarCanvas" Width="180" Height="180">
-                                        <!-- Camada de Tatuagens (Fundo) -->
-                                        <Path x:Name="miniTattooGeek" Data="M 30,130 L 50,110 L 60,120 M 120,120 L 130,110 L 150,130" Stroke="#44FF2222" StrokeThickness="3" Visibility="Collapsed" />
-                                        <Path x:Name="miniTattooTribal" Data="M 35,125 Q 50,115 65,128 M 115,128 Q 130,115 145,125" Stroke="#4400FFFF" StrokeThickness="3" StrokeDashArray="2,2" Visibility="Collapsed" />
-                                        <Path x:Name="miniTattooGamer" Data="M 40,135 L 60,130 L 70,145 M 110,145 L 120,130 L 140,135" Stroke="#44FFFF00" StrokeThickness="4" Visibility="Collapsed" />
-
-                                        <!-- Corpo (Vestuário) -->
-                                        <Path x:Name="miniBodyBase" Data="M 30,160 C 30,125 60,105 90,105 C 120,105 150,125 150,160 Z" Fill="#2D2D2D" Stroke="#3D3D3D" StrokeThickness="2" />
-                                        
-                                        <!-- Linhas e preenchimentos extras do Outfit -->
-                                        <Path x:Name="miniClothingTshirt" Data="M 65,105 Q 90,125 115,105" Stroke="#E74C3C" StrokeThickness="4" Visibility="Visible" />
-                                        <Path x:Name="miniClothingHoodie" Data="M 60,103 Q 90,120 120,103 L 110,128 L 70,128 Z" Fill="#FF2222" Stroke="#880000" StrokeThickness="1" Visibility="Collapsed" />
-                                        <Path x:Name="miniClothingJacket" Data="M 55,105 L 75,135 M 125,105 L 105,135" Stroke="#D4AC0D" StrokeThickness="3" Visibility="Collapsed" />
-                                        <Path x:Name="miniClothingSuit" Data="M 60,105 L 90,135 L 120,105 M 90,135 L 90,160" Stroke="#FFFFFF" StrokeThickness="2" Visibility="Collapsed" />
-
-                                        <!-- Rosto -->
-                                        <Ellipse x:Name="miniHeadBase" Width="70" Height="80" Canvas.Left="55" Canvas.Top="35" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="1"/>
-
-                                        <!-- Olhos -->
-                                        <Ellipse Width="6" Height="6" Canvas.Left="75" Canvas.Top="60" Fill="#1E1E1E" />
-                                        <Ellipse Width="6" Height="6" Canvas.Left="99" Canvas.Top="60" Fill="#1E1E1E" />
-                                        <Path Data="M 82,78 Q 90,86 98,78" Stroke="#1E1E1E" StrokeThickness="2" Fill="Transparent" />
-
-                                        <!-- Acessório Óculos -->
-                                        <Canvas x:Name="miniAccGlassesCanvas" Visibility="Collapsed" Canvas.Left="55" Canvas.Top="35">
-                                            <Path Data="M 12,23 L 30,23 M 40,23 L 58,23" Stroke="#00FFFF" StrokeThickness="2" />
-                                            <Ellipse Width="16" Height="16" Canvas.Left="14" Canvas.Top="15" Stroke="#00FFFF" StrokeThickness="2" Fill="#3300FFFF" />
-                                            <Ellipse Width="16" Height="16" Canvas.Left="40" Canvas.Top="15" Stroke="#00FFFF" StrokeThickness="2" Fill="#3300FFFF" />
-                                        </Canvas>
-
-                                        <!-- Cabelos -->
-                                        <Path x:Name="miniHairSpiky" Data="M 55,45 L 60,25 L 70,35 L 80,20 L 90,35 L 100,20 L 110,35 L 120,25 L 125,45 L 120,53 L 60,53 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Visible" />
-                                        <Path x:Name="miniHairMohawk" Data="M 85,35 L 90,5 L 95,35 Z M 88,35 L 90,10 L 92,35 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
-                                        <Path x:Name="miniHairPompadour" Data="M 55,45 C 55,15 125,15 125,45 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
-                                        <Path x:Name="miniHairGamer" Data="M 55,45 Q 90,15 125,45 L 115,58 Q 90,45 65,58 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
-                                        <Path x:Name="miniHairWavy" Data="M 55,45 C 40,55 45,95 45,95 L 60,85 Q 55,60 65,55 M 125,45 C 140,55 135,95 135,95 L 120,85 Q 125,60 115,55" Stroke="#00FFFF" StrokeThickness="5" Fill="Transparent" Visibility="Collapsed" />
-
-                                        <!-- Acessório Headphones -->
-                                        <Canvas x:Name="miniAccHeadphonesCanvas" Visibility="Collapsed" Canvas.Left="55" Canvas.Top="35">
-                                            <Path Data="M 5,25 A 30,30 0 0,1 65,25" Stroke="#FF2222" StrokeThickness="4" Fill="Transparent" />
-                                            <Ellipse Width="12" Height="24" Canvas.Left="-2" Canvas.Top="18" Fill="#FF2222" Stroke="#FFFFFF" StrokeThickness="1"/>
-                                            <Ellipse Width="6" Height="14" Canvas.Left="1" Canvas.Top="23" Fill="#1E1E1E" />
-                                            <Ellipse Width="12" Height="24" Canvas.Left="60" Canvas.Top="18" Fill="#FF2222" Stroke="#FFFFFF" StrokeThickness="1"/>
-                                            <Ellipse Width="6" Height="14" Canvas.Left="63" Canvas.Top="23" Fill="#1E1E1E" />
-                                        </Canvas>
-
-                                        <!-- Acessório Boné -->
-                                        <Canvas x:Name="miniAccCapCanvas" Visibility="Collapsed" Canvas.Left="55" Canvas.Top="35">
-                                            <Path Data="M 6,18 C 6,-2 64,-2 64,18 Z" Fill="#FFCC00" Stroke="#B38F00" StrokeThickness="1" />
-                                            <Path Data="M 50,18 L 78,13 L 64,25 Z" Fill="#E5E5E5" Stroke="#B3B3B3" StrokeThickness="1" />
-                                        </Canvas>
-                                    </Canvas>
-                                </Viewbox>
+                                <Image x:Name="imgProfileAvatarMini" Stretch="UniformToFill" Margin="-4" Width="52" Height="52" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Border>
                         </Border>
 

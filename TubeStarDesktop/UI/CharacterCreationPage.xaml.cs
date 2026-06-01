@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
 
 namespace TubeStar
 {
@@ -12,118 +12,119 @@ namespace TubeStar
     {
         public event Action StartGameClicked;
 
-        // RPG Base Limpa: O personagem inicia careca, sem barba, de cueca, sem acessórios e sem tatuagens!
-        private int _selectedHairStyle = 0; // 0=Careca/Nenhum
-        private string _selectedHairColor = "#FF00FF"; // default Pink
-        private string _selectedHairName = "Pink";
+        private int _selectedAvatarIndex = 0;
 
-        private int _selectedBeard = 0; // 0=Sem Barba, 1=Barba Fechada, 2=Cavanhaque
-        private int _selectedOutfit = -1; // -1=Só Cueca, 0=Tshirt, 1=Hoodie, 2=Jacket, 3=Suit
-        private int _selectedAccessory = 0; // 0=Nenhum, 1=Headphones, 2=Glasses, 3=Chain
-        private int _selectedTattoo = 0; // 0=Nenhuma, 1=Clover, 2=Tribal, 3=Geek
-
-        // Neon color palette definitions
-        private readonly Tuple<string, string>[] _hairColors = new Tuple<string, string>[]
-        {
-            Tuple.Create("#FF00FF", "Pink"),
-            Tuple.Create("#00FFFF", "Cyan"),
-            Tuple.Create("#00FF00", "Green"),
-            Tuple.Create("#FF5500", "Orange"),
-            Tuple.Create("#FFDD44", "Yellow"),
-            Tuple.Create("#FF2222", "Red"),
-            Tuple.Create("#8A2BE2", "Purple"),
-            Tuple.Create("#FFFFFF", "White")
+        private readonly string[] _avatarUris = new string[] {
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_1.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_2.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_3.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_4.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_gangstar_1.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_gangstar_2.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_1.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_2.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_1.png",
+            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_2.png"
         };
 
-        private readonly string[] _outfits = new string[] { "Camiseta Gamer", "Moletom de Rua", "Jaqueta Puffer Preta", "Terno Premium" };
-        private readonly string[] _accessories = new string[] { "Nenhum", "Headphones Pro", "Óculos Escuros", "Corrente de Ouro $" };
-        private readonly string[] _tattoos = new string[] { "Nenhuma", "Trevo no Pescoço", "Tribal Manga", "Símbolos Geek" };
-        private readonly string[] _beards = new string[] { "Sem Barba", "Barba Fechada", "Cavanhaque" };
-        private readonly string[] _hairNames = new string[] { "Careca", "Arrepiado", "Mohawk", "Topete", "Gamer", "Messy Pink", "Longos" };
+        private readonly string[] _avatarNames = new string[] {
+            "Mauricinho Executivo",
+            "Mauricinho Casual",
+            "Empresário Jovem",
+            "Empresário Maduro",
+            "Trap Messy Pink",
+            "Trap Hip-Hop",
+            "Casual E-boy",
+            "Casual Rocker",
+            "Casual Cyberpunk",
+            "Casual Contemporâneo"
+        };
 
-        private List<Button> _colorButtons = new List<Button>();
+        private readonly string[] _avatarStyles = new string[] {
+            "Terno Premium Cinza",
+            "Suéter de Lã Azul Premium",
+            "Terno Azul de Fino Trato",
+            "Camisa Preta de Sucesso",
+            "Jaqueta Puffer Preta de Grife",
+            "Jaqueta Bomber Vermelha",
+            "Jaqueta Jeans com Ovelha",
+            "Jaqueta de Couro Rocker",
+            "Windbreaker Neon Militar",
+            "Moletom Oversized Branco"
+        };
+
+        private readonly string[] _avatarTattoos = new string[] {
+            "Nenhuma (Barba Alinhada)",
+            "Nenhuma (Cabelo Social)",
+            "Nenhuma (Fade Degradê)",
+            "Nenhuma (Barba Cerrada)",
+            "Trevo no Pescoço & Face",
+            "Tranças com Dreads Dourados",
+            "Colar de Couro (Estilo Indie)",
+            "Cavanhaque Moderno",
+            "Riscos no Buzzcut Verde",
+            "Barba de Linha Fina"
+        };
+
+        private readonly string[] _avatarAccessories = new string[] {
+            "Óculos Escuros Italianos",
+            "Colarinho de Lã Fina",
+            "Gravata de Seda Fina",
+            "Gola Aberta Confiante",
+            "Corrente de Ouro com Pingente $",
+            "Correntes de Prata de Grife",
+            "Cabelo Longo Despojado",
+            "Cabelo Longo Platinado",
+            "Windbreaker Neon de Rua",
+            "Corte Degradê Contemporâneo"
+        };
+
+        private readonly string[] _avatarProfiles = new string[] {
+            "Empresário Social Moderno",
+            "Empresário Jovem Confiante",
+            "Empresário Altamente Focado",
+            "Empresário de Sucesso Maduro",
+            "Trap Star Ousado e Estiloso",
+            "Trap Star Clássico de Grife",
+            "Casual Moderno com Vibe Indie",
+            "Casual com Atitude Alternativa",
+            "Casual Streetwear de Vanguarda",
+            "Casual Urbano Contemporâneo"
+        };
+
+        private readonly string[] _avatarGlowColors = new string[] {
+            "#FFDD44", // Executivo - Dourado
+            "#00FFFF", // Casual - Cyan
+            "#FF2222", // Jovem - Vermelho Neon
+            "#FF5500", // Maduro - Laranja de Sucesso
+            "#FF00FF", // Trap Messy - Pink Neon
+            "#FF2222", // Trap Hip-Hop - Vermelho Neon
+            "#00FF00", // E-boy - Verde Neon
+            "#FFFFFF", // Rocker - Branco Puro
+            "#00FF00", // Cyberpunk - Verde Neon
+            "#8A2BE2"  // Contemporâneo - Roxo Neon
+        };
 
         public CharacterCreationPage()
         {
             InitializeComponent();
-            SetupHairColorPanel();
-            
-            // Set initial highlights on RPG grids to align with the "Naked/Clean" default state
-            HighlightSelectedButton(btnHairNone);
-            HighlightSelectedButton(btnBeardNone);
-            HighlightSelectedButton(btnOutfitNone);
-            HighlightSelectedButton(btnAccNone);
-            HighlightSelectedButton(btnTattooNone);
-
-            UpdatePreview();
+            SelectAvatar(0);
         }
 
-        private void SetupHairColorPanel()
+        private void HighlightSelectedAvatarButton(int index)
         {
-            panelHairColors.Children.Clear();
-            _colorButtons.Clear();
+            Button[] buttons = new Button[] {
+                btnAvatar1, btnAvatar2, btnAvatar3, btnAvatar4,
+                btnAvatar5, btnAvatar6,
+                btnAvatar7, btnAvatar8, btnAvatar9, btnAvatar10
+            };
 
-            for (int i = 0; i < _hairColors.Length; i++)
+            for (int i = 0; i < buttons.Length; i++)
             {
-                var colorHex = _hairColors[i].Item1;
-                var colorName = _hairColors[i].Item2;
-
-                Button btn = new Button
-                {
-                    Width = 32,
-                    Height = 32,
-                    Margin = new Thickness(4),
-                    Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(colorHex)),
-                    BorderBrush = Brushes.Transparent,
-                    BorderThickness = new Thickness(2),
-                    ToolTip = "Cabelo Neon " + colorName
-                };
-
-                btn.Click += (s, e) =>
-                {
-                    _selectedHairColor = colorHex;
-                    _selectedHairName = colorName;
-                    SelectColorButton(colorHex);
-                    UpdatePreview();
-                };
-
-                panelHairColors.Children.Add(btn);
-                _colorButtons.Add(btn);
-            }
-
-            SelectColorButton("#FF00FF"); // default Pink
-        }
-
-        private void SelectColorButton(string selectedHex)
-        {
-            for (int i = 0; i < _hairColors.Length; i++)
-            {
-                var btn = _colorButtons[i];
-                var hex = _hairColors[i].Item1;
-
-                if (hex == selectedHex)
-                {
-                    btn.BorderBrush = Brushes.White;
-                }
-                else
-                {
-                    btn.BorderBrush = Brushes.Transparent;
-                }
-            }
-        }
-
-        private void HighlightSelectedButton(Button selectedBtn)
-        {
-            if (selectedBtn == null) return;
-            Panel container = selectedBtn.Parent as Panel;
-            if (container == null) return;
-
-            foreach (var child in container.Children)
-            {
-                Button btn = child as Button;
+                var btn = buttons[i];
                 if (btn != null)
                 {
-                    if (btn == selectedBtn)
+                    if (i == index)
                     {
                         btn.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2222"));
                         btn.BorderThickness = new Thickness(2);
@@ -141,176 +142,89 @@ namespace TubeStar
             }
         }
 
-        private void HairStyle_Click(object sender, RoutedEventArgs e)
+        private void Avatar_Click(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
             if (btn != null && btn.Tag != null)
             {
-                _selectedHairStyle = int.Parse(btn.Tag.ToString());
-                HighlightSelectedButton(btn);
-                UpdatePreview();
+                int index = int.Parse(btn.Tag.ToString());
+                SelectAvatar(index);
             }
         }
 
-        private void Beard_Click(object sender, RoutedEventArgs e)
+        private void SelectAvatar(int index)
         {
-            Button btn = sender as Button;
-            if (btn != null && btn.Tag != null)
-            {
-                _selectedBeard = int.Parse(btn.Tag.ToString());
-                HighlightSelectedButton(btn);
-                UpdatePreview();
-            }
+            _selectedAvatarIndex = index;
+            HighlightSelectedAvatarButton(index);
+            UpdatePreview();
         }
 
-        private void Outfit_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != null && btn.Tag != null)
-            {
-                _selectedOutfit = int.Parse(btn.Tag.ToString());
-                HighlightSelectedButton(btn);
-                UpdatePreview();
-            }
-        }
-
-        private void Accessory_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != null && btn.Tag != null)
-            {
-                _selectedAccessory = int.Parse(btn.Tag.ToString());
-                HighlightSelectedButton(btn);
-                UpdatePreview();
-            }
-        }
-
-        private void Tattoo_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != null && btn.Tag != null)
-            {
-                _selectedTattoo = int.Parse(btn.Tag.ToString());
-                HighlightSelectedButton(btn);
-                UpdatePreview();
-            }
-        }
-
-        private void InputChanged(object sender, RoutedEventArgs e)
+        private void InputChanged(object sender, TextChangedEventArgs e)
         {
             UpdatePreview();
         }
 
         private void UpdatePreview()
         {
-            // Ensure visual elements exist
-            if (avatarCanvas == null) return;
+            if (imgAvatarPreview == null) return;
 
-            // 1. Update Hair Style Visibilities & Neon Colors
-            var neonColor = (Color)ColorConverter.ConvertFromString(_selectedHairColor);
-            var hairBrush = new SolidColorBrush(neonColor);
-
-            hairSpiky.Visibility = (_selectedHairStyle == 1) ? Visibility.Visible : Visibility.Collapsed;
-            hairMohawk.Visibility = (_selectedHairStyle == 2) ? Visibility.Visible : Visibility.Collapsed;
-            hairPompadour.Visibility = (_selectedHairStyle == 3) ? Visibility.Visible : Visibility.Collapsed;
-            hairGamer.Visibility = (_selectedHairStyle == 4) ? Visibility.Visible : Visibility.Collapsed;
-            hairMessy.Visibility = (_selectedHairStyle == 5) ? Visibility.Visible : Visibility.Collapsed;
-            hairWavy.Visibility = (_selectedHairStyle == 6) ? Visibility.Visible : Visibility.Collapsed;
-
-            // Apply active Neon color brush to hair styles
-            hairSpiky.Fill = hairBrush;
-            hairMohawk.Fill = hairBrush;
-            hairPompadour.Fill = hairBrush;
-            hairGamer.Fill = hairBrush;
-            hairMessy.Fill = hairBrush;
-            hairWavy.Stroke = hairBrush; // Wavy long hair uses thick stroke
-
-            // Update Aura surrounding frame to sintonize with Neon hair color (if has hair, otherwise default red neon)
-            if (glowShadow != null)
+            try
             {
-                if (_selectedHairStyle == 0)
-                {
-                    avatarGlowBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2222"));
-                    glowShadow.Color = (Color)ColorConverter.ConvertFromString("#FF2222");
-                }
-                else
-                {
-                    avatarGlowBorder.BorderBrush = hairBrush;
-                    glowShadow.Color = neonColor;
-                }
+                string packUri = _avatarUris[_selectedAvatarIndex];
+                imgAvatarPreview.Source = new BitmapImage(new Uri(packUri, UriKind.Absolute));
+
+                var glowColor = (Color)ColorConverter.ConvertFromString(_avatarGlowColors[_selectedAvatarIndex]);
+                var glowBrush = new SolidColorBrush(glowColor);
+
+                if (avatarGlowBorder != null)
+                    avatarGlowBorder.BorderBrush = glowBrush;
+                
+                if (glowShadow != null)
+                    glowShadow.Color = glowColor;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Erro ao carregar preview do avatar: " + ex.Message);
             }
 
-            // 2. Update Beard Visibilities
-            beardFull.Visibility = (_selectedBeard == 1) ? Visibility.Visible : Visibility.Collapsed;
-            beardGoatee.Visibility = (_selectedBeard == 2) ? Visibility.Visible : Visibility.Collapsed;
-
-            // 3. Update Clothing Visibilities
-            clothingTshirt.Visibility = (_selectedOutfit == 0) ? Visibility.Visible : Visibility.Collapsed;
-            clothingHoodie.Visibility = (_selectedOutfit == 1) ? Visibility.Visible : Visibility.Collapsed;
-            clothingJacket.Visibility = (_selectedOutfit == 2) ? Visibility.Visible : Visibility.Collapsed;
-            clothingSuit.Visibility = (_selectedOutfit == 3) ? Visibility.Visible : Visibility.Collapsed;
-
-            // 4. Update Accessories Visibilities
-            accPhones.Visibility = (_selectedAccessory == 1) ? Visibility.Visible : Visibility.Collapsed;
-            accGlasses.Visibility = (_selectedAccessory == 2) ? Visibility.Visible : Visibility.Collapsed;
-            accChain.Visibility = (_selectedAccessory == 3) ? Visibility.Visible : Visibility.Collapsed;
-
-            // 5. Update Tattoos Visibilities
-            tattooClover.Visibility = (_selectedTattoo == 1) ? Visibility.Visible : Visibility.Collapsed;
-            tattooTribal.Visibility = (_selectedTattoo == 2) ? Visibility.Visible : Visibility.Collapsed;
-            tattooGeek.Visibility = (_selectedTattoo == 3) ? Visibility.Visible : Visibility.Collapsed;
-
-            // 6. Update Texts on the Summary Card
             if (txtSummaryChannel != null)
                 txtSummaryChannel.Text = "CANAL: " + (string.IsNullOrEmpty(txtYoutuberName.Text) ? "Gamer Pro" : txtYoutuberName.Text);
-            
+
             if (txtSummaryOutfit != null)
-                txtSummaryOutfit.Text = "👕 " + (_selectedOutfit == -1 ? "Só Cueca" : _outfits[_selectedOutfit]);
-            
-            if (txtSummaryAccessory != null)
-                txtSummaryAccessory.Text = "💍 " + _accessories[_selectedAccessory];
-            
+                txtSummaryOutfit.Text = "👕 Estilo: " + _avatarStyles[_selectedAvatarIndex];
+
             if (txtSummaryTattoo != null)
-                txtSummaryTattoo.Text = "💉 " + _tattoos[_selectedTattoo];
-            
+                txtSummaryTattoo.Text = "💉 Detalhes: " + _avatarTattoos[_selectedAvatarIndex];
+
+            if (txtSummaryAccessory != null)
+                txtSummaryAccessory.Text = "💍 Acessórios: " + _avatarAccessories[_selectedAvatarIndex];
+
             if (txtSummaryHair != null)
-            {
-                if (_selectedHairStyle == 0)
-                {
-                    txtSummaryHair.Text = "⚡ Careca";
-                }
-                else
-                {
-                    txtSummaryHair.Text = "⚡ Cabelo " + _hairNames[_selectedHairStyle] + " " + _selectedHairName;
-                }
-            }
+                txtSummaryHair.Text = "⚡ Perfil: " + _avatarProfiles[_selectedAvatarIndex];
         }
 
         private void BtnStartGame_Click(object sender, RoutedEventArgs e)
         {
-            // Apply customization details to current Player instance
             Player.Current.YoutuberName = string.IsNullOrEmpty(txtYoutuberName.Text) ? "Gamer Pro" : txtYoutuberName.Text;
             
-            Player.Current.YoutuberAvatarId = _selectedHairStyle;
-            Player.Current.YoutuberHairColor = _selectedHairColor;
-            Player.Current.YoutuberOutfit = (_selectedOutfit == -1 ? "Só Cueca" : _outfits[_selectedOutfit]);
-            Player.Current.YoutuberAccessories = _accessories[_selectedAccessory];
-            Player.Current.YoutuberTattoos = _tattoos[_selectedTattoo];
+            Player.Current.YoutuberAvatarId = _selectedAvatarIndex;
+            Player.Current.YoutuberHairColor = _avatarGlowColors[_selectedAvatarIndex];
+            Player.Current.YoutuberOutfit = _avatarStyles[_selectedAvatarIndex];
+            Player.Current.YoutuberAccessories = _avatarAccessories[_selectedAvatarIndex];
+            Player.Current.YoutuberTattoos = _avatarTattoos[_selectedAvatarIndex];
 
-            // Create a real initial channel for the player using the chosen name!
             Channel realChannel = new Channel()
             {
                 Name = Player.Current.YoutuberName,
                 Advertising = AdvertisingStrategy.Normal
             };
 
-            // Add the real channel to the list (position 1)
             if (Player.Current.Channels != null)
             {
+                Player.Current.Channels.Clear(); // Limpar canais gerados incorretamente por fallbacks
                 Player.Current.Channels.Add(realChannel);
             }
 
-            // Raise StartGameClicked event to transition UI
             if (StartGameClicked != null)
             {
                 StartGameClicked();

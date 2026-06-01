@@ -65,6 +65,21 @@ namespace TubeStar
         public string YoutuberTattoos { get; set; }
         public string YoutuberAccessories { get; set; }
 
+        // Stock Market (Bolsa de Valores) Properties
+        public int SharesSTB { get; set; }
+        public int SharesPEAR { get; set; }
+        public int SharesRVG { get; set; }
+        public int SharesGDR { get; set; }
+        public int SharesWHP { get; set; }
+
+        public double PricePaidSTB { get; set; }
+        public double PricePaidPEAR { get; set; }
+        public double PricePaidRVG { get; set; }
+        public double PricePaidGDR { get; set; }
+        public double PricePaidWHP { get; set; }
+
+        public string SerializeStockPrices { get; set; }
+
         public Player()
         {
             Reset();
@@ -92,6 +107,19 @@ namespace TubeStar
             YoutuberOutfit = "Camiseta Gamer";
             YoutuberTattoos = "Nenhuma";
             YoutuberAccessories = "Nenhum";
+
+            // Reset Stock Shares and prices
+            SharesSTB = 0;
+            SharesPEAR = 0;
+            SharesRVG = 0;
+            SharesGDR = 0;
+            SharesWHP = 0;
+            PricePaidSTB = 0;
+            PricePaidPEAR = 0;
+            PricePaidRVG = 0;
+            PricePaidGDR = 0;
+            PricePaidWHP = 0;
+            SerializeStockPrices = string.Empty;
 
             TasksInProgress = new List<Task>();
             Videos = new List<Video>();

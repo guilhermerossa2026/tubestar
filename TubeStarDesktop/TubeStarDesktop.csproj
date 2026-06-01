@@ -254,6 +254,7 @@
 
     <Compile Include="GameJolt Integration\TrophyManager.cs" />
     <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\StockMarketManager.cs" />
     <Compile Include="Game\Settings.cs" />
     <Compile Include="Game\VideoViewer.cs" />
     <Compile Include="Helpers\AsyncCacheItem.cs" />

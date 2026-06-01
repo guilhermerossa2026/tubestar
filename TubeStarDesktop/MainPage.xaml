@@ -75,6 +75,15 @@
                             </StackPanel>
                         </ToggleButton.Content>
                     </ToggleButton>
+
+                    <ToggleButton x:Name="btnStockMarket" Height="42" Margin="0,4" HorizontalContentAlignment="Left" Padding="12,0" Click="btnStockMarket_Click">
+                        <ToggleButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/commons.png" Width="16" Height="16" Margin="0,0,10,0" />
+                                <TextBlock x:Name="txtStockMarket" Text="Bolsa de Valores" VerticalAlignment="Center" FontSize="13" FontWeight="Bold" />
+                            </StackPanel>
+                        </ToggleButton.Content>
+                    </ToggleButton>
                 </StackPanel>
 
                 <!-- System Controls (Save/Help/Exit) -->

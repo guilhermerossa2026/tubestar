@@ -1,0 +1,101 @@
+<UserControl x:Class="TubeStar.TitlePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:TubeStar">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#080808" Offset="0" />
+                <GradientStop Color="#250505" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="75*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="60*" />
+            <ColumnDefinition Width="20*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Logo -->
+        <Image Grid.Row="0" Grid.ColumnSpan="3" Width="220" Source="Resources/TubeStar.png" Margin="10, 15, 10, 10" Cursor="Hand" MouseLeftButtonDown="Image_MouseLeftButtonDown" />
+
+        <!-- Menu Principal -->
+        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel HorizontalAlignment="Center" Width="480">
+                
+                <!-- Bandeiras de Idiomas -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,2">
+                    <Image x:Name="imgUK" Height="30" Source="Resources/Languages/English.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgUK_MouseLeftButtonDown"/>
+                    <Image x:Name="imgBrazil" Height="30" Source="Resources/Languages/Brazil.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgBrazil_MouseLeftButtonDown"/>
+                    <Image x:Name="imgPortugal" Height="30" Source="Resources/Languages/Portugal.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgPortugal_MouseLeftButtonDown"/>
+                    <Image x:Name="imgSpain" Height="30" Source="Resources/Languages/Spanish.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgSpain_MouseLeftButtonDown"/>
+                    <Image x:Name="imgFrance" Height="30" Source="Resources/Languages/French.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgFrance_MouseLeftButtonDown"/>
+                    <Image x:Name="imgNetherlands" Height="30" Source="Resources/Languages/Dutch.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgNetherlands_MouseLeftButtonDown"/>
+                    <Image x:Name="imgGermany" Height="30" Source="Resources/Languages/German.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgGermany_MouseLeftButtonDown"/>
+                    <Image x:Name="imgItaly" Height="30" Source="Resources/Languages/Italian.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgItaly_MouseLeftButtonDown"/>
+                    <Image x:Name="imgCzech" Height="30" Source="Resources/Languages/Czech.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgCzech_MouseLeftButtonDown"/>
+                    <Image x:Name="imgSweden" Height="30" Source="Resources/Languages/Swedish.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgSweden_MouseLeftButtonDown"/>
+                    <Image x:Name="imgPoland" Height="30" Source="Resources/Languages/Polish.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgPoland_MouseLeftButtonDown"/>
+                    <Image x:Name="imgHungary" Height="30" Source="Resources/Languages/Hungarian.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgHungary_MouseLeftButtonDown"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
+                    <Image x:Name="imgAlbania" Height="30" Source="Resources/Languages/Albanian.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgAlbania_MouseLeftButtonDown"/>
+                    <Image x:Name="imgRomania" Height="30" Source="Resources/Languages/Romanian.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgRomania_MouseLeftButtonDown"/>
+                    <Image x:Name="imgTurkey" Height="30" Source="Resources/Languages/Turkish.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgTurkey_MouseLeftButtonDown"/>
+                    <Image x:Name="imgRussia" Height="30" Source="Resources/Languages/Russian.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgRussia_MouseLeftButtonDown"/>
+                    <Image x:Name="imgGeorgia" Height="30" Source="Resources/Languages/Georgia.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgGeorgia_MouseLeftButtonDown"/>
+                    <Image x:Name="imgChina" Height="30" Source="Resources/Languages/Chinese.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgChina_MouseLeftButtonDown"/>
+                    <Image x:Name="imgIndonesia" Height="30" Source="Resources/Languages/Indonesian.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgIndonesia_MouseLeftButtonDown"/>
+                    <Image x:Name="imgThailand" Height="30" Source="Resources/Languages/Thai.png" Margin="3" Cursor="Hand" MouseLeftButtonDown="imgThailand_MouseLeftButtonDown"/>
+
+                    <Button x:Name="imgCustom" Margin="3" Height="30" Width="40" Click="imgCustom_Click">
+                        <Button.Content>
+                            <Image Source="Resources/More_icon.png" Height="15"/>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+                
+                <TextBlock x:Name="TranslatedBy" HorizontalAlignment="Center" Text="" FontSize="10" TextWrapping="Wrap" Width="440" TextAlignment="Center" Foreground="#AAAAAA" Margin="0,0,0,15" />
+
+                <!-- Botões de Jogo -->
+                <Button x:Name="btnContinue" Content="Continue game" Margin="5" FontSize="18" Height="38" HorizontalAlignment="Center" Width="220" Click="ContinueGame_Click" />
+                <Button x:Name="btnNewGame" Content="New game" Margin="5" FontSize="18" Height="38" HorizontalAlignment="Center" Width="220" Click="NewGame_Click" />
+                <Button x:Name="btnTutorial" Content="Tutorial" Margin="5" FontSize="18" Height="38" HorizontalAlignment="Center" Width="220" Click="Tutorial_Click" />
+                <Button x:Name="btnCredits" Content="Credits" Margin="5" FontSize="18" Height="38" HorizontalAlignment="Center" Width="220" Click="Credits_Click" />
+                <Button x:Name="btnExit" Content="Exit" Margin="5" FontSize="18" Height="38" HorizontalAlignment="Center" Width="220" Click="Exit_Click" />
+
+                <!-- Painel Premium de Configuração da API do YouTube -->
+                <Border Margin="10,25,10,10" Padding="15" Width="320" HorizontalAlignment="Center" 
+                        Background="#201A1A1A" BorderBrush="#353535" BorderThickness="1" CornerRadius="8">
+                    <StackPanel>
+                        <TextBlock Text="YouTube API Key (Optional / Opcional):" FontWeight="Bold" FontSize="11" 
+                                   Foreground="#CCCCCC" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="txtApiKey" Grid.Column="0" Background="#0C0C0C" BorderBrush="#333333" 
+                                     Foreground="White" CaretBrush="White" Padding="6,4" Height="28" FontSize="11" 
+                                     VerticalContentAlignment="Center" BorderThickness="1"/>
+                            <Button x:Name="btnSaveKey" Grid.Column="1" Content="Save / Salvar" Margin="6,0,0,0" Height="28" 
+                                    FontSize="10" Padding="10,0" Click="btnSaveKey_Click"/>
+                        </Grid>
+                        <TextBlock Text="Deixe em branco para usar o motor de busca automática keyless." 
+                                   FontSize="9" Foreground="#777777" HorizontalAlignment="Center" Margin="0,6,0,0" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

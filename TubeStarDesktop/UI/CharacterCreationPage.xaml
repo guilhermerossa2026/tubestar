@@ -1,0 +1,219 @@
+<UserControl x:Class="TubeStar.CharacterCreationPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1000"
+             Background="#0C0C0C">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/Custom.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+            <TextBlock Text="CRIE SEU YOUTUBER" FontSize="32" FontWeight="Black" Foreground="#FF2222"/>
+            <TextBlock Text="Monte a identidade visual e o estilo do seu personagem antes de iniciar a sua carreira de sucesso." FontSize="13" Foreground="#AAAAAA" Margin="0,3,0,0"/>
+        </StackPanel>
+
+        <!-- Main Workspace -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Pane: Options -->
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Padding="0,0,15,0">
+                <StackPanel Orientation="Vertical">
+                    
+                    <!-- Channel & Name Selection -->
+                    <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="IDENTIDADE SOCIAL" FontSize="14" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            <TextBlock Text="Nome Artístico / Canal" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,5"/>
+                            <TextBox x:Name="txtYoutuberName" Text="Gamer Pro" FontSize="15" Height="36" VerticalContentAlignment="Center" Background="#1E1E1E" Foreground="White" BorderBrush="#2E2E2E" Margin="0,0,0,5" TextChanged="InputChanged"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Hair Style & Neon Color Selection (Grid RPG) -->
+                    <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="ESTILO E COR DO CABELO NEON" FontSize="14" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            
+                            <TextBlock Text="Escolha o estilo de corte de cabelo:" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,6"/>
+                            <UniformGrid Columns="5" Margin="0,0,0,10">
+                                <Button x:Name="btnHairSpiky" Content="Arrepiado" Height="35" Margin="2" Click="HairStyle_Click" Tag="1"/>
+                                <Button x:Name="btnHairMohawk" Content="Mohawk" Height="35" Margin="2" Click="HairStyle_Click" Tag="2"/>
+                                <Button x:Name="btnHairPompadour" Content="Topete" Height="35" Margin="2" Click="HairStyle_Click" Tag="3"/>
+                                <Button x:Name="btnHairGamer" Content="Gamer" Height="35" Margin="2" Click="HairStyle_Click" Tag="4"/>
+                                <Button x:Name="btnHairWavy" Content="Longos" Height="35" Margin="2" Click="HairStyle_Click" Tag="5"/>
+                            </UniformGrid>
+
+                            <TextBlock Text="Selecione a cor Neon do cabelo:" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,6"/>
+                            <WrapPanel x:Name="panelHairColors">
+                                <!-- Colors added dynamically in code -->
+                            </WrapPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Clothing Selection (Grid RPG) -->
+                    <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="VESTUÁRIO DO JOGADOR (OUTFIT)" FontSize="14" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            <UniformGrid Columns="4">
+                                <Button x:Name="btnOutfitTshirt" Content="Camiseta" Height="40" Margin="3" Click="Outfit_Click" Tag="0"/>
+                                <Button x:Name="btnOutfitHoodie" Content="Moletom" Height="40" Margin="3" Click="Outfit_Click" Tag="1"/>
+                                <Button x:Name="btnOutfitJacket" Content="Jaqueta" Height="40" Margin="3" Click="Outfit_Click" Tag="2"/>
+                                <Button x:Name="btnOutfitSuit" Content="Terno" Height="40" Margin="3" Click="Outfit_Click" Tag="3"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Accessories & Tattoos Selection (Grid RPG) -->
+                    <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="ACESSÓRIOS &amp; PELE GAMER" FontSize="14" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            
+                            <TextBlock Text="Acessórios Gamer (Headphones/Óculos/Boné):" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,5"/>
+                            <UniformGrid Columns="4" Margin="0,0,0,10">
+                                <Button x:Name="btnAccNone" Content="Nenhum" Height="40" Margin="3" Click="Accessory_Click" Tag="0"/>
+                                <Button x:Name="btnAccPhones" Content="Headphones" Height="40" Margin="3" Click="Accessory_Click" Tag="1"/>
+                                <Button x:Name="btnAccGlasses" Content="Óculos" Height="40" Margin="3" Click="Accessory_Click" Tag="2"/>
+                                <Button x:Name="btnAccCap" Content="Boné" Height="40" Margin="3" Click="Accessory_Click" Tag="3"/>
+                            </UniformGrid>
+
+                            <TextBlock Text="Tatuagens e Cobertura Corporal:" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,5"/>
+                            <UniformGrid Columns="4">
+                                <Button x:Name="btnTattooNone" Content="Nenhuma" Height="40" Margin="3" Click="Tattoo_Click" Tag="0"/>
+                                <Button x:Name="btnTattooTribal" Content="Tribal" Height="40" Margin="3" Click="Tattoo_Click" Tag="1"/>
+                                <Button x:Name="btnTattooGeek" Content="Geek" Height="40" Margin="3" Click="Tattoo_Click" Tag="2"/>
+                                <Button x:Name="btnTattooGamer" Content="Gamer" Height="40" Margin="3" Click="Tattoo_Click" Tag="3"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Start Button -->
+                    <Button x:Name="btnStartGame" Content="INICIAR CARREIRA GAMER" Height="48" FontSize="16" FontWeight="Bold" Background="#FF2222" Foreground="White" BorderThickness="0" Margin="0,8,0,25" Click="BtnStartGame_Click"/>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Right Pane: Realtime Preview -->
+            <Border Grid.Column="1" Background="#121212" CornerRadius="12" BorderBrush="#2E2E2E" BorderThickness="1.5" Margin="8,0,0,25" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="PREVIEW DO AVATAR XAML" FontSize="13" FontWeight="Bold" Foreground="#AAAAAA" HorizontalAlignment="Center"/>
+
+                    <!-- Circular Glow Avatar Container -->
+                    <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!-- Neon Glowing Aura -->
+                        <Border x:Name="avatarGlowBorder" Width="200" Height="200" CornerRadius="100" BorderThickness="4" BorderBrush="#00FFFF">
+                            <Border.Effect>
+                                <DropShadowEffect x:Name="glowShadow" BlurRadius="30" ShadowDepth="0" Color="#00FFFF" Opacity="0.8"/>
+                            </Border.Effect>
+                            
+                            <!-- Inner Avatar Area -->
+                            <Grid>
+                                <Border CornerRadius="100" Background="#1E1E1E" ClipToBounds="True">
+                                    <Canvas x:Name="avatarCanvas" Width="180" Height="180" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        
+                                        <!-- Camada de Tatuagens (Fundo) -->
+                                        <Path x:Name="tattooGeek" Data="M 30,130 L 50,110 L 60,120 M 120,120 L 130,110 L 150,130" Stroke="#44FF2222" StrokeThickness="3" Visibility="Collapsed" />
+                                        <Path x:Name="tattooTribal" Data="M 35,125 Q 50,115 65,128 M 115,128 Q 130,115 145,125" Stroke="#4400FFFF" StrokeThickness="3" StrokeDashArray="2,2" Visibility="Collapsed" />
+                                        <Path x:Name="tattooGamer" Data="M 40,135 L 60,130 L 70,145 M 110,145 L 120,130 L 140,135" Stroke="#44FFFF00" StrokeThickness="4" Visibility="Collapsed" />
+
+                                        <!-- Corpo (Vestuário) -->
+                                        <Path x:Name="bodyBase" Data="M 30,160 C 30,125 60,105 90,105 C 120,105 150,125 150,160 Z" Fill="#2D2D2D" Stroke="#3D3D3D" StrokeThickness="2" />
+                                        
+                                        <!-- Linhas e preenchimentos extras do Outfit -->
+                                        <Path x:Name="clothingTshirt" Data="M 65,105 Q 90,125 115,105" Stroke="#E74C3C" StrokeThickness="4" Visibility="Visible" />
+                                        <Path x:Name="clothingHoodie" Data="M 60,103 Q 90,120 120,103 L 110,128 L 70,128 Z" Fill="#FF2222" Stroke="#880000" StrokeThickness="1" Visibility="Collapsed" />
+                                        <Path x:Name="clothingJacket" Data="M 55,105 L 75,135 M 125,105 L 105,135" Stroke="#D4AC0D" StrokeThickness="3" Visibility="Collapsed" />
+                                        <Path x:Name="clothingSuit" Data="M 60,105 L 90,135 L 120,105 M 90,135 L 90,160" Stroke="#FFFFFF" StrokeThickness="2" Visibility="Collapsed" />
+
+                                        <!-- Rosto -->
+                                        <Ellipse x:Name="headBase" Width="70" Height="80" Canvas.Left="55" Canvas.Top="35" Fill="#FFD1A9" Stroke="#E0A375" StrokeThickness="1"/>
+
+                                        <!-- Olhos -->
+                                        <Ellipse Width="6" Height="6" Canvas.Left="75" Canvas.Top="60" Fill="#1E1E1E" />
+                                        <Ellipse Width="6" Height="6" Canvas.Left="99" Canvas.Top="60" Fill="#1E1E1E" />
+                                        <Path Data="M 82,78 Q 90,86 98,78" Stroke="#1E1E1E" StrokeThickness="2" Fill="Transparent" />
+
+                                        <!-- Acessório Óculos -->
+                                        <Canvas x:Name="accGlassesCanvas" Visibility="Collapsed" Canvas.Left="55" Canvas.Top="35">
+                                            <Path Data="M 12,23 L 30,23 M 40,23 L 58,23" Stroke="#00FFFF" StrokeThickness="2" />
+                                            <Ellipse Width="16" Height="16" Canvas.Left="14" Canvas.Top="15" Stroke="#00FFFF" StrokeThickness="2" Fill="#3300FFFF" />
+                                            <Ellipse Width="16" Height="16" Canvas.Left="40" Canvas.Top="15" Stroke="#00FFFF" StrokeThickness="2" Fill="#3300FFFF" />
+                                        </Canvas>
+
+                                        <!-- Cabelos -->
+                                        <Path x:Name="hairSpiky" Data="M 55,45 L 60,25 L 70,35 L 80,20 L 90,35 L 100,20 L 110,35 L 120,25 L 125,45 L 120,53 L 60,53 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Visible" />
+                                        <Path x:Name="hairMohawk" Data="M 85,35 L 90,5 L 95,35 Z M 88,35 L 90,10 L 92,35 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
+                                        <Path x:Name="hairPompadour" Data="M 55,45 C 55,15 125,15 125,45 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
+                                        <Path x:Name="hairGamer" Data="M 55,45 Q 90,15 125,45 L 115,58 Q 90,45 65,58 Z" Fill="#00FFFF" Stroke="#FFFFFF" StrokeThickness="0.5" Visibility="Collapsed" />
+                                        <Path x:Name="hairWavy" Data="M 55,45 C 40,55 45,95 45,95 L 60,85 Q 55,60 65,55 M 125,45 C 140,55 135,95 135,95 L 120,85 Q 125,60 115,55" Stroke="#00FFFF" StrokeThickness="5" Fill="Transparent" Visibility="Collapsed" />
+
+                                        <!-- Acessório Headphones -->
+                                        <Canvas x:Name="accHeadphonesCanvas" Visibility="Collapsed" Canvas.Left="55" Canvas.Top="35">
+                                            <Path Data="M 5,25 A 30,30 0 0,1 65,25" Stroke="#FF2222" StrokeThickness="4" Fill="Transparent" />
+                                            <Ellipse Width="12" Height="24" Canvas.Left="-2" Canvas.Top="18" Fill="#FF2222" Stroke="#FFFFFF" StrokeThickness="1"/>
+                                            <Ellipse Width="6" Height="14" Canvas.Left="1" Canvas.Top="23" Fill="#1E1E1E" />
+                                            <Ellipse Width="12" Height="24" Canvas.Left="60" Canvas.Top="18" Fill="#FF2222" Stroke="#FFFFFF" StrokeThickness="1"/>
+                                            <Ellipse Width="6" Height="14" Canvas.Left="63" Canvas.Top="23" Fill="#1E1E1E" />
+                                        </Canvas>
+
+                                        <!-- Acessório Boné -->
+                                        <Canvas x:Name="accCapCanvas" Visibility="Collapsed" Canvas.Left="55" Canvas.Top="35">
+                                            <Path Data="M 6,18 C 6,-2 64,-2 64,18 Z" Fill="#FFCC00" Stroke="#B38F00" StrokeThickness="1" />
+                                            <Path Data="M 50,18 L 78,13 L 64,25 Z" Fill="#E5E5E5" Stroke="#B3B3B3" StrokeThickness="1" />
+                                        </Canvas>
+
+                                    </Canvas>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- Customization Summary Info Card -->
+                    <Border Grid.Row="2" Background="#1A1A1A" CornerRadius="8" Padding="12" BorderBrush="#2A2A2A" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock x:Name="txtSummaryChannel" Text="CANAL: Gamer Pro" FontSize="14" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,6"/>
+                            <Separator Background="#333333" Margin="0,0,0,6"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock x:Name="txtSummaryOutfit" Text="👕 Camiseta Gamer" FontSize="10" Foreground="#AAAAAA" Margin="0,1"/>
+                                    <TextBlock x:Name="txtSummaryTattoo" Text="💉 Nenhuma" FontSize="10" Foreground="#AAAAAA" Margin="0,1"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock x:Name="txtSummaryAccessory" Text="🎧 Nenhum" FontSize="10" Foreground="#AAAAAA" Margin="0,1"/>
+                                    <TextBlock x:Name="txtSummaryHair" Text="⚡ Cabelo Cyan" FontSize="10" Foreground="#AAAAAA" Margin="0,1"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

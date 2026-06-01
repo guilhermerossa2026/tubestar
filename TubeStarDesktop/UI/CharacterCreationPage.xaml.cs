@@ -15,21 +15,21 @@ namespace TubeStar
         private int _selectedAvatarIndex = 0;
 
         private readonly string[] _avatarUris = new string[] {
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_1.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_2.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_3.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_mauricinho_4.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_gangstar_1.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_gangstar_2.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_1.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelolongo_2.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_1.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_cabelocurto_2.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_trap_3.jpg",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_3.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_4.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_5.png",
-            "pack://application:,,,/TubeStarDesktop;component/Resources/avatar_casual_6.png"
+            "pack://application:,,,/TubeStar;component/Resources/avatar_mauricinho_1.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_mauricinho_2.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_mauricinho_3.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_mauricinho_4.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_gangstar_1.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_gangstar_2.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_cabelolongo_1.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_cabelolongo_2.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_cabelocurto_1.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_cabelocurto_2.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_trap_3.jpg",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_casual_3.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_casual_4.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_casual_5.png",
+            "pack://application:,,,/TubeStar;component/Resources/avatar_casual_6.png"
         };
 
         private readonly string[] _avatarNames = new string[] {

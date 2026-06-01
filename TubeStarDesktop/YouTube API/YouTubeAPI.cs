@@ -209,7 +209,7 @@ namespace TubeStar
         {
             if (string.IsNullOrEmpty(id))
             {
-                return new Uri("pack://application:,,,/TubeStarDesktop;component/Resources/InternetDown.jpg", UriKind.Absolute);
+                return new Uri("pack://application:,,,/TubeStar;component/Resources/InternetDown.jpg", UriKind.Absolute);
             }
             return new Uri(String.Format("http://i.ytimg.com/vi/{0}/hqdefault.jpg", id));
         }
@@ -218,7 +218,7 @@ namespace TubeStar
         {
             if (string.IsNullOrEmpty(id))
             {
-                return new Uri("pack://application:,,,/TubeStarDesktop;component/Resources/InternetDown.jpg", UriKind.Absolute);
+                return new Uri("pack://application:,,,/TubeStar;component/Resources/InternetDown.jpg", UriKind.Absolute);
             }
             return new Uri(String.Format("http://i.ytimg.com/vi/{0}/default.jpg", id));
         }

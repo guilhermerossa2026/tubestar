@@ -257,31 +257,31 @@ namespace TubeStar
             switch (category)
             {
                 case VideoCategory.Cats:
-                    return "pack://application:,,,/TubeStarDesktop;component/Resources/Cat.jpg";
+                    return "pack://application:,,,/TubeStar;component/Resources/Cat.jpg";
                 case VideoCategory.AnimalVSAnimal:
                 case VideoCategory.TheWeirdSide:
                 case VideoCategory.ConspiraryTheories:
                 case VideoCategory.Creepypasta:
-                    return "pack://application:,,,/TubeStarDesktop;component/Resources/Tiger.jpg";
+                    return "pack://application:,,,/TubeStar;component/Resources/Tiger.jpg";
                 case VideoCategory.Technology:
                 case VideoCategory.Gaming:
                 case VideoCategory.Anime:
-                    return "pack://application:,,,/TubeStarDesktop;component/Resources/Ultra.jpg";
+                    return "pack://application:,,,/TubeStar;component/Resources/Ultra.jpg";
                 case VideoCategory.HowTo:
                 case VideoCategory.NonProfit:
-                    return "pack://application:,,,/TubeStarDesktop;component/Resources/Study.jpg";
+                    return "pack://application:,,,/TubeStar;component/Resources/Study.jpg";
                 case VideoCategory.Sports:
                 case VideoCategory.Comedy:
                 case VideoCategory.Hauls:
                 case VideoCategory.Vlog:
                 case VideoCategory.Movies:
-                    return "pack://application:,,,/TubeStarDesktop;component/Resources/Shoot.jpg";
+                    return "pack://application:,,,/TubeStar;component/Resources/Shoot.jpg";
                 case VideoCategory.MusicVideo:
                 case VideoCategory.Accidents:
                 case VideoCategory.UkuleleCover:
-                    return "pack://application:,,,/TubeStarDesktop;component/Resources/Edit.jpg";
+                    return "pack://application:,,,/TubeStar;component/Resources/Edit.jpg";
                 default:
-                    return "pack://application:,,,/TubeStarDesktop;component/Resources/InternetDown.jpg";
+                    return "pack://application:,,,/TubeStar;component/Resources/InternetDown.jpg";
             }
         }
 
@@ -310,7 +310,7 @@ namespace TubeStar
         {
             try
             {
-                var info = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/TubeStarDesktop;component/Resources/InternetDown.jpg", UriKind.Absolute));
+                var info = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/TubeStar;component/Resources/InternetDown.jpg", UriKind.Absolute));
                 if (info != null && info.Stream != null)
                 {
                     ExternalSetImageBytes(StreamHelpers.StreamToBytes(info.Stream));

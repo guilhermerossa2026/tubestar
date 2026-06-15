@@ -109,6 +109,11 @@ namespace TubeStar
             var qualityViews = Math.Max(0, ((video.Quality.Value - Math.Pow(video.Iterations, Player.Current.ChallengeMode ? 2 : 1)) * video.Quality.Value) / Math.Max((Player.Current.ChallengeMode ? 2 : 1), (100 - video.Quality.Value) / 2));
             var iterationViews = (int)(searchEngineViews + qualityViews + tempShares);
 
+            if (IsTrendActiveForCategory(video.Category))
+            {
+                iterationViews = (int)(iterationViews * 1.5);
+            }
+
             if (iterationViews > 0)
             {
                 ViewVideo(channel, video, ref dailyIncome, ref dailyExpenses, iterationViews);
@@ -130,6 +135,60 @@ namespace TubeStar
             video.Views += numViews;
             income += ViewIncome(channel, video, payedView, numViews);
             expenses += video.CostPerView * numViews;
+
+            if (!string.IsNullOrEmpty(video.PromotedCompanyId) && Player.Current.OwnedCompanies != null)
+            {
+                var company = Player.Current.OwnedCompanies.FirstOrDefault(c => c.Id == video.PromotedCompanyId);
+                if (company != null)
+                {
+                    double gain = numViews * 0.0001;
+                    company.BrandAwareness = Math.Min(100.0, company.BrandAwareness + gain);
+
+                    if (company.Products != null && company.Products.Count > 0)
+                    {
+                        int totalPromoSales = (int)(numViews * 0.005);
+                        if (totalPromoSales > 0)
+                        {
+                            double totalWeight = company.Products.Sum(p => (p.Quality / 100.0) * (p.Novelty / 100.0));
+                            if (totalWeight <= 0) totalWeight = 1.0;
+
+                            double companyRevenue = 0;
+                            double companyCOGS = 0;
+
+                            double stdCost = 2.50;
+                            switch (company.Niche)
+                            {
+                                case "Alimentos": stdCost = 2.50; break;
+                                case "Merch": stdCost = 12.00; break;
+                                case "Gamer": stdCost = 70.00; break;
+                                case "Brinquedos": stdCost = 20.00; break;
+                            }
+
+                            foreach (var product in company.Products)
+                            {
+                                double weight = (product.Quality / 100.0) * (product.Novelty / 100.0);
+                                int prodSales = (int)(totalPromoSales * (weight / totalWeight));
+                                if (prodSales > 0)
+                                {
+                                    double rev = prodSales * product.Price;
+                                    double cost = prodSales * stdCost;
+
+                                    product.SalesYesterday += prodSales;
+                                    product.RevenueYesterday += (rev - cost);
+
+                                    companyRevenue += rev;
+                                    companyCOGS += cost;
+                                }
+                            }
+
+                            company.Balance += (companyRevenue - companyCOGS);
+                            company.YesterdayRevenue += companyRevenue;
+                            company.YesterdayCosts += companyCOGS;
+                            company.YesterdaySales += totalPromoSales;
+                        }
+                    }
+                }
+            }
 
             // Second watcher attribute
             if (video.Attributes.Contains(VideoAttributes.SecondTime))
@@ -201,7 +260,7 @@ namespace TubeStar
                         if (CheckUnsubscriptions(channel, video, dislikedViews, payedView))
                         {
                             if (commentType == null && RandomHelpers.Chance(5))
-                                commentType = CommentType.UnsubscribeQuality;
+                                    commentType = CommentType.UnsubscribeQuality;
                         }
 
                         if (video.Attributes.Contains(VideoAttributes.SoBad))
@@ -334,7 +393,42 @@ namespace TubeStar
                 income += 0.01;
             }
 
+            // Sponsor income boost
+            if (!string.IsNullOrEmpty(video.SponsorTicker))
+            {
+                double compPrice = 100.0;
+                if (StockMarketManager.Companies != null)
+                {
+                    var comp = StockMarketManager.Companies.FirstOrDefault(c => c.Ticker == video.SponsorTicker);
+                    if (comp != null)
+                    {
+                        compPrice = comp.CurrentPrice;
+                    }
+                }
+                income += compPrice * 0.0002;
+            }
+
             return income * numViews;
+        }
+
+        private static bool IsTrendActiveForCategory(VideoCategory category)
+        {
+            if (Player.Current == null) return false;
+            switch (category)
+            {
+                case VideoCategory.Comedy:
+                    return Player.Current.TrendSTBDays > 0;
+                case VideoCategory.Technology:
+                    return Player.Current.TrendPEARDays > 0;
+                case VideoCategory.Gaming:
+                    return Player.Current.TrendRVGDays > 0;
+                case VideoCategory.Vlog:
+                    return Player.Current.TrendGDRDays > 0;
+                case VideoCategory.HowTo:
+                    return Player.Current.TrendWHPDays > 0;
+                default:
+                    return false;
+            }
         }
 
         private static void Initialize(Video video)

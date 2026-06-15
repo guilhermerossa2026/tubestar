@@ -23,14 +23,7 @@ namespace TubeStar
             private set
             {
                 _storeItem = value;
-                if (_storeItem != null)
-                {
-                    txtName.Text = _storeItem.Name;
-                    txtDescription.Text = _storeItem.Description;
-                    txtPrice.Text = _storeItem.Cost.ToCurrencyString();
-                    this.IsEnabled = _storeItem.Purchased ? false : true;
-                    imgItem.Source = new BitmapImage(new Uri(String.Format("../Resources/StoreItems/{0}.jpg", _storeItem.ImageName), UriKind.Relative));
-                }
+                UpdateState();
             }
         }
 
@@ -40,27 +33,73 @@ namespace TubeStar
             StoreItem = item;
         }
 
+        public void UpdateState()
+        {
+            if (_storeItem == null) return;
+
+            txtName.Text = _storeItem.Name;
+            txtDescription.Text = _storeItem.Description;
+            txtPrice.Text = _storeItem.Cost.ToCurrencyString();
+            
+            try
+            {
+                imgItem.Source = new BitmapImage(new Uri(String.Format("../Resources/StoreItems/{0}.jpg", _storeItem.ImageName), UriKind.Relative));
+            }
+            catch (Exception)
+            {
+                // Fallback in case of image load error
+            }
+
+            if (_storeItem.Purchased)
+            {
+                borderFrame.Opacity = 0.5;
+                btnBuy.Visibility = Visibility.Collapsed;
+                txtStatus.Visibility = Visibility.Visible;
+                txtStatus.Text = "Adquirido";
+                txtStatus.Foreground = new SolidColorBrush(ColorConverter.ConvertFromString("#FF666666") as Color? ?? Colors.Gray);
+                txtPrice.Foreground = new SolidColorBrush(ColorConverter.ConvertFromString("#FF666666") as Color? ?? Colors.Gray);
+            }
+            else
+            {
+                borderFrame.Opacity = 1.0;
+                txtStatus.Visibility = Visibility.Collapsed;
+                btnBuy.Visibility = Visibility.Visible;
+
+                bool canAfford = Player.Current.Money >= _storeItem.Cost;
+                if (canAfford)
+                {
+                    txtPrice.Foreground = new SolidColorBrush(ColorConverter.ConvertFromString("#FF2ECC71") as Color? ?? Colors.Green);
+                    btnBuy.IsEnabled = true;
+                    btnBuy.Content = "Comprar";
+                }
+                else
+                {
+                    txtPrice.Foreground = new SolidColorBrush(ColorConverter.ConvertFromString("#FFE74C3C") as Color? ?? Colors.Red);
+                    btnBuy.IsEnabled = false;
+                    btnBuy.Content = "Sem Saldo";
+                }
+            }
+        }
+
         private void btnBuy_Click(object sender, RoutedEventArgs e)
         {
-            if (Player.Current.Money - _storeItem.Cost < 0)
-            {
-                CustomMessageBox.ShowDialog(EnglishStrings.LowCashHeader.Translate(), EnglishStrings.LowCashMessage.Translate(), MessagePicture.Money);
-                return;
-            }
-
-            Player.Current.Money -= _storeItem.Cost;
-            _storeItem.Purchased = true;
-            this.IsEnabled = false;
-
-            if (_storeItem == StoreItems.Current.Loan)
-            {
-                Player.Current.LoanPayOff = (StoreItems.Current.Loan.Payout * (100 + StoreItems.Current.Loan.Interest) / 100);
-                Player.Current.Money += StoreItems.Current.Loan.Payout;
-            }
+            TryBuyItem();
         }
 
         private void LayoutRoot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            // Only trigger if clicking the card body and not already purchased
+            if (e.OriginalSource != btnBuy)
+            {
+                TryBuyItem();
+            }
+        }
+
+        private void TryBuyItem()
+        {
+            if (_storeItem == null || _storeItem.Purchased)
+                return;
+
             this.PlayAnimation(() =>
             {
                 if (Player.Current.Money - _storeItem.Cost < 0)
@@ -84,6 +123,8 @@ namespace TubeStar
 
                         if (PurchaseMade != null)
                             PurchaseMade();
+
+                        UpdateState();
                     }
                 });
             });

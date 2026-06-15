@@ -99,8 +99,18 @@
     <Compile Include="OnlineStore\Items\EditingSoftwareI.cs" />
     <Compile Include="OnlineStore\Items\VideoCameraII.cs" />
     <Compile Include="OnlineStore\Items\VideoCameraI.cs" />
+    <Compile Include="OnlineStore\Items\Microphone.cs" />
+    <Compile Include="OnlineStore\Items\StudioLighting.cs" />
+    <Compile Include="OnlineStore\Items\CaptureCard.cs" />
     <Compile Include="OnlineStore\StoreItems.cs" />
     <Compile Include="OnlineStore\StoreItem.cs" />
+    <Compile Include="OnlineStore\RealEstateItem.cs" />
+    <Compile Include="OnlineStore\VehicleItem.cs" />
+    <Compile Include="OnlineStore\AssetCatalog.cs" />
+    <Compile Include="OnlineStore\Company.cs" />
+    <Compile Include="OnlineStore\JobDefinition.cs" />
+    <Compile Include="OnlineStore\JobCatalog.cs" />
+    <Compile Include="OnlineStore\Product.cs" />
     <Compile Include="Rivals\Base\Rival.cs" />
     <Compile Include="Rivals\Rival15.cs" />
     <Compile Include="Rivals\Rival14.cs" />
@@ -135,6 +145,7 @@
     <Compile Include="Tasks\Studies\StudyProductionIII.cs" />
     <Compile Include="Tasks\Studies\StudyQualityAnalysis.cs" />
     <Compile Include="Tasks\Study.cs" />
+    <Compile Include="Tasks\CareerJob.cs" />
     <Compile Include="TitlePage.xaml.cs">
       <DependentUpon>TitlePage.xaml</DependentUpon>
     </Compile>
@@ -170,6 +181,9 @@
     </Compile>
     <Compile Include="UI\CharacterCreationPage.xaml.cs">
       <DependentUpon>CharacterCreationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\StockMarketControl.xaml.cs">
+      <DependentUpon>StockMarketControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomMessageBox.xaml.cs">
       <DependentUpon>CustomMessageBox.xaml</DependentUpon>
@@ -207,6 +221,21 @@
     </Compile>
     <Compile Include="UI\OnlineStoreControl.xaml.cs">
       <DependentUpon>OnlineStoreControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AssetBlock.xaml.cs">
+      <DependentUpon>AssetBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RealEstateControl.xaml.cs">
+      <DependentUpon>RealEstateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\VehicleControl.xaml.cs">
+      <DependentUpon>VehicleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CompanyControl.xaml.cs">
+      <DependentUpon>CompanyControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CareerControl.xaml.cs">
+      <DependentUpon>CareerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\RivalControl.xaml.cs">
       <DependentUpon>RivalControl.xaml</DependentUpon>
@@ -333,6 +362,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\StockMarketControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\EditVideoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -371,6 +404,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\OnlineStoreControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\AssetBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\CompanyControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\CareerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\RealEstateControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\VehicleControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -445,6 +498,18 @@
     <Resource Include="Resources\StoreItems\Software2.jpg" />
     <Resource Include="Resources\StoreItems\Software1.jpg" />
     <Resource Include="Resources\StoreItems\Consultant.jpg" />
+    <Resource Include="Resources\StoreItems\Microphone.jpg" />
+    <Resource Include="Resources\StoreItems\Lighting.jpg" />
+    <Resource Include="Resources\StoreItems\CaptureCard.jpg" />
+    <Resource Include="Resources\Assets\Apartment.jpg" />
+    <Resource Include="Resources\Assets\House.jpg" />
+    <Resource Include="Resources\Assets\Mansion.jpg" />
+    <Resource Include="Resources\Assets\Island.jpg" />
+    <Resource Include="Resources\Assets\Office.jpg" />
+    <Resource Include="Resources\Assets\Car.jpg" />
+    <Resource Include="Resources\Assets\Airplane.jpg" />
+    <Resource Include="Resources\Assets\Boat.jpg" />
+    <Resource Include="Resources\Assets\Jetski.jpg" />
     <None Include="Readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

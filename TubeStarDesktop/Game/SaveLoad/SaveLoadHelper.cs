@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -60,8 +60,9 @@ namespace TubeStar
                 var saveObj = SerializationHelpers.FromXml<SaveObj>(xml);
 
                 Player.Current = saveObj.Player;
+                var unreleased = Player.Current.Channels[0];
                 Player.Current.Channels.RemoveAt(0);
-                Channel.UnreleasedVideos = Player.Current.Channels[0];
+                Channel.UnreleasedVideos = unreleased;
 
                 VideoViewer.SetShares(saveObj.ShareViews);
                 VideoViewer.SetBoughtViews(saveObj.BoughtViews);

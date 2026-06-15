@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -40,6 +40,62 @@ namespace TubeStar
 
         public static string GenerateComment(Video video, CommentType type)
         {
+            if (!string.IsNullOrEmpty(video.SponsorTicker) && RandomHelpers.Chance(25))
+            {
+                var rand = RandomHelpers.RandomInt(4);
+                switch (rand)
+                {
+                    case 0: return String.Format("Vídeo legal, mas o patrocínio da {0} ficou meio forçado.", video.SponsorTicker);
+                    case 1: return String.Format("Parceria com a {0}? Aí sim, canal profissional!", video.SponsorTicker);
+                    case 2: return String.Format("Propaganda da {0} no meio do vídeo? Sellout haha.", video.SponsorTicker);
+                    default: return String.Format("Muito bom ver a {0} apoiando o canal! Sucesso!", video.SponsorTicker);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(video.PromotedCompanyId) && Player.Current.OwnedCompanies != null && RandomHelpers.Chance(30))
+            {
+                var company = Player.Current.OwnedCompanies.FirstOrDefault(c => c.Id == video.PromotedCompanyId);
+                if (company != null && company.Products != null && company.Products.Count > 0)
+                {
+                    var product = company.Products[RandomHelpers.RandomInt(company.Products.Count)];
+                    
+                    double stdPrice = 5.0;
+                    if (company.Niche == "Alimentos") stdPrice = 5.0;
+                    else if (company.Niche == "Merch") stdPrice = 25.0;
+                    else if (company.Niche == "Gamer") stdPrice = 120.0;
+                    else if (company.Niche == "Brinquedos") stdPrice = 40.0;
+
+                    if (product.Price > stdPrice * 1.5)
+                    {
+                        var rVal = RandomHelpers.RandomInt(3);
+                        if (rVal == 0) return string.Format("Adoro o canal, mas o preço do {0} da {1} está abusivo!", product.Name, company.Name);
+                        if (rVal == 1) return string.Format("R$ {0:F2} por um {1}? Vendeu a alma para o capitalismo!", product.Price, product.Name);
+                        return string.Format("{0} é muito ganancioso, cobrando {1:C} no seu produto...", company.Name, product.Price);
+                    }
+                    else if (product.Quality < 45)
+                    {
+                        var rVal = RandomHelpers.RandomInt(3);
+                        if (rVal == 0) return string.Format("Comprei o {0} da {1} e quebrou em 5 minutos. Muito ruim!", product.Name, company.Name);
+                        if (rVal == 1) return string.Format("Essa marca {0} só faz produto de qualidade horrível.", company.Name);
+                        return string.Format("O {0} é péssimo, não comprem!", product.Name);
+                    }
+                    else if (product.Price <= stdPrice * 0.9 && product.Quality >= 75)
+                    {
+                        var rVal = RandomHelpers.RandomInt(3);
+                        if (rVal == 0) return string.Format("O {0} da {1} é bom demais e muito barato! Super recomendo!", product.Name, company.Name);
+                        if (rVal == 1) return string.Format("Melhor compra que fiz! {0} vale cada centavo.", product.Name);
+                        return string.Format("Qualidade incrível do {0}. {1} está de parabéns!", product.Name, company.Name);
+                    }
+                    else
+                    {
+                        var rVal = RandomHelpers.RandomInt(3);
+                        if (rVal == 0) return string.Format("Comprei o {0} da {1} após ver o vídeo. Vale a pena!", product.Name, company.Name);
+                        if (rVal == 1) return string.Format("Interessante a divulgação do {0}. Já encomendei o meu.", product.Name);
+                        return string.Format("Quem mais comprou o {0}?", product.Name);
+                    }
+                }
+            }
+
             switch (type)
             {
                 case (CommentType.Like): return LikeComment(video);

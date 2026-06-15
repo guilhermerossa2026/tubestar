@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -20,91 +20,111 @@ namespace TubeStar
         private static Dictionary<CommentStrings, string> _comments;
         private static Dictionary<RivalStrings, string> _rivalStrings;
 
+        private static readonly object _lock = new object();
+
         public static void SetLanguage(string language)
         {
-            if (_customLanguage == null)
-                _customLanguage = new Dictionary<EnglishStrings, string>();
-
-            try
+            lock (_lock)
             {
-                var streamResourceInfo = Application.GetResourceStream(new Uri(String.Format("pack://application:,,,/Languages/{0}.xml", language)));
-                using (var stream = streamResourceInfo.Stream)
+                if (_customLanguage == null)
+                    _customLanguage = new Dictionary<EnglishStrings, string>();
+
+                try
                 {
-                    using (var reader = new StreamReader(stream))
+                    var streamResourceInfo = Application.GetResourceStream(new Uri(String.Format("pack://application:,,,/Languages/{0}.xml", language)));
+                    using (var stream = streamResourceInfo.Stream)
                     {
-                        var xml = reader.ReadToEnd();
-                        foreach (var customText in SerializationHelpers.FromXml<List<CustomText>>(xml))
+                        using (var reader = new StreamReader(stream))
                         {
-                            _customLanguage[customText.Id] = customText.Text;
+                            var xml = reader.ReadToEnd();
+                            foreach (var customText in SerializationHelpers.FromXml<List<CustomText>>(xml))
+                            {
+                                _customLanguage[customText.Id] = customText.Text;
+                            }
+                            Properties.Settings.Default.CustomModPath = null;
+                            Properties.Settings.Default.Language = language;
                         }
-                        Properties.Settings.Default.CustomModPath = null;
-                        Properties.Settings.Default.Language = language;
                     }
                 }
-            }
-            catch(Exception ex)
-            {
-                _customLanguage = null;
-                Properties.Settings.Default.Language = null;
+                catch(Exception ex)
+                {
+                    _customLanguage = null;
+                    Properties.Settings.Default.Language = null;
+                }
             }
         }
 
         public static void ReadLanguage(string fileName)
         {
-            if (_customLanguage == null)
-                _customLanguage = new Dictionary<EnglishStrings, string>();
+            lock (_lock)
+            {
+                if (_customLanguage == null)
+                    _customLanguage = new Dictionary<EnglishStrings, string>();
 
-            try
-            {
-                var xml = File.ReadAllText(fileName);
-                foreach (var customText in SerializationHelpers.FromXml<List<CustomText>>(xml))
+                try
                 {
-                    _customLanguage[customText.Id] = customText.Text;
+                    var xml = File.ReadAllText(fileName);
+                    foreach (var customText in SerializationHelpers.FromXml<List<CustomText>>(xml))
+                    {
+                        _customLanguage[customText.Id] = customText.Text;
+                    }
+                    Properties.Settings.Default.CustomModPath = fileName;
                 }
-                Properties.Settings.Default.CustomModPath = fileName;
-            }
-            catch
-            {
-                _customLanguage = null;
-                Properties.Settings.Default.CustomModPath = null;
+                catch
+                {
+                    _customLanguage = null;
+                    Properties.Settings.Default.CustomModPath = null;
+                }
             }
         }
 
         public static void Reset()
         {
-            _customLanguage = null;
-            _comments = null;
-            _rivalStrings = null;
+            lock (_lock)
+            {
+                _customLanguage = null;
+                _comments = null;
+                _rivalStrings = null;
+            }
         }
 
         public static string Translate(this EnglishStrings english)
         {
-            if (_customLanguage == null)
-                _customLanguage = new Dictionary<EnglishStrings, string>();
+            lock (_lock)
+            {
+                if (_customLanguage == null)
+                    _customLanguage = new Dictionary<EnglishStrings, string>();
 
-            if (!_customLanguage.ContainsKey(english))
-                _customLanguage[english] = EnumHelpers.GetAttribute<DescriptionAttribute>(english).Description;
-            return _customLanguage[english];
+                if (!_customLanguage.ContainsKey(english))
+                    _customLanguage[english] = EnumHelpers.GetAttribute<DescriptionAttribute>(english).Description;
+                return _customLanguage[english];
+            }
         }
 
         public static string Translate(this CommentStrings comment)
         {
-            if (_comments == null)
-                _comments = new Dictionary<CommentStrings, string>();
+            lock (_lock)
+            {
+                if (_comments == null)
+                    _comments = new Dictionary<CommentStrings, string>();
 
-            if (!_comments.ContainsKey(comment))
-                _comments[comment] = EnumHelpers.GetAttribute<DescriptionAttribute>(comment).Description;
-            return _comments[comment];
+                if (!_comments.ContainsKey(comment))
+                    _comments[comment] = EnumHelpers.GetAttribute<DescriptionAttribute>(comment).Description;
+                return _comments[comment];
+            }
         }
 
         public static string Translate(this RivalStrings rivalString)
         {
-            if (_rivalStrings == null)
-                _rivalStrings = new Dictionary<RivalStrings, string>();
+            lock (_lock)
+            {
+                if (_rivalStrings == null)
+                    _rivalStrings = new Dictionary<RivalStrings, string>();
 
-            if (!_rivalStrings.ContainsKey(rivalString))
-                _rivalStrings[rivalString] = EnumHelpers.GetAttribute<DescriptionAttribute>(rivalString).Description;
-            return _rivalStrings[rivalString];
+                if (!_rivalStrings.ContainsKey(rivalString))
+                    _rivalStrings[rivalString] = EnumHelpers.GetAttribute<DescriptionAttribute>(rivalString).Description;
+                return _rivalStrings[rivalString];
+            }
         }
 
         public static string SerializeEnglish()

@@ -1,0 +1,144 @@
+<UserControl x:Class="TubeStar.StockMarketControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TubeStar"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="800"
+             Background="#121212">
+
+    <Grid x:Name="mainGrid" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="285" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- COLUNA ESQUERDA: LISTA DE AÇÕES -->
+        <Border Grid.Column="0" BorderBrush="#222222" BorderThickness="0,0,1,0" Padding="0,0,10,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Text="COTAÇÕES DO DIA" FontSize="13" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,12" HorizontalAlignment="Center"/>
+                
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="listContainer"/>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- COLUNA DIREITA: DETALHE DA AÇÃO -->
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Padding="15,0,0,0">
+            <Grid x:Name="rightGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" /> <!-- Header -->
+                    <RowDefinition Height="Auto" /> <!-- Gráfico -->
+                    <RowDefinition Height="Auto" /> <!-- Notícias -->
+                    <RowDefinition Height="Auto" /> <!-- Transações -->
+                    <RowDefinition Height="*" />    <!-- Patrocínio & Tendência -->
+                </Grid.RowDefinitions>
+
+                <!-- Header Detalhado -->
+                <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                    <TextBlock x:Name="txtCompName" Text="SELECIONE UMA EMPRESA" FontSize="15" FontWeight="Bold" Foreground="White" />
+                    <TextBlock x:Name="txtCompTickerPrice" Text="-" FontSize="12" FontWeight="Bold" Margin="0,2,0,0" />
+                </StackPanel>
+
+                <!-- Gráfico Sparkline -->
+                <Border Grid.Row="1" Background="#0D0D0D" BorderBrush="#222222" BorderThickness="1" CornerRadius="6" Height="150" Margin="0,0,0,12" Padding="5">
+                    <Canvas x:Name="chartCanvas" ClipToBounds="True" Width="370" Height="140"/>
+                </Border>
+
+                <!-- Feed de Notícia -->
+                <Border Grid.Row="2" Background="#181818" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="📰 BOLSA NEWS" FontSize="11" FontWeight="Bold" Foreground="Red" Margin="0,0,0,4" />
+                        <TextBlock x:Name="txtNewsContent" Text="Nenhuma notícia disponível." FontSize="11" Foreground="#DDDDDD" TextWrapping="Wrap" FontStyle="Italic" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Portfólio & Transações -->
+                <Border Grid.Row="3" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                    <Grid x:Name="tradeGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" /> <!-- Stats -->
+                            <RowDefinition Height="Auto" /> <!-- Slider -->
+                            <RowDefinition Height="*" />    <!-- Buttons -->
+                        </Grid.RowDefinitions>
+
+                        <!-- Stats -->
+                        <Grid Grid.Row="0" Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock x:Name="txtMyShares" Text="Cotas Possuídas: 0" FontSize="11" Foreground="Gray" FontWeight="Bold" />
+                                <TextBlock x:Name="txtMyAverage" Text="Preço Médio Pago: -" FontSize="11" Foreground="Gray" FontWeight="Bold" Margin="0,3,0,0" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                <TextBlock x:Name="txtMyReturn" Text="Retorno Atual: -" FontSize="11" Foreground="Gray" FontWeight="Bold" HorizontalAlignment="Right" />
+                                <TextBlock x:Name="txtMyMoney" Text="Saldo: $0.00" FontSize="12" FontWeight="Bold" Foreground="#00FF00" Margin="0,3,0,0" HorizontalAlignment="Right" />
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Slider -->
+                        <Grid Grid.Row="1" Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Slider x:Name="tradeSlider" Minimum="1" Maximum="10" Value="1" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,15,0" VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="1" x:Name="txtTradeQty" Text="1 cota" FontSize="14" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+
+                        <!-- Botões -->
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Button Grid.Column="0" x:Name="btnBuy" Content="COMPRAR" Margin="0,0,5,0" Background="#008800" Foreground="White" FontWeight="Bold" FontSize="13" Height="36" Click="btnBuy_Click"/>
+                            <Button Grid.Column="1" x:Name="btnSell" Content="VENDER" Margin="5,0,0,0" Background="#AA0000" Foreground="White" FontWeight="Bold" FontSize="13" Height="36" Click="btnSell_Click"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- Patrocínio & Tendência -->
+                <Border Grid.Row="4" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="💼 PARCERIAS &amp; TENDÊNCIAS" FontSize="12" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,8" />
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock x:Name="txtSponsorStatus" Text="Patrocínio: Inativo" FontSize="11" Foreground="White" FontWeight="Bold" />
+                                <TextBlock x:Name="txtSponsorRequirements" Text="Requisitos: 10 ações, 1000 inscritos" FontSize="10" Foreground="Gray" Margin="0,2,0,0" TextWrapping="Wrap" />
+                            </StackPanel>
+                            
+                            <Button Grid.Column="1" x:Name="btnSignSponsor" Content="ASSINAR CONTRATO" Background="#008800" Foreground="White" FontWeight="Bold" FontSize="11" Padding="8,4" Click="btnSignSponsor_Click" VerticalAlignment="Center"/>
+                        </Grid>
+                        
+                        <Separator Background="#2E2E2E" Margin="0,8" />
+                        
+                        <StackPanel>
+                            <TextBlock x:Name="txtTrendStatus" Text="Tendência de Mercado: Inativa" FontSize="11" Foreground="White" FontWeight="Bold" />
+                            <TextBlock x:Name="txtTrendEffect" Text="Efeito: Vídeos da categoria relacionada ganham +50% de visualizações." FontSize="10" Foreground="Gray" Margin="0,2,0,0" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

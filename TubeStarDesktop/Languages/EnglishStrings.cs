@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -628,5 +628,23 @@ namespace TubeStar
 
         [Description("Display 'Creative Commons' Material Only")]
         UseCreativeCommons,
+
+        [Description("All")]
+        StoreTabAll,
+
+        [Description("Equipment")]
+        StoreTabEquipment,
+
+        [Description("Services")]
+        StoreTabServices,
+
+        [Description("Finance")]
+        StoreTabFinance,
+
+        [Description("Owned")]
+        StoreTabOwned,
+
+        [Description("Upgrade your studio to improve your videos")]
+        StoreSubtitle,
     }
 }

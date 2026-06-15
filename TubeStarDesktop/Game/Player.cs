@@ -80,6 +80,29 @@ namespace TubeStar
 
         public string SerializeStockPrices { get; set; }
 
+        // Sponsorships remaining days (0 if not active)
+        public int SponsorSTBDays { get; set; }
+        public int SponsorPEARDays { get; set; }
+        public int SponsorRVGDays { get; set; }
+        public int SponsorGDRDays { get; set; }
+        public int SponsorWHPDays { get; set; }
+
+        // Active Trend remaining days (0 if not active)
+        public int TrendSTBDays { get; set; }
+        public int TrendPEARDays { get; set; }
+        public int TrendRVGDays { get; set; }
+        public int TrendGDRDays { get; set; }
+        public int TrendWHPDays { get; set; }
+
+        public List<string> OwnedRealEstate { get; set; }
+        public List<string> OwnedVehicles { get; set; }
+        public List<Company> OwnedCompanies { get; set; }
+
+        public string CurrentJobId { get; set; }
+        public double JobPerformance { get; set; }
+        public string JobEffortLevel { get; set; }
+        public double SalaryBonusMultiplier { get; set; }
+
         public Player()
         {
             Reset();
@@ -99,6 +122,11 @@ namespace TubeStar
             Overtime = false;
             HasPromotion = false;
             LoanPayOff = 0;
+
+            CurrentJobId = "panfletos";
+            JobPerformance = 50.0;
+            JobEffortLevel = "Normal";
+            SalaryBonusMultiplier = 1.0;
 
             // Initialize Customization
             YoutuberName = "Gamer Pro";
@@ -120,6 +148,22 @@ namespace TubeStar
             PricePaidGDR = 0;
             PricePaidWHP = 0;
             SerializeStockPrices = string.Empty;
+
+            SponsorSTBDays = 0;
+            SponsorPEARDays = 0;
+            SponsorRVGDays = 0;
+            SponsorGDRDays = 0;
+            SponsorWHPDays = 0;
+
+            TrendSTBDays = 0;
+            TrendPEARDays = 0;
+            TrendRVGDays = 0;
+            TrendGDRDays = 0;
+            TrendWHPDays = 0;
+
+            OwnedRealEstate = new List<string>();
+            OwnedVehicles = new List<string>();
+            OwnedCompanies = new List<Company>();
 
             TasksInProgress = new List<Task>();
             Videos = new List<Video>();

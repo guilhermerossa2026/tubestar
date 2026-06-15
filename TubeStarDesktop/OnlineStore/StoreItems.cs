@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,6 +29,10 @@ namespace TubeStar
 
         public Loan Loan { get; set; }
 
+        public Microphone Microphone { get; set; }
+        public StudioLighting StudioLighting { get; set; }
+        public CaptureCard CaptureCard { get; set; }
+
         public List<StoreItem> All
         {
             get
@@ -42,9 +46,12 @@ namespace TubeStar
 
                     EditingSoftwareII,
                     EditingSoftwareI,
+                    CaptureCard,
 
                     VideoCameraII,
-                    VideoCameraI,                    
+                    VideoCameraI,
+                    StudioLighting,
+                    Microphone,
                 };
             }
         }
@@ -61,6 +68,10 @@ namespace TubeStar
             Consultant = new Consultant();
 
             Loan = new Loan();
+
+            Microphone = new Microphone();
+            StudioLighting = new StudioLighting();
+            CaptureCard = new CaptureCard();
         }
     }
 }

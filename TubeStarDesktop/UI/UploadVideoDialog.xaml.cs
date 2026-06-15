@@ -46,6 +46,35 @@ namespace TubeStar
                 cmbChannel.SelectedValue = Settings.LastChannel;
             }
 
+            // Populate sponsors dropdown
+            var sponsors = new List<KeyValuePair<string, string>>();
+            sponsors.Add(new KeyValuePair<string, string>("", "Nenhum"));
+            if (Player.Current.SponsorSTBDays > 0) sponsors.Add(new KeyValuePair<string, string>("STB", "StarTube Corp. (STB)"));
+            if (Player.Current.SponsorPEARDays > 0) sponsors.Add(new KeyValuePair<string, string>("PEAR", "Pear Corp. (PEAR)"));
+            if (Player.Current.SponsorRVGDays > 0) sponsors.Add(new KeyValuePair<string, string>("RVG", "Rivalry Games (RVG)"));
+            if (Player.Current.SponsorGDRDays > 0) sponsors.Add(new KeyValuePair<string, string>("GDR", "GamerDrink (GDR)"));
+            if (Player.Current.SponsorWHPDays > 0) sponsors.Add(new KeyValuePair<string, string>("WHP", "WebHosting Pro (WHP)"));
+
+            cmbSponsor.ItemsSource = sponsors;
+            cmbSponsor.DisplayMemberPath = "Value";
+            cmbSponsor.SelectedValuePath = "Key";
+            cmbSponsor.SelectedValue = "";
+
+            // Populate companies dropdown
+            var companies = new List<KeyValuePair<string, string>>();
+            companies.Add(new KeyValuePair<string, string>("", "Nenhuma"));
+            if (Player.Current.OwnedCompanies != null)
+            {
+                foreach (var company in Player.Current.OwnedCompanies)
+                {
+                    companies.Add(new KeyValuePair<string, string>(company.Id, company.Name + " (" + company.Niche + ")"));
+                }
+            }
+            cmbPromotedCompany.ItemsSource = companies;
+            cmbPromotedCompany.DisplayMemberPath = "Value";
+            cmbPromotedCompany.SelectedValuePath = "Key";
+            cmbPromotedCompany.SelectedValue = "";
+
             if (Video.ImageBytes != null)
             {
                 BitmapImage image = new BitmapImage();
@@ -159,6 +188,16 @@ namespace TubeStar
             {
                 VideoViewer.BuyViews(Video, 2000);
                 Video.CostPerView = 0.04;
+            }
+
+            if (cmbSponsor.SelectedValue != null)
+            {
+                Video.SponsorTicker = (string)cmbSponsor.SelectedValue;
+            }
+
+            if (cmbPromotedCompany.SelectedValue != null)
+            {
+                Video.PromotedCompanyId = (string)cmbPromotedCompany.SelectedValue;
             }
 
             Channel = Settings.LastChannel = (Channel)cmbChannel.SelectedValue;

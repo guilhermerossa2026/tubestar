@@ -1,0 +1,125 @@
+<UserControl x:Class="TubeStar.CareerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TubeStar"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="800"
+             Background="#121212">
+
+    <Grid x:Name="LayoutRoot" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <!-- Header -->
+            <RowDefinition Height="*" />    <!-- Content Panel -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="CENTRO DE CARREIRA" FontSize="20" FontWeight="Black" Foreground="#FF2222" />
+                <TextBlock Text="Gerencie seu esforço diário, estude e candidate-se a vagas corporativas" FontSize="11" Foreground="#666666" FontWeight="Bold" Margin="0,2,0,0"/>
+            </StackPanel>
+            <Border Grid.Column="1" Background="#1E1E1E" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="SALDO PESSOAL: " FontSize="14" FontWeight="Bold" Foreground="#666666" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtPersonalMoney" Text="$0.00" FontSize="16" FontWeight="Black" Foreground="#FF2ECC71" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Content Panel -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="340" /> <!-- Left: Current Job and effort -->
+                <ColumnDefinition Width="*" />   <!-- Right: Job Catalog -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Coluna Esquerda: Status do Emprego Atual -->
+            <Border Grid.Column="0" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- Seção Emprego Atual -->
+                        <TextBlock Text="CARGO ATUAL" FontSize="12" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,10" />
+                        
+                        <Grid x:Name="panelNoJob" Visibility="Collapsed">
+                            <StackPanel Margin="0,10,0,20">
+                                <TextBlock Text="Desempregado" FontSize="18" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Você não possui um emprego no momento. Candidate-se a uma vaga no painel ao lado!" FontSize="11" Foreground="#888888" TextWrapping="Wrap" TextAlignment="Center" Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid x:Name="panelHasJob" Visibility="Visible">
+                            <StackPanel>
+                                <TextBlock x:Name="txtJobName" Text="Desenvolvedor Júnior" FontSize="18" FontWeight="Bold" Foreground="White" />
+                                <TextBlock x:Name="txtJobDesc" Text="Escreva linhas de código e participe de reuniões diárias." FontSize="11" Foreground="#888888" TextWrapping="Wrap" Margin="0,3,0,12"/>
+
+                                <Border Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,15">
+                                    <StackPanel>
+                                        <Grid Margin="0,2">
+                                            <TextBlock Text="Salário Base:" FontSize="12" Foreground="#888888"/>
+                                            <TextBlock x:Name="txtJobSalary" Text="$350 / dia" FontSize="12" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                        <Grid Margin="0,2">
+                                            <TextBlock Text="Horas de Trabalho:" FontSize="12" Foreground="#888888"/>
+                                            <TextBlock x:Name="txtJobHours" Text="6 horas" FontSize="12" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                        <Grid Margin="0,2" x:Name="gridSalaryBonus" Visibility="Visible">
+                                            <TextBlock Text="Bônus de Promoção:" FontSize="12" Foreground="#888888"/>
+                                            <TextBlock x:Name="txtJobBonus" Text="+15% de aumento" FontSize="12" FontWeight="Bold" Foreground="#FF2ECC71" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Desempenho Corporativo -->
+                                <TextBlock Text="DESEMPENHO CORPORATIVO" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,0,0,5" />
+                                <Grid Margin="0,0,0,5">
+                                    <TextBlock Text="Rumo à Promoção:" FontSize="11" Foreground="White"/>
+                                    <TextBlock x:Name="txtPerformanceVal" Text="50%" FontSize="11" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <ProgressBar x:Name="pbPerformance" Height="10" Background="#222222" Foreground="#FF2ECC71" Minimum="0" Maximum="100" Value="50" Margin="0,0,0,20"/>
+
+                                <!-- Nível de Dedicação -->
+                                <TextBlock Text="DEDICAÇÃO DIÁRIA" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,0,0,8" />
+                                <Border Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="4" Margin="0,0,0,12">
+                                    <UniformGrid Columns="3">
+                                        <ToggleButton x:Name="btnEffortMin" Content="Mínimo" FontSize="11" Padding="5" Click="BtnEffort_Click"/>
+                                        <ToggleButton x:Name="btnEffortNorm" Content="Normal" FontSize="11" Padding="5" Click="BtnEffort_Click"/>
+                                        <ToggleButton x:Name="btnEffortMax" Content="Máximo" FontSize="11" Padding="5" Click="BtnEffort_Click"/>
+                                    </UniformGrid>
+                                </Border>
+                                
+                                <TextBlock x:Name="txtEffortDescription" Text="Modo normal: consome as horas padrão do cargo, melhora levemente o desempenho corporativo." FontSize="10" Foreground="#888888" TextWrapping="Wrap" Margin="0,0,0,20" Height="40"/>
+
+                                <!-- Pedir Demissão -->
+                                <Button x:Name="btnResign" Content="Pedir Demissão" Height="32" FontSize="12" FontWeight="Bold" Background="#FF2222" Foreground="White" Click="BtnResign_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Coluna Direita: Catálogo de Vagas de Emprego -->
+            <Border Grid.Column="1" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Text="MERCADO DE TRABALHO (VAGAS DISPONÍVEIS)" FontSize="13" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,15" />
+                    
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="panelJobCatalog">
+                            <!-- Os blocos de empregos serão inseridos dinamicamente no Code-behind -->
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

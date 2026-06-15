@@ -1,0 +1,438 @@
+<UserControl x:Class="TubeStar.CompanyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TubeStar"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="800"
+             Background="#121212">
+
+    <Grid x:Name="LayoutRoot" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <!-- Header -->
+            <RowDefinition Height="Auto" /> <!-- Dropdown Selector -->
+            <RowDefinition Height="*" />    <!-- Content Panel -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="IMPÉRIO COMERCIAL (EMPRESAS)" FontSize="20" FontWeight="Black" Foreground="#FF2222" />
+                <TextBlock Text="Crie marcas exclusivas, lance produtos e integre a divulgação com seus vídeos" FontSize="11" Foreground="#666666" FontWeight="Bold" Margin="0,2,0,0"/>
+            </StackPanel>
+            <Border Grid.Column="1" Background="#1E1E1E" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="SALDO PESSOAL: " FontSize="14" FontWeight="Bold" Foreground="#666666" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtPersonalMoney" Text="$0.00" FontSize="16" FontWeight="Black" Foreground="#FF2ECC71" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Dropdown Selector -->
+        <Border Grid.Row="1" Background="#181818" BorderBrush="#222222" BorderThickness="1" CornerRadius="6" Padding="8" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Empresa Ativa:" Foreground="White" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,10,0" Grid.Column="0" />
+                <ComboBox x:Name="cmbActiveCompany" Grid.Column="1" FontSize="14" SelectionChanged="CmbActiveCompany_SelectionChanged" Background="#1E1E1E" Foreground="White" />
+            </Grid>
+        </Border>
+
+        <!-- Content Panel -->
+        <Grid Grid.Row="2">
+            <!-- CREATION PANEL -->
+            <Border x:Name="creationPanel" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="20" Visibility="Collapsed">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel MaxWidth="600" HorizontalAlignment="Center">
+                        <TextBlock Text="FUNDAR NOVA EMPRESA" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,10" HorizontalAlignment="Center" />
+                        <TextBlock Text="Torne-se um grande empresário! Crie marcas exclusivas e integre a divulgação diretamente com seus vídeos no YouTube." Foreground="#AAAAAA" TextWrapping="Wrap" FontSize="13" Margin="0,0,0,20" TextAlignment="Center" />
+
+                        <!-- Requisitos -->
+                        <Border Background="#121212" BorderBrush="#222222" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="REQUISITOS DE FUNDAÇÃO:" FontSize="12" FontWeight="Bold" Foreground="#666666" Margin="0,0,0,8" />
+                                
+                                <Grid Margin="0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="• Inscritos no Canal (Mínimo: 100.000):" FontSize="14" Foreground="White" />
+                                    <TextBlock x:Name="txtReqSubs" Grid.Column="1" Text="0 / 100.000" FontSize="14" FontWeight="Bold" Foreground="Red" />
+                                </Grid>
+
+                                <Grid Margin="0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="• Custo de Fundação ($300.000):" FontSize="14" Foreground="White" />
+                                    <TextBlock x:Name="txtReqMoney" Grid.Column="1" Text="$0 / $300.000" FontSize="14" FontWeight="Bold" Foreground="Red" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Formulário -->
+                        <StackPanel Margin="0,0,0,20">
+                            <TextBlock Text="Nome da Empresa:" FontSize="13" FontWeight="Bold" Foreground="White" Margin="0,0,0,5" />
+                            <TextBox x:Name="txtNewCompanyName" FontSize="14" Background="#1E1E1E" Foreground="White" BorderBrush="#3E3E3E" Padding="5" Height="30" Margin="0,0,0,12" />
+
+                            <TextBlock Text="Nicho de Mercado:" FontSize="13" FontWeight="Bold" Foreground="White" Margin="0,0,0,5" />
+                            <ComboBox x:Name="cmbNewCompanyNiche" FontSize="14" Height="30" Background="#1E1E1E" Foreground="White" BorderBrush="#3E3E3E" Margin="0,0,0,20">
+                                <ComboBoxItem Content="Alimentos (Guloseimas, Chocolates, Bebidas)" IsSelected="True" Tag="Alimentos" />
+                                <ComboBoxItem Content="Merch (Camisetas, Bonés, Acessórios de Moda)" Tag="Merch" />
+                                <ComboBoxItem Content="Gamer (Mouses, Teclados, Headsets Premium)" Tag="Gamer" />
+                                <ComboBoxItem Content="Brinquedos (Bonecos, Jogos de Tabuleiro, Pelúcias)" Tag="Brinquedos" />
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!-- Botão de Ação -->
+                        <Button x:Name="btnFundCompany" Content="Fundar Empresa (Custo: $300.000)" Height="45" FontSize="15" FontWeight="Bold" Background="#FF2222" Foreground="White" Click="BtnFundCompany_Click" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- DASHBOARD PANEL -->
+            <Grid x:Name="dashboardPanel" Visibility="Visible">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="280" /> <!-- Left stats & bank transfers -->
+                    <ColumnDefinition Width="*" />   <!-- Right tabbed details -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Coluna Esquerda: Status Geral e Banco Interno -->
+                <Border Grid.Column="0" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,10,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <!-- General Info -->
+                            <TextBlock x:Name="txtCompanyName" Text="EMPRESA" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,2" />
+                            <TextBlock x:Name="txtCompanyNiche" Text="Nicho: Alimentos" FontSize="12" Foreground="#888888" Margin="0,0,0,12" />
+
+                            <!-- Caixa da Empresa -->
+                            <Border Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <TextBlock Text="CAIXA DA EMPRESA" FontSize="10" FontWeight="Bold" Foreground="#888888" HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="txtCompanyBalance" Text="$0.00" FontSize="18" FontWeight="Black" Foreground="#FF2ECC71" HorizontalAlignment="Center" Margin="0,4,0,8"/>
+                                    
+                                    <UniformGrid Columns="2">
+                                        <Button Content="Investir $10k" FontSize="9" Margin="1" Click="BtnInvest10k_Click" Height="25"/>
+                                        <Button Content="Investir $50k" FontSize="9" Margin="1" Click="BtnInvest50k_Click" Height="25"/>
+                                        <Button Content="Retirar $10k" FontSize="9" Margin="1" Click="BtnWithdraw10k_Click" Height="25"/>
+                                        <Button Content="Retirar Tudo" FontSize="9" Margin="1" Click="BtnWithdrawAll_Click" Height="25"/>
+                                    </UniformGrid>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Indicadores de Marca -->
+                            <TextBlock Text="INDICADORES DA MARCA" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,5,0,8" />
+                            
+                            <!-- Brand Awareness -->
+                            <StackPanel Margin="0,0,0,10">
+                                <Grid>
+                                    <TextBlock Text="Reconhecimento de Marca:" FontSize="10" Foreground="White" />
+                                    <TextBlock x:Name="txtBrandAwarenessVal" Text="0.0%" FontSize="10" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right" />
+                                </Grid>
+                                <ProgressBar x:Name="pbBrandAwareness" Height="6" Background="#222222" Foreground="#3498DB" Margin="0,3,0,0" Minimum="0" Maximum="100" />
+                            </StackPanel>
+
+                            <!-- Infrastructure -->
+                            <StackPanel Margin="0,0,0,10">
+                                <Grid>
+                                    <TextBlock Text="Produção (Fábrica):" FontSize="10" Foreground="White" />
+                                    <TextBlock x:Name="txtInfraVal" Text="Nível 1 / 5" FontSize="10" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right" />
+                                </Grid>
+                                <ProgressBar x:Name="pbInfra" Height="6" Background="#222222" Foreground="#E74C3C" Margin="0,3,0,0" Minimum="0" Maximum="5" Value="1" />
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Coluna Direita: Tabs de Detalhes -->
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" /> <!-- Tab Buttons -->
+                        <RowDefinition Height="*" />    <!-- Tab Content -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Tab Buttons -->
+                    <Border Grid.Row="0" Background="#181818" BorderBrush="#222222" BorderThickness="1" CornerRadius="6" Padding="4" Margin="0,0,0,10">
+                        <UniformGrid Columns="3">
+                            <ToggleButton x:Name="tabBtnProducts" Content="Produtos" FontSize="12" Padding="6" Click="TabBtn_Click" IsChecked="True"/>
+                            <ToggleButton x:Name="tabBtnOps" Content="Operações &amp; Upgrades" FontSize="12" Padding="6" Click="TabBtn_Click"/>
+                            <ToggleButton x:Name="tabBtnStaff" Content="Equipe &amp; Staff" FontSize="12" Padding="6" Click="TabBtn_Click"/>
+                        </UniformGrid>
+                    </Border>
+
+                    <!-- Tab Content Panel -->
+                    <Grid Grid.Row="1">
+                        <!-- TAB 1: PRODUTOS -->
+                        <Border x:Name="panelProducts" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="12" Visibility="Visible">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="230" /> <!-- List of products -->
+                                    <ColumnDefinition Width="*" />   <!-- Selected product editor or creation form -->
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Lista de Produtos -->
+                                <Grid Grid.Column="0" Margin="0,0,10,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="PRODUTOS ATIVOS" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,0,0,8" />
+                                    <ListBox Grid.Row="1" x:Name="lstProducts" Background="#121212" BorderBrush="#2E2E2E" SelectionChanged="LstProducts_SelectionChanged">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="White" FontSize="12"/>
+                                                    <Grid Margin="0,2,0,0">
+                                                        <TextBlock Text="{Binding Price, StringFormat=Preço: {0:C}}" FontSize="10" Foreground="#888888"/>
+                                                        <TextBlock Text="{Binding Novelty, StringFormat=Novidade: {0:F0}%}" FontSize="10" Foreground="#F1C40F" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+
+                                <!-- Editor / Criador de Produtos -->
+                                <Border Grid.Column="1" Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="12">
+                                    <Grid>
+                                        <!-- CASO 1: NENHUM PRODUTO SELECIONADO / CRIAR PRODUTO -->
+                                        <ScrollViewer x:Name="panelCreateProduct" VerticalScrollBarVisibility="Auto" Visibility="Visible">
+                                            <StackPanel>
+                                                <TextBlock Text="CRIAR NOVO PRODUTO" FontSize="13" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,12" />
+                                                
+                                                <TextBlock Text="Nome do Produto:" FontSize="11" Foreground="White" Margin="0,0,0,4"/>
+                                                <TextBox x:Name="txtProductName" FontSize="12" Margin="0,0,0,12" Height="26"/>
+
+                                                <TextBlock Text="Preço de Venda Unitário:" FontSize="11" Foreground="White" Margin="0,0,0,4"/>
+                                                <TextBox x:Name="txtProductPrice" FontSize="12" Text="5.00" Margin="0,0,0,15" Height="26"/>
+
+                                                <TextBlock Text="Orçamento de Pesquisa &amp; Desenvolvimento:" FontSize="11" Foreground="White" Margin="0,0,0,6" />
+                                                <ComboBox x:Name="cmbRDLevel" Margin="0,0,0,20" Height="26" SelectedIndex="0">
+                                                    <ComboBoxItem Content="P&amp;D Básico ($5.000) - Qualidade Média" Tag="Basic"/>
+                                                    <ComboBoxItem Content="P&amp;D Avançado ($15.000) - Qualidade Alta" Tag="Advanced"/>
+                                                    <ComboBoxItem Content="P&amp;D Premium ($35.000) - Qualidade Excelente" Tag="Premium"/>
+                                                </ComboBox>
+
+                                                <Button x:Name="btnDevelopProduct" Content="Desenvolver Produto" Height="32" FontWeight="Bold" Background="#FF2222" Foreground="White" Click="BtnDevelopProduct_Click"/>
+                                                <TextBlock Text="* Máximo de 3 produtos simultâneos por empresa." FontSize="10" Foreground="#666666" Margin="0,10,0,0" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </ScrollViewer>
+
+                                        <!-- CASO 2: PRODUTO SELECIONADO / EDITAR PRODUTO -->
+                                        <ScrollViewer x:Name="panelEditProduct" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                                            <StackPanel>
+                                                <TextBlock x:Name="txtSelectedProductName" Text="PRODUTO SELECIONADO" FontSize="14" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,10"/>
+                                                
+                                                <!-- Qualidade e Novidade Bars -->
+                                                <Grid Margin="0,0,0,10">
+                                                    <TextBlock Text="Qualidade do Produto:" FontSize="10" Foreground="White"/>
+                                                    <TextBlock x:Name="txtSelectedProductQuality" Text="0%" FontSize="10" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right"/>
+                                                </Grid>
+                                                <ProgressBar x:Name="pbSelectedProductQuality" Height="6" Background="#222222" Foreground="#3498DB" Margin="0,0,0,12" Minimum="0" Maximum="100"/>
+
+                                                <Grid Margin="0,0,0,10">
+                                                    <TextBlock Text="Fator de Novidade:" FontSize="10" Foreground="White"/>
+                                                    <TextBlock x:Name="txtSelectedProductNovelty" Text="100%" FontSize="10" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right"/>
+                                                </Grid>
+                                                <ProgressBar x:Name="pbSelectedProductNovelty" Height="6" Background="#222222" Foreground="#F1C40F" Margin="0,0,0,15" Minimum="0" Maximum="100"/>
+
+                                                <!-- Ajuste de Preço -->
+                                                <TextBlock Text="Preço Unitário de Venda ($):" FontSize="11" Foreground="White" Margin="0,0,0,4"/>
+                                                <Grid Margin="0,0,0,8">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="80" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox Grid.Column="0" x:Name="txtEditProductPrice" FontSize="12" Height="26" SelectionChanged="TxtEditProductPrice_SelectionChanged"/>
+                                                    <Button Grid.Column="1" Content="Salvar" FontSize="10" Height="26" Margin="5,0,0,0" Click="BtnSaveProductPrice_Click"/>
+                                                </Grid>
+                                                <TextBlock x:Name="lblPricePerception" Text="Percepção do Preço: Padrão" FontSize="10" FontWeight="Bold" Foreground="#3498DB" Margin="0,0,0,20"/>
+
+                                                <Separator Background="#2E2E2E" Margin="0,5,0,15" />
+
+                                                <!-- Relançamento -->
+                                                <Grid Margin="0,0,0,15">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                                        <TextBlock Text="Atualizar Versão (Relaunch)" FontSize="11" FontWeight="Bold" Foreground="White"/>
+                                                        <TextBlock Text="Reseta a novidade para 100% e ganha +5 pontos de qualidade. Custo: $15.000" FontSize="9" Foreground="#888888" TextWrapping="Wrap"/>
+                                                    </StackPanel>
+                                                    <Button Grid.Column="1" x:Name="btnRelaunchProduct" Content="Atualizar ($15k)" Height="28" Width="110" Click="BtnRelaunchProduct_Click"/>
+                                                </Grid>
+
+                                                <!-- Descontinuar -->
+                                                <Grid Margin="0,0,0,10">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                                        <TextBlock Text="Descontinuar Produto" FontSize="11" FontWeight="Bold" Foreground="White"/>
+                                                        <TextBlock Text="Remove o produto de circulação permanentemente." FontSize="9" Foreground="#888888" TextWrapping="Wrap"/>
+                                                    </StackPanel>
+                                                    <Button Grid.Column="1" Content="Descontinuar" Height="28" Width="110" Background="#FF2222" Foreground="White" Click="BtnDiscontinueProduct_Click"/>
+                                                </Grid>
+
+                                                <Button Content="Voltar para Criação" Height="28" Margin="0,15,0,0" Click="BtnBackToCreate_Click"/>
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- TAB 2: OPERAÇÕES & UPGRADES -->
+                        <Border x:Name="panelOps" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15" Visibility="Collapsed">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <!-- Market Trend Badge -->
+                                    <Border Background="#121212" BorderBrush="#3498DB" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,15">
+                                        <Grid>
+                                            <TextBlock Text="TENDÊNCIA DE MERCADO ATUAL:" FontSize="10" FontWeight="Bold" Foreground="#3498DB" VerticalAlignment="Center"/>
+                                            <TextBlock x:Name="txtMarketTrend" Text="Mercado Estável" FontSize="12" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Faturamento Ontem -->
+                                    <TextBlock Text="RELATÓRIO DE FATURAMENTO (ONTEM)" FontSize="13" FontWeight="Bold" Foreground="#FF2222" Margin="0,0,0,10" />
+                                    <Border Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,15">
+                                        <StackPanel>
+                                            <Grid Margin="0,3">
+                                                <TextBlock Text="Unidades Vendidas Ontem:" FontSize="11" Foreground="#888888"/>
+                                                <TextBlock x:Name="txtYesterdaySales" Text="0" FontSize="11" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                            <Grid Margin="0,3">
+                                                <TextBlock Text="Receita Bruta:" FontSize="11" Foreground="#888888"/>
+                                                <TextBlock x:Name="txtYesterdayRevenue" Text="$0.00" FontSize="11" FontWeight="Bold" Foreground="#FF2ECC71" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                            <Grid Margin="0,3">
+                                                <TextBlock Text="Custos (Fabricação + Operacional):" FontSize="11" Foreground="#888888"/>
+                                                <TextBlock x:Name="txtYesterdayCosts" Text="$0.00" FontSize="11" FontWeight="Bold" Foreground="#E74C3C" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                            <Separator Background="#2E2E2E" Margin="0,5" />
+                                            <Grid Margin="0,3">
+                                                <TextBlock Text="Lucro/Prejuízo Líquido:" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock x:Name="txtYesterdayNetProfit" Text="$0.00" FontSize="13" FontWeight="Black" Foreground="#FF2ECC71" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Upgrades -->
+                                    <TextBlock Text="UPGRADES DA EMPRESA" FontSize="13" FontWeight="Bold" Foreground="#FF2222" Margin="0,5,0,10" />
+                                    
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Melhorar Infraestrutura (Expandir Fábrica)" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                            <TextBlock x:Name="txtInfraUpgradeDesc" Text="Aumenta a margem e o limite máximo de volume de produção/vendas." FontSize="10" Foreground="#888888" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="1" x:Name="btnUpgradeInfra" Content="Melhorar ($50k)" Width="130" Height="28" Click="BtnUpgradeInfra_Click"/>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Campanha de Marketing Diária" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                            <TextBlock Text="Escolha o orçamento diário para aumentar/manter seu reconhecimento de marca." FontSize="10" Foreground="#888888" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                        <ComboBox Grid.Column="1" x:Name="cmbMarketingCampaign" Width="130" Height="28" SelectionChanged="CmbMarketingCampaign_SelectionChanged" Background="#1E1E1E" Foreground="White">
+                                            <ComboBoxItem Content="Inativa ($0/dia)" Tag="Nenhuma" />
+                                            <ComboBoxItem Content="Baixa ($100/dia)" Tag="Baixa" />
+                                            <ComboBoxItem Content="Média ($300/dia)" Tag="Média" />
+                                            <ComboBoxItem Content="Agressiva ($800/dia)" Tag="Agressiva" />
+                                        </ComboBox>
+                                    </Grid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+
+                        <!-- TAB 3: EQUIPE & STAFF -->
+                        <Border x:Name="panelStaff" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15" Visibility="Collapsed">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <!-- CEO -->
+                                    <Border Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="110" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                                <TextBlock Text="CEO Profissional ($500/dia)" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Automatiza o relançamento de versões de produtos velhos (com novidade &lt; 20%) e adiciona +15% de bônus de vendas gerais." FontSize="10" Foreground="#888888" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" x:Name="btnToggleCEO" Content="Contratar" VerticalAlignment="Center" Height="28" Click="BtnToggleCEO_Click"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Diretor Marketing -->
+                                    <Border Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="110" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                                <TextBlock Text="Diretor de Marketing ($300/dia)" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Reduz o decaimento natural da marca pela metade e aumenta o ganho de awareness de campanhas de publicidade em 25%." FontSize="10" Foreground="#888888" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" x:Name="btnToggleMarketing" Content="Contratar" VerticalAlignment="Center" Height="28" Click="BtnToggleMarketing_Click"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Gerente Vendas -->
+                                    <Border Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="110" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                                <TextBlock Text="Gerente de Vendas ($300/dia)" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Otimiza canais de distribuição. Garante um aumento de +20% no volume de vendas de todos os produtos." FontSize="10" Foreground="#888888" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" x:Name="btnToggleSales" Content="Contratar" VerticalAlignment="Center" Height="28" Click="BtnToggleSales_Click"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Engenheiro P&D -->
+                                    <Border Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="110" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                                <TextBlock Text="Engenheiro de P&amp;D ($250/dia)" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Melhora a qualidade inicial de novos produtos criados em +10 pontos e reduz o decaimento de novidade diário." FontSize="10" Foreground="#888888" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" x:Name="btnToggleRD" Content="Contratar" VerticalAlignment="Center" Height="28" Click="BtnToggleRD_Click"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

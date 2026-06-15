@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Xml.Serialization;
@@ -12,6 +12,9 @@ namespace TubeStar
     [XmlInclude(typeof(Lawyer))]
     [XmlInclude(typeof(Consultant))]
     [XmlInclude(typeof(Loan))]
+    [XmlInclude(typeof(Microphone))]
+    [XmlInclude(typeof(StudioLighting))]
+    [XmlInclude(typeof(CaptureCard))]
     public abstract class StoreItem
     {
         public abstract string Name { get; }

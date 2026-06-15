@@ -42,6 +42,9 @@ namespace TubeStar
 
         public bool IsSuspended { get; set; }
 
+        public string SponsorTicker { get; set; }
+        public string PromotedCompanyId { get; set; }
+
         public Video()
             : base()
         {

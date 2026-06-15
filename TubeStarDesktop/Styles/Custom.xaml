@@ -274,6 +274,7 @@
     <Style TargetType="local:StoreItemBlock" BasedOn="{StaticResource ClickStyle}" />
     <Style TargetType="local:VideoBlock" BasedOn="{StaticResource ClickStyle}" />
     <Style TargetType="local:VideoBlockGrid" BasedOn="{StaticResource ClickStyle}" />
+    <Style TargetType="local:AssetBlock" BasedOn="{StaticResource ClickStyle}" />
 
     <!-- Button Style: Slate/Red Glowing Accent -->
     <Style TargetType="Button" BasedOn="{StaticResource TriggerClickStyle}">

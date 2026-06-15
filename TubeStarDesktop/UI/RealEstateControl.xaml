@@ -1,4 +1,4 @@
-<UserControl x:Class="TubeStar.OnlineStoreControl"
+<UserControl x:Class="TubeStar.RealEstateControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -23,8 +23,8 @@
             </Grid.ColumnDefinitions>
             
             <StackPanel Grid.Column="0">
-                <TextBlock x:Name="lblStoreTitle" Text="LOJA ONLINE" FontSize="20" FontWeight="Black" Foreground="#FF2222" />
-                <TextBlock x:Name="lblStoreSubtitle" Text="Melhore seu estúdio para turbinar seus vídeos" FontSize="11" Foreground="#666666" FontWeight="Bold" Margin="0,2,0,0"/>
+                <TextBlock Text="MERCADO IMOBILIÁRIO" FontSize="20" FontWeight="Black" Foreground="#FF2222" />
+                <TextBlock Text="Adquira apartamentos, casas, mansões, ilhas ou salas comerciais" FontSize="11" Foreground="#666666" FontWeight="Bold" Margin="0,2,0,0"/>
             </StackPanel>
 
             <Border Grid.Column="1" Background="#1E1E1E" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
@@ -35,18 +35,20 @@
             </Border>
         </Grid>
 
-        <!-- Row 1: Navigation Tabs (using RadioButtons styled as tabs or simple ToggleButtons) -->
+        <!-- Row 1: Navigation Tabs (Apartamentos, Casas, Mansões, Ilhas, Salas Comerciais) -->
         <Border Grid.Row="1" Background="#181818" BorderBrush="#222222" BorderThickness="1" CornerRadius="6" Padding="5" Margin="0,0,0,15">
-            <UniformGrid x:Name="tabGrid" Columns="5">
+            <UniformGrid x:Name="tabGrid" Columns="7">
                 <ToggleButton x:Name="tabAll" Content="Todos" Margin="2" IsChecked="True" Click="Tab_Click"/>
-                <ToggleButton x:Name="tabEquipment" Content="Equipamentos" Margin="2" Click="Tab_Click"/>
-                <ToggleButton x:Name="tabServices" Content="Serviços" Margin="2" Click="Tab_Click"/>
-                <ToggleButton x:Name="tabFinance" Content="Financiamento" Margin="2" Click="Tab_Click"/>
+                <ToggleButton x:Name="tabApartment" Content="Apartamentos" Margin="2" Click="Tab_Click"/>
+                <ToggleButton x:Name="tabHouse" Content="Casas" Margin="2" Click="Tab_Click"/>
+                <ToggleButton x:Name="tabMansion" Content="Mansões" Margin="2" Click="Tab_Click"/>
+                <ToggleButton x:Name="tabIsland" Content="Ilhas" Margin="2" Click="Tab_Click"/>
+                <ToggleButton x:Name="tabOffice" Content="Comercial" Margin="2" Click="Tab_Click"/>
                 <ToggleButton x:Name="tabOwned" Content="Adquiridos" Margin="2" Click="Tab_Click"/>
             </UniformGrid>
         </Border>
 
-        <!-- Row 2: Store Items Grid -->
+        <!-- Row 2: Real Estate Grid -->
         <ScrollViewer Grid.Row="2" BorderThickness="0" VerticalScrollBarVisibility="Auto">
             <UniformGrid x:Name="itemPanel" Columns="2" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </ScrollViewer>

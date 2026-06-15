@@ -147,6 +147,22 @@ namespace TubeStar
                 InitializeOrLoad();
             }
 
+            // Decrement remaining days
+            if (Player.Current != null)
+            {
+                if (Player.Current.SponsorSTBDays > 0) Player.Current.SponsorSTBDays--;
+                if (Player.Current.SponsorPEARDays > 0) Player.Current.SponsorPEARDays--;
+                if (Player.Current.SponsorRVGDays > 0) Player.Current.SponsorRVGDays--;
+                if (Player.Current.SponsorGDRDays > 0) Player.Current.SponsorGDRDays--;
+                if (Player.Current.SponsorWHPDays > 0) Player.Current.SponsorWHPDays--;
+
+                if (Player.Current.TrendSTBDays > 0) Player.Current.TrendSTBDays--;
+                if (Player.Current.TrendPEARDays > 0) Player.Current.TrendPEARDays--;
+                if (Player.Current.TrendRVGDays > 0) Player.Current.TrendRVGDays--;
+                if (Player.Current.TrendGDRDays > 0) Player.Current.TrendGDRDays--;
+                if (Player.Current.TrendWHPDays > 0) Player.Current.TrendWHPDays--;
+            }
+
             // Selecionar aleatoriamente 1 empresa para sofrer um evento de notícia de mercado (45% de chance global)
             int targetEventCompIdx = -1;
             bool isPositiveEvent = false;
@@ -170,6 +186,15 @@ namespace TubeStar
                         trend = _rnd.NextDouble() * 0.08 + 0.06; // alta forte (+6% a +14%)
                         volatility = comp.BaseVolatility * 0.5; // menos oscilação errática, viés direcionado
                         news = GetRandomNews(comp.Ticker, true);
+
+                        if (Player.Current != null)
+                        {
+                            if (comp.Ticker == "STB") Player.Current.TrendSTBDays = 5;
+                            else if (comp.Ticker == "PEAR") Player.Current.TrendPEARDays = 5;
+                            else if (comp.Ticker == "RVG") Player.Current.TrendRVGDays = 5;
+                            else if (comp.Ticker == "GDR") Player.Current.TrendGDRDays = 5;
+                            else if (comp.Ticker == "WHP") Player.Current.TrendWHPDays = 5;
+                        }
                     }
                     else
                     {
@@ -219,6 +244,112 @@ namespace TubeStar
                     return positive ? _positiveNewsWHP[_rnd.Next(0, _positiveNewsWHP.Length)] : _negativeNewsWHP[_rnd.Next(0, _negativeNewsWHP.Length)];
                 default:
                     return "Mercado de cotações ativo e estável.";
+            }
+        }
+
+        public static void GetSponsorRequirements(string ticker, out int requiredShares, out int requiredSubs, out double signBonus)
+        {
+            switch (ticker)
+            {
+                case "STB":
+                    requiredShares = 10;
+                    requiredSubs = 1000;
+                    signBonus = 150;
+                    break;
+                case "WHP":
+                    requiredShares = 20;
+                    requiredSubs = 5000;
+                    signBonus = 350;
+                    break;
+                case "GDR":
+                    requiredShares = 30;
+                    requiredSubs = 10000;
+                    signBonus = 750;
+                    break;
+                case "RVG":
+                    requiredShares = 40;
+                    requiredSubs = 25000;
+                    signBonus = 1500;
+                    break;
+                case "PEAR":
+                    requiredShares = 50;
+                    requiredSubs = 50000;
+                    signBonus = 3000;
+                    break;
+                default:
+                    requiredShares = 0;
+                    requiredSubs = 0;
+                    signBonus = 0;
+                    break;
+            }
+        }
+
+        public static int GetPlayerShares(string ticker)
+        {
+            if (Player.Current == null) return 0;
+            switch (ticker)
+            {
+                case "STB": return Player.Current.SharesSTB;
+                case "PEAR": return Player.Current.SharesPEAR;
+                case "RVG": return Player.Current.SharesRVG;
+                case "GDR": return Player.Current.SharesGDR;
+                case "WHP": return Player.Current.SharesWHP;
+                default: return 0;
+            }
+        }
+
+        public static int GetPlayerSubscribers()
+        {
+            if (Player.Current == null || Player.Current.Channels == null) return 0;
+            int total = 0;
+            foreach (var channel in Player.Current.Channels)
+            {
+                if (channel != Channel.UnreleasedVideos)
+                {
+                    total += channel.Subscribers;
+                }
+            }
+            return total;
+        }
+
+        public static int GetSponsorRemainingDays(string ticker)
+        {
+            if (Player.Current == null) return 0;
+            switch (ticker)
+            {
+                case "STB": return Player.Current.SponsorSTBDays;
+                case "PEAR": return Player.Current.SponsorPEARDays;
+                case "RVG": return Player.Current.SponsorRVGDays;
+                case "GDR": return Player.Current.SponsorGDRDays;
+                case "WHP": return Player.Current.SponsorWHPDays;
+                default: return 0;
+            }
+        }
+
+        public static void SetSponsorRemainingDays(string ticker, int days)
+        {
+            if (Player.Current == null) return;
+            switch (ticker)
+            {
+                case "STB": Player.Current.SponsorSTBDays = days; break;
+                case "PEAR": Player.Current.SponsorPEARDays = days; break;
+                case "RVG": Player.Current.SponsorRVGDays = days; break;
+                case "GDR": Player.Current.SponsorGDRDays = days; break;
+                case "WHP": Player.Current.SponsorWHPDays = days; break;
+            }
+        }
+
+        public static int GetTrendRemainingDays(string ticker)
+        {
+            if (Player.Current == null) return 0;
+            switch (ticker)
+            {
+                case "STB": return Player.Current.TrendSTBDays;
+                case "PEAR": return Player.Current.TrendPEARDays;
+                case "RVG": return Player.Current.TrendRVGDays;
+                case "GDR": return Player.Current.TrendGDRDays;
+                case "WHP": return Player.Current.TrendWHPDays;
+                default: return 0;
             }
         }
     }

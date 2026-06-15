@@ -76,15 +76,51 @@
                         </ToggleButton.Content>
                     </ToggleButton>
 
-                    <ToggleButton x:Name="btnStockMarket" Height="42" Margin="0,4" HorizontalContentAlignment="Left" Padding="12,0" Click="btnStockMarket_Click">
-                        <ToggleButton.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/Resources/commons.png" Width="16" Height="16" Margin="0,0,10,0" />
-                                <TextBlock x:Name="txtStockMarket" Text="Bolsa de Valores" VerticalAlignment="Center" FontSize="13" FontWeight="Bold" />
-                            </StackPanel>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                </StackPanel>
+                     <ToggleButton x:Name="btnStockMarket" Height="42" Margin="0,4" HorizontalContentAlignment="Left" Padding="12,0" Click="btnStockMarket_Click">
+                         <ToggleButton.Content>
+                             <StackPanel Orientation="Horizontal">
+                                 <Image Source="/Resources/commons.png" Width="16" Height="16" Margin="0,0,10,0" />
+                                 <TextBlock x:Name="txtStockMarket" Text="Bolsa de Valores" VerticalAlignment="Center" FontSize="13" FontWeight="Bold" />
+                             </StackPanel>
+                         </ToggleButton.Content>
+                     </ToggleButton>
+
+                     <ToggleButton x:Name="btnRealEstate" Height="42" Margin="0,4" HorizontalContentAlignment="Left" Padding="12,0" Click="btnRealEstate_Click">
+                         <ToggleButton.Content>
+                             <StackPanel Orientation="Horizontal">
+                                 <Image Source="/Resources/Home_icon.png" Width="16" Height="16" Margin="0,0,10,0" />
+                                 <TextBlock x:Name="txtRealEstate" Text="Imóveis" VerticalAlignment="Center" FontSize="13" FontWeight="Bold"/>
+                             </StackPanel>
+                         </ToggleButton.Content>
+                     </ToggleButton>
+
+                     <ToggleButton x:Name="btnVehicles" Height="42" Margin="0,4" HorizontalContentAlignment="Left" Padding="12,0" Click="btnVehicles_Click">
+                         <ToggleButton.Content>
+                             <StackPanel Orientation="Horizontal">
+                                 <Image Source="/Resources/commons.png" Width="16" Height="16" Margin="0,0,10,0" />
+                                 <TextBlock x:Name="txtVehicles" Text="Veículos" VerticalAlignment="Center" FontSize="13" FontWeight="Bold"/>
+                             </StackPanel>
+                         </ToggleButton.Content>
+                     </ToggleButton>
+
+                     <ToggleButton x:Name="btnCareer" Height="42" Margin="0,4" HorizontalContentAlignment="Left" Padding="12,0" Click="btnCareer_Click">
+                         <ToggleButton.Content>
+                             <StackPanel Orientation="Horizontal">
+                                 <Image Source="/Resources/Rivals_icon.png" Width="16" Height="16" Margin="0,0,10,0" />
+                                 <TextBlock x:Name="txtCareer" Text="Carreira &amp; Empregos" VerticalAlignment="Center" FontSize="13" FontWeight="Bold"/>
+                             </StackPanel>
+                         </ToggleButton.Content>
+                     </ToggleButton>
+
+                     <ToggleButton x:Name="btnCompanies" Height="42" Margin="0,4" HorizontalContentAlignment="Left" Padding="12,0" Click="btnCompanies_Click">
+                         <ToggleButton.Content>
+                             <StackPanel Orientation="Horizontal">
+                                 <Image Source="/Resources/commons.png" Width="16" Height="16" Margin="0,0,10,0" />
+                                 <TextBlock x:Name="txtCompanies" Text="Minhas Empresas" VerticalAlignment="Center" FontSize="13" FontWeight="Bold"/>
+                             </StackPanel>
+                         </ToggleButton.Content>
+                     </ToggleButton>
+                 </StackPanel>
 
                 <!-- System Controls (Save/Help/Exit) -->
                 <Border Grid.Row="2" Background="#181818" CornerRadius="6" Padding="8" Margin="0,0,0,15" BorderBrush="#222222" BorderThickness="1">
@@ -144,6 +180,11 @@
                     <local:VideoManagerControl x:Name="videoManager" Visibility="Collapsed" />
                     <local:OnlineStoreControl x:Name="onlineStore" Visibility="Collapsed" />
                     <local:RivalControl x:Name="rivalViewer" Visibility="Collapsed" />
+                    <local:StockMarketControl x:Name="stockMarket" Visibility="Collapsed" />
+                    <local:RealEstateControl x:Name="realEstate" Visibility="Collapsed" />
+                    <local:VehicleControl x:Name="vehicles" Visibility="Collapsed" />
+                    <local:CompanyControl x:Name="companies" Visibility="Collapsed" />
+                    <local:CareerControl x:Name="careerControl" Visibility="Collapsed" />
                 </Grid>
             </Border>
 

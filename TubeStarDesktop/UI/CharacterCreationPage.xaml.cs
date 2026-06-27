@@ -164,7 +164,13 @@ namespace TubeStar
             try
             {
                 string packUri = _avatarUris[_selectedAvatarIndex];
-                imgAvatarPreview.Source = new BitmapImage(new Uri(packUri, UriKind.Absolute));
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(packUri, UriKind.Absolute);
+                bitmap.DecodePixelWidth = 512;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                imgAvatarPreview.Source = bitmap;
 
                 var glowColor = (Color)ColorConverter.ConvertFromString(_avatarGlowColors[_selectedAvatarIndex]);
                 var glowBrush = new SolidColorBrush(glowColor);

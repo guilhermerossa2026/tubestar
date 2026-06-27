@@ -9,7 +9,9 @@
         WindowState="Maximized"
         ResizeMode="CanResize"
         FontFamily="Segoe UI"
-        Icon="Resources/TubeStar.ico">
+        Icon="Resources/TubeStar.ico"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True">
     <Grid>
         <Grid x:Name="LayoutRoot" Background="#080808">
         </Grid>

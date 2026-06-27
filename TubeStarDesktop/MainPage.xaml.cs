@@ -178,7 +178,13 @@ namespace TubeStar
                         "pack://application:,,,/TubeStar;component/Resources/avatar_casual_6.png"
                     };
 
-                    imgProfileAvatarMini.Source = new BitmapImage(new Uri(avatarUris[avatarIdx], UriKind.Absolute));
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(avatarUris[avatarIdx], UriKind.Absolute);
+                    bitmap.DecodePixelWidth = 128;
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+                    imgProfileAvatarMini.Source = bitmap;
                 }
 
                 // 2. Atualizar Aura de Brilho Dinâmica

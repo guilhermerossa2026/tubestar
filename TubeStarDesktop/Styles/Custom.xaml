@@ -67,6 +67,13 @@
         </Style.Resources>
     </Style>
 
+    <!-- Global Image Scaling Style to prevent pixelated/blurry images -->
+    <Style TargetType="Image">
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+
     <!-- Estilo para o ToggleButton que serve de cabeçalho do ComboBox -->
     <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
         <Setter Property="Template">

@@ -166,7 +166,7 @@
                             <!-- Inner Avatar Design Area -->
                             <Grid>
                                 <Border CornerRadius="126" Background="#0A0F1A" ClipToBounds="True">
-                                    <Image x:Name="imgAvatarPreview" Stretch="UniformToFill" Margin="-22" Width="264" Height="264" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <Image x:Name="imgAvatarPreview" Stretch="UniformToFill" Margin="-22" Width="264" Height="264" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" />
                                 </Border>
                             </Grid>
                         </Border>

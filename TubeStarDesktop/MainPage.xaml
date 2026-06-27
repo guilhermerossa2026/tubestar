@@ -131,7 +131,7 @@
                                 <DropShadowEffect x:Name="profileAvatarGlowEffect" BlurRadius="8" ShadowDepth="0" Color="#00FFFF" Opacity="0.7"/>
                             </Border.Effect>
                             <Border CornerRadius="25" Background="#282828" ClipToBounds="True">
-                                <Image x:Name="imgProfileAvatarMini" Stretch="UniformToFill" Margin="-4" Width="52" Height="52" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <Image x:Name="imgProfileAvatarMini" Stretch="UniformToFill" Margin="-4" Width="52" Height="52" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" />
                             </Border>
                         </Border>
 

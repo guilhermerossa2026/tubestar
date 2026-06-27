@@ -10,3 +10,13 @@
 /TubeStarDesktop/bin
 /TubeStarDesktop/obj
 /ModLauncher/obj
+/ModLauncher/bin
+
+# Ignored custom binaries & outputs
+*.exe
+*.pdb
+*.dll
+*.zip
+/JOGO/
+.vs/
+*.user

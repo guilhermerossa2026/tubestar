@@ -1,0 +1,272 @@
+<UserControl x:Class="TubeStar.GovernmentControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TubeStar"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="800"
+             Background="#121212">
+
+    <Grid x:Name="LayoutRoot" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <!-- Header -->
+            <RowDefinition Height="Auto" /> <!-- Tabs -->
+            <RowDefinition Height="*" />    <!-- Content -->
+        </Grid.RowDefinitions>
+
+        <!-- Row 0: Header with Title and Player Cash Balance -->
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="PORTAL DO GOVERNO" FontSize="20" FontWeight="Black" Foreground="#FFD700" />
+                <TextBlock Text="Gerenciamento tributário, editais de subsídios e consultoria fiscal" FontSize="11" Foreground="#888888" FontWeight="Bold" Margin="0,2,0,0"/>
+            </StackPanel>
+
+            <Border Grid.Column="1" Background="#1E1E1E" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="SALDO: " FontSize="14" FontWeight="Bold" Foreground="#666666" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtMoneyBalance" Text="$0.00" FontSize="16" FontWeight="Black" Foreground="#FF2ECC71" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Row 1: Navigation Tabs (Painel Fiscal, Assessoria, Editais) -->
+        <Border Grid.Row="1" Background="#181818" BorderBrush="#222222" BorderThickness="1" CornerRadius="6" Padding="5" Margin="0,0,0,15">
+            <UniformGrid x:Name="tabGrid" Columns="3">
+                <ToggleButton x:Name="tabFiscal" Content="Painel Fiscal &amp; Impostos" Margin="2" IsChecked="True" Click="Tab_Click"/>
+                <ToggleButton x:Name="tabAdvisory" Content="Assessoria Tributária" Margin="2" Click="Tab_Click"/>
+                <ToggleButton x:Name="tabSubsidies" Content="Subsídios &amp; Editais" Margin="2" Click="Tab_Click"/>
+            </UniformGrid>
+        </Border>
+
+        <!-- Row 2: Content area -->
+        <Grid Grid.Row="2">
+            <!-- Aba 1: Painel Fiscal -->
+            <ScrollViewer x:Name="panelFiscal" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="5">
+                    <!-- Dívida Ativa Warning Block (red) -->
+                    <Border x:Name="borderDebtWarning" Background="#2A1212" BorderBrush="#FF5555" BorderThickness="2" CornerRadius="8" Padding="15" Margin="0,0,0,15" Visibility="Collapsed">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="⚠️ ATENÇÃO: NOME SUJO NA DÍVIDA ATIVA!" FontSize="16" FontWeight="Bold" Foreground="#FF5555"/>
+                                <TextBlock x:Name="txtDebtWarningDescription" Text="Você possui $0.00 pendentes com o governo. Ações de compra de ações, imóveis, veículos ou criação de empresas estão bloqueadas!" FontSize="12" Foreground="#CCCCCC" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" x:Name="btnPayDebt" Content="Regularizar Nome" Click="PayDebt_Click" Height="40" Padding="15,0" Background="#FF5555" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                        </Grid>
+                    </Border>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left Column: Declaração de Impostos -->
+                        <Border Grid.Column="0" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                            <StackPanel>
+                                <TextBlock Text="DECLARAÇÃO DE RENDIMENTOS" FontSize="14" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,0,15"/>
+                                
+                                <TextBlock Text="Defina a porcentagem de receita declarada diariamente ao fisco. Sonegar economiza impostos imediatos, mas acarreta multas gravíssimas se você cair na Malha Fina." FontSize="11" Foreground="#A0A0A0" TextWrapping="Wrap" LineHeight="16"/>
+                                
+                                <Separator Background="#2E2E2E" Margin="0,15"/>
+
+                                <Grid Margin="0,0,0,5">
+                                    <TextBlock Text="Declarar Receita:" FontSize="12" Foreground="#FFFFFF" FontWeight="Bold"/>
+                                    <TextBlock x:Name="txtDeclarationPercent" Text="100%" FontSize="14" FontWeight="Bold" Foreground="#FFD700" HorizontalAlignment="Right"/>
+                                </Grid>
+                                
+                                <Slider x:Name="sliderDeclaration" Minimum="10" Maximum="100" Value="100" TickFrequency="5" IsSnapToTickEnabled="True" Margin="0,5,0,15" ValueChanged="SliderDeclaration_ValueChanged"/>
+
+                                <Grid Margin="0,5">
+                                    <TextBlock Text="Risco de Auditoria Diária:" FontSize="12" Foreground="#CCCCCC"/>
+                                    <TextBlock x:Name="txtAuditRisk" Text="0.0%" FontSize="12" FontWeight="Bold" Foreground="#00FF00" HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Grid Margin="0,5">
+                                    <TextBlock Text="Contador Contratado:" FontSize="12" Foreground="#CCCCCC"/>
+                                    <TextBlock x:Name="txtAccountantStatus" Text="Não (-0% risco)" FontSize="12" FontWeight="Bold" Foreground="#FF5555" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Right Column: Histórico e Alíquotas -->
+                        <Border Grid.Column="1" Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15" Margin="10,0,0,0">
+                            <StackPanel>
+                                <TextBlock Text="DADOS FISCAIS E ESTATÍSTICAS" FontSize="14" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,0,15"/>
+
+                                <Grid Margin="0,4">
+                                    <TextBlock Text="Receita Bruta de Ontem:" FontSize="12" Foreground="#A0A0A0"/>
+                                    <TextBlock x:Name="txtYesterdayRevenue" Text="$0.00" FontSize="12" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Grid Margin="0,4">
+                                    <TextBlock Text="Receita Declarada de Ontem:" FontSize="12" Foreground="#A0A0A0"/>
+                                    <TextBlock x:Name="txtYesterdayDeclared" Text="$0.00" FontSize="12" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Grid Margin="0,4">
+                                    <TextBlock Text="Imposto Recolhido (IRPF):" FontSize="12" Foreground="#A0A0A0"/>
+                                    <TextBlock x:Name="txtYesterdayTaxPaid" Text="$0.00" FontSize="12" FontWeight="Bold" Foreground="#FF5555" HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Grid Margin="0,4">
+                                    <TextBlock Text="Total Sonegado Acumulado:" FontSize="12" Foreground="#A0A0A0"/>
+                                    <TextBlock x:Name="txtTotalEvaded" Text="$0.00" FontSize="12" FontWeight="Bold" Foreground="#FFD700" HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Separator Background="#2E2E2E" Margin="0,10"/>
+
+                                <TextBlock Text="Brackets de Imposto (IRPF):" FontSize="11" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,5,0,5"/>
+                                <TextBlock Text="• Até $100: Isento&#x0a;• De $100 a $500: 10%&#x0a;• De $500 a $2.000: 20%&#x0a;• Acima de $2.000: 35%" FontSize="10" Foreground="#A0A0A0" LineHeight="14"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Aba 2: Assessoria Tributária -->
+            <ScrollViewer x:Name="panelAdvisory" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                <UniformGrid Columns="2" Margin="5">
+                    <!-- Contador Card -->
+                    <Border Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <StackPanel Grid.Row="0">
+                                <TextBlock Text="CONTADOR PROFISSIONAL" FontSize="16" FontWeight="Bold" Foreground="#00FFCC" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Serviço de Consultoria Contábil" FontSize="11" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <Separator Background="#2E2E2E" Margin="0,10"/>
+                            </StackPanel>
+                            
+                            <TextBlock Grid.Row="1" FontSize="12" Foreground="#CCCCCC" TextWrapping="Wrap" LineHeight="18" Margin="0,0,0,15">
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Custo:</Run> $40/dia.<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Benefício 1:</Run> Reduz pela metade a chance de ser pego na Malha Fina.<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Benefício 2 (Dedução):</Run> Permite deduzir depreciação de estúdio ($30/dia) e 50% da faculdade da base tributável diária.
+                            </TextBlock>
+                            
+                            <Button Grid.Row="2" x:Name="btnToggleAccountant" Content="Contratar ($40/dia)" Height="35" Click="ToggleAccountant_Click" Background="#252525" Foreground="#FFFFFF" FontWeight="Bold" BorderBrush="#00FFCC"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Advogado Card -->
+                    <Border Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <StackPanel Grid.Row="0">
+                                <TextBlock Text="ADVOGADO TRIBUTARISTA" FontSize="16" FontWeight="Bold" Foreground="#FFA500" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Defesa e Planejamento Jurídico" FontSize="11" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <Separator Background="#2E2E2E" Margin="0,10"/>
+                            </StackPanel>
+                            
+                            <TextBlock Grid.Row="1" FontSize="12" Foreground="#CCCCCC" TextWrapping="Wrap" LineHeight="18" Margin="0,0,0,15">
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Custo:</Run> $80/dia.<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Benefício 1:</Run> Defende você em caso de fiscalização.<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Benefício 2 (Proteção):</Run> Reduz a multa sobre impostos sonegados de 150% para apenas 50%.
+                            </TextBlock>
+                            
+                            <Button Grid.Row="2" x:Name="btnToggleAttorney" Content="Contratar ($80/dia)" Height="35" Click="ToggleAttorney_Click" Background="#252525" Foreground="#FFFFFF" FontWeight="Bold" BorderBrush="#FFA500"/>
+                        </Grid>
+                    </Border>
+                </UniformGrid>
+            </ScrollViewer>
+
+            <!-- Aba 3: Subsídios e Editais -->
+            <ScrollViewer x:Name="panelSubsidies" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="5">
+                    <!-- Active Subsidy Info -->
+                    <Border x:Name="borderActiveSubsidy" Background="#182A18" BorderBrush="#2ECC71" BorderThickness="2" CornerRadius="8" Padding="15" Margin="8" Visibility="Collapsed">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="🟢 PROGRAMA DE SUBSÍDIO ATIVO" FontSize="14" FontWeight="Bold" Foreground="#2ECC71"/>
+                                <TextBlock x:Name="txtActiveSubsidyDetails" Text="Subsídio ativo: ..." FontSize="12" Foreground="#DDDDDD" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" x:Name="btnCancelSubsidy" Content="Rescindir Contrato" Click="CancelSubsidy_Click" Height="30" Padding="10,0" Background="#FF5555" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Edital 1: Educação -->
+                    <Border Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Row="0" Grid.ColumnSpan="2">
+                                <TextBlock Text="Edital de Divulgação Científica e Escolar" FontSize="16" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                <TextBlock Text="Fomento diário a canais educativos e científicos" FontSize="11" Foreground="#666666" Margin="0,2,0,0"/>
+                                <Separator Background="#2E2E2E" Margin="0,8"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" FontSize="12" Foreground="#CCCCCC" TextWrapping="Wrap" LineHeight="18" Margin="0,0,15,10">
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Benefício:</Run> Subsídio diário de +$200 creditados em sua conta.<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Requisito de Entrada:</Run> Não ter pendências tributárias (Dívida Ativa).<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Regra Contratual:</Run> Você DEVE postar apenas vídeos na categoria 'Educativo' ou 'Vlog' enquanto o edital estiver ativo.<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FF5555">Penalidade por Infração:</Run> Caso suba um vídeo de outra categoria, o contrato é cancelado com multa de $3.000 cobrada na hora.
+                            </TextBlock>
+
+                            <Button Grid.Row="1" Grid.Column="1" x:Name="btnApplyEdu" Content="Inscrever-se" Click="ApplyEdu_Click" Width="130" Height="40" VerticalAlignment="Center" Background="#252525" Foreground="White" FontWeight="Bold"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Edital 2: Lei Rouanet -->
+                    <Border Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="15" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Row="0" Grid.ColumnSpan="2">
+                                <TextBlock Text="Fomento Cultural (Fundo Rouanet)" FontSize="16" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                <TextBlock Text="Investimento governamental em infraestrutura de produção" FontSize="11" Foreground="#666666" Margin="0,2,0,0"/>
+                                <Separator Background="#2E2E2E" Margin="0,8"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" FontSize="12" Foreground="#CCCCCC" TextWrapping="Wrap" LineHeight="18" Margin="0,0,15,10">
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Benefício:</Run> Financiamento de $15.000 imediatos pagos adiantado.<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Requisito de Entrada:</Run> Matrícula universitária ativa e sem dívidas fiscais.<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FFFFFF">Meta:</Run> Upar no mínimo 3 vídeos com pontuação de qualidade > 80 em até 10 dias.<LineBreak/>
+                                • <Run FontWeight="Bold" Foreground="#FF5555">Penalidade por Fracasso:</Run> Caso o prazo expire sem cumprir a meta, você deverá reembolsar os $15.000 integralmente ao tesouro nacional.
+                            </TextBlock>
+
+                            <Button Grid.Row="1" Grid.Column="1" x:Name="btnApplyRouanet" Content="Inscrever-se" Click="ApplyRouanet_Click" Width="130" Height="40" VerticalAlignment="Center" Background="#252525" Foreground="White" FontWeight="Bold"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

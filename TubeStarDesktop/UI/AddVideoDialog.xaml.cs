@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -28,6 +28,23 @@ namespace TubeStar
             if (Settings.LastCategory.HasValue)
             {
                 cmbCategory.SelectedValue = Settings.LastCategory.Value;
+            }
+
+            if (Player.Current.Channels != null)
+            {
+                var availableChannels = Player.Current.Channels.Where(c => c != Channel.UnreleasedVideos).ToList();
+                cmbChannel.ItemsSource = availableChannels;
+                cmbChannel.DisplayMemberPath = "Name";
+                cmbChannel.SelectedValuePath = "Id";
+                if (availableChannels.Count > 0)
+                {
+                    cmbChannel.SelectedIndex = 0;
+                }
+            }
+
+            if (Player.Current != null && Player.Current.HasAIEnhancedTitles)
+            {
+                btnGenerateAITitle.Visibility = Visibility.Visible;
             }
         }
 
@@ -71,6 +88,12 @@ namespace TubeStar
                 return;
             }
 
+            if (cmbChannel.SelectedValue == null)
+            {
+                CustomMessageBox.ShowDialog("Canal Requerido", "Por favor, selecione um canal de destino para o vídeo.", MessagePicture.Puzzle);
+                return;
+            }
+
             if (Player.Current.Money - (sldrMoney.Value * 100) < 0)
             {
                 CustomMessageBox.ShowDialog(EnglishStrings.LowCashHeader.Translate(), EnglishStrings.LowCashMessage.Translate(), MessagePicture.Money);
@@ -80,6 +103,7 @@ namespace TubeStar
             Video = new Video();
             Video.Name = txtName.Text;
             Video.Category = (VideoCategory)cmbCategory.SelectedValue;
+            Video.ChannelId = cmbChannel.SelectedValue.ToString();
             Video.ExtraShootingHours = (int)sldrHours.Value - ShootVideo.MinimumShootTime;
             Video.Cost = (int)sldrMoney.Value * 100;
 
@@ -102,6 +126,73 @@ namespace TubeStar
         {
             if (lblMoney != null)
                 lblMoney.Text = String.Format("${0}", (int)sldrMoney.Value * 100);
+        }
+
+        private static readonly Random _rnd = new Random();
+        private void btnGenerateAITitle_Click(object sender, RoutedEventArgs e)
+        {
+            if (cmbCategory.SelectedValue == null)
+            {
+                CustomMessageBox.ShowDialog("Selecione a Categoria", "Escolha a categoria do vídeo primeiro para gerarmos um título adequado!", MessagePicture.Puzzle);
+                return;
+            }
+
+            var cat = (VideoCategory)cmbCategory.SelectedValue;
+            string title = "";
+            switch (cat)
+            {
+                case VideoCategory.Gaming:
+                    string[] gamingTitles = {
+                        "JOGUEI ISSO E QUASE CHOREI! 😭",
+                        "COMO SUBIR DE ELO RÁPIDO NA NOVA TEMPORADA!",
+                        "Eles disseram que era impossível ganhar desse boss...",
+                        "O JOGO QUE DESTRUIU MINHA SANIDADE MENTAL! 🤬",
+                        "TENTEI SER PRO PLAYER POR UM DIA E DEU RUIM!"
+                    };
+                    title = gamingTitles[_rnd.Next(gamingTitles.Length)];
+                    break;
+                case VideoCategory.Technology:
+                    string[] techTitles = {
+                        "ESTE NOVO SMARTPHONE VAI FALIR A CONCORRÊNCIA! 📱",
+                        "Montei o PC Gamer dos meus sonhos e deu tudo errado...",
+                        "5 Tecnologias revolucionárias que você precisa conhecer!",
+                        "A nova IA que programa melhor que a maioria dos juniores...",
+                        "Não compre este hardware antes de assistir este vídeo!"
+                    };
+                    title = techTitles[_rnd.Next(techTitles.Length)];
+                    break;
+                case VideoCategory.Comedy:
+                    string[] comedyTitles = {
+                        "TENTE NÃO RIR! 😂 (Impossível)",
+                        "MINHA MÃE REAGINDO AOS MEUS VÍDEOS!",
+                        "O dia em que fui expulso do shopping por um motivo besta...",
+                        "RECRUTANDO INSCRITOS PARA PASSAR TROTE! 📞",
+                        "EXPECTATIVA vs REALIDADE: Vida de Youtuber!"
+                    };
+                    title = comedyTitles[_rnd.Next(comedyTitles.Length)];
+                    break;
+                case VideoCategory.Vlog:
+                    string[] vlogTitles = {
+                        "PASSEI 24 HORAS NO LUGAR MAIS ESTRANHO DO MUNDO!",
+                        "A VERDADE sobre a minha carreira de Youtuber...",
+                        "Rotina realista de um criador de conteúdo digital!",
+                        "Fui assaltado gravando vlogs? Mostrei tudo! 😱",
+                        "MINHA NOVA AQUISIÇÃO MILIONÁRIA!"
+                    };
+                    title = vlogTitles[_rnd.Next(vlogTitles.Length)];
+                    break;
+                case VideoCategory.HowTo:
+                    string[] howToTitles = {
+                        "COMO CRESCER NO YOUTUBE RÁPIDO E SEM SEGREDO!",
+                        "Aprenda a cozinhar isso em 5 minutos! (Fácil)",
+                        "O tutorial definitivo para iniciantes de WPF/XAML!",
+                        "Como programar uma IA de alta qualidade passo a passo!",
+                        "Como sonegar impostos sem ser pego pela malha fina!"
+                    };
+                    title = howToTitles[_rnd.Next(howToTitles.Length)];
+                    break;
+            }
+            txtName.Text = title;
         }
     }
 }

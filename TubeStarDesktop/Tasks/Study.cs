@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Xml.Serialization;
@@ -30,6 +30,25 @@ namespace TubeStar
 
         public abstract int SkillModifier { get; }
         public abstract SkillModifierType SkillModifierType { get; }
+
+        public abstract int BaseHoursToComplete { get; }
+
+        public override int HoursToComplete
+        {
+            get
+            {
+                double speedBonus = 0.0;
+                if (Player.Current != null && !string.IsNullOrEmpty(Player.Current.EnrolledUniversityId))
+                {
+                    var uni = UniversityCatalog.GetUniversityById(Player.Current.EnrolledUniversityId);
+                    if (uni != null)
+                    {
+                        speedBonus = uni.HoursSpeedBonus;
+                    }
+                }
+                return (int)Math.Max(1, Math.Round(BaseHoursToComplete * (1.0 - speedBonus)));
+            }
+        }
 
         public override TaskType TaskType
         {

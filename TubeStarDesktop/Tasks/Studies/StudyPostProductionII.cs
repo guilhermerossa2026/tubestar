@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Media;
 
 namespace TubeStar
@@ -20,7 +20,7 @@ namespace TubeStar
             get { return 400; }
         }
 
-        public override int HoursToComplete
+        public override int BaseHoursToComplete
         {
             get { return 8; }
         }

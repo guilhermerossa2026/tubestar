@@ -22,9 +22,6 @@ namespace TubeStar
 
             Refresh();
             txtApiKey.Text = Settings.CustomYouTubeApiKey;
-
-            UpdateDialog dialog = new UpdateDialog();
-            dialog.ShowDialog();
         }
 
         private void NewGame_Click(object sender, RoutedEventArgs e)

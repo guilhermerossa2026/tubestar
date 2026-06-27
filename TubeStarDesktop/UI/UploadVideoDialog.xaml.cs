@@ -201,6 +201,54 @@ namespace TubeStar
             }
 
             Channel = Settings.LastChannel = (Channel)cmbChannel.SelectedValue;
+
+            // 1. Verificar subsídios ativos no upload do vídeo
+            if (!string.IsNullOrEmpty(Player.Current.ActiveSubsidyId))
+            {
+                if (Player.Current.ActiveSubsidyId == "edu")
+                {
+                    var cat = Video.Category;
+                    if (cat != VideoCategory.HowTo && cat != VideoCategory.Vlog && cat != VideoCategory.Technology && cat != VideoCategory.NonProfit)
+                    {
+                        Player.Current.ActiveSubsidyId = null;
+                        double penalty = 3000.0;
+                        if (Player.Current.Money >= penalty)
+                        {
+                            Player.Current.Money -= penalty;
+                            CustomMessageBox.ShowDialog(
+                                "CONTRATO RESCINDIDO E MULTA!",
+                                string.Format("Você descumpriu as regras do Subsídio de Educação postando um vídeo da categoria '{0}'! O contrato foi cancelado e uma multa de $3.000 foi descontada.", cat.GetString()),
+                                MessagePicture.Axe
+                            );
+                        }
+                        else
+                        {
+                            double diff = penalty - Player.Current.Money;
+                            Player.Current.Money = 0;
+                            Player.Current.TaxDebtAmount += diff;
+                            CustomMessageBox.ShowDialog(
+                                "CONTRATO RESCINDIDO E NOME SUJO!",
+                                string.Format("Você violou o edital postando '{0}'. Como seu saldo não cobria a multa de $3.000, o restante de {1} foi para a sua DÍVIDA ATIVA!", cat.GetString(), diff.ToCurrencyString()),
+                                MessagePicture.Axe
+                            );
+                        }
+                    }
+                }
+                else if (Player.Current.ActiveSubsidyId == "rouanet")
+                {
+                    int qual = Video.Quality ?? Video.GenerateQuality();
+                    if (qual > 80)
+                    {
+                        Player.Current.SubsidyVideosUploaded++;
+                        CustomMessageBox.ShowDialog(
+                            "Lei Rouanet: Meta Progredindo!",
+                            string.Format("Excelente! Seu vídeo '{0}' atingiu qualidade de {1}% (> 80%). Progresso do edital: {2}/3 vídeos enviados!", Video.Name, qual, Player.Current.SubsidyVideosUploaded),
+                            MessagePicture.Study
+                        );
+                    }
+                }
+            }
+
             this.DialogResult = true;
         }
 

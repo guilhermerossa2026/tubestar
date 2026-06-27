@@ -39,7 +39,8 @@
                 <StackPanel Orientation="Vertical">
                     
                     <!-- CATEGORY 1: SOCIAL IDENTITY -->
-                    <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
+                    <!-- CATEGORY 1: SOCIAL IDENTITY -->
+                    <Border Background="#161616" CornerRadius="12" Padding="14" Margin="0,0,0,12" BorderBrush="#2C2C2C" BorderThickness="1.2">
                         <StackPanel>
                             <TextBlock Text="SOCIAL IDENTITY" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
                             <TextBlock Text="Nome do Personagem / YouTuber" FontSize="11" Foreground="#888888" Margin="0,0,0,5"/>
@@ -48,57 +49,104 @@
                     </Border>
 
                     <!-- CATEGORY 2: AVATAR SELECTION -->
-                    <Border Background="#121212" CornerRadius="8" Padding="12" Margin="0,0,0,12" BorderBrush="#222222" BorderThickness="1">
+                    <Border Background="#161616" CornerRadius="12" Padding="14" Margin="0,0,0,12" BorderBrush="#2C2C2C" BorderThickness="1.2">
                         <StackPanel>
-                            <TextBlock Text="SELEÇÃO DE AVATAR GAMER (ESTILO AAA)" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            <TextBlock Text="SELEÇÃO DE AVATAR GAMER" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
                             
-                            <!-- Grupo 1: Empresários & Mauricinhos -->
-                            <TextBlock Text="💼 EMPRESÁRIOS &amp; MAURICINHOS" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,5,0,5"/>
-                            <UniformGrid Columns="2" Margin="0,0,0,8">
-                                <Button x:Name="btnAvatar1" Content="Mauricinho Executivo" Height="36" Margin="2" Click="Avatar_Click" Tag="0"/>
-                                <Button x:Name="btnAvatar2" Content="Mauricinho Casual" Height="36" Margin="2" Click="Avatar_Click" Tag="1"/>
-                                <Button x:Name="btnAvatar3" Content="Empresário Jovem" Height="36" Margin="2" Click="Avatar_Click" Tag="2"/>
-                                <Button x:Name="btnAvatar4" Content="Empresário Maduro" Height="36" Margin="2" Click="Avatar_Click" Tag="3"/>
+                            <!-- Abas de Categorias de Avatar -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Name="tabBusiness" Grid.Column="0" Content="💼 Negócios" Height="30" Margin="1" Click="Tab_Click" IsChecked="True"/>
+                                <ToggleButton x:Name="tabTrap" Grid.Column="1" Content="🎤 Trap &amp; Style" Height="30" Margin="1" Click="Tab_Click"/>
+                                <ToggleButton x:Name="tabCasual" Grid.Column="2" Content="👕 Casual &amp; Urbano" Height="30" Margin="1" Click="Tab_Click"/>
+                            </Grid>
+
+                            <!-- Grade de Avatares: Negócios -->
+                            <UniformGrid x:Name="gridBusinessAvatars" Columns="2" Margin="0,0,0,2" Visibility="Visible">
+                                <Button x:Name="btnAvatar1" Content="Empresário Jovem" Height="36" Margin="2" Click="Avatar_Click" Tag="0"/>
+                                <Button x:Name="btnAvatar2" Content="Empresária Jovem" Height="36" Margin="2" Click="Avatar_Click" Tag="1"/>
                             </UniformGrid>
 
-                            <!-- Grupo 2: Estilo Trap -->
-                            <TextBlock Text="🎤 ESTILO TRAP &amp; GANGSTAR" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,5,0,5"/>
-                            <UniformGrid Columns="3" Margin="0,0,0,8">
-                                <Button x:Name="btnAvatar5" Content="Trap Messy Pink" Height="36" Margin="2" Click="Avatar_Click" Tag="4"/>
-                                <Button x:Name="btnAvatar6" Content="Trap Hip-Hop" Height="36" Margin="2" Click="Avatar_Click" Tag="5"/>
-                                <Button x:Name="btnAvatar11" Content="Trap Platinado" Height="36" Margin="2" Click="Avatar_Click" Tag="10"/>
+                            <!-- Grade de Avatares: Trap -->
+                            <UniformGrid x:Name="gridTrapAvatars" Columns="2" Margin="0,0,0,2" Visibility="Collapsed">
+                                <Button x:Name="btnAvatar3" Content="Trap Estilo Pink" Height="36" Margin="2" Click="Avatar_Click" Tag="2"/>
+                                <Button x:Name="btnAvatar4" Content="Trap Streetwear" Height="36" Margin="2" Click="Avatar_Click" Tag="3"/>
                             </UniformGrid>
 
-                            <!-- Grupo 3: Estilo Casual -->
-                            <TextBlock Text="👕 ESTILO CASUAL &amp; URBANO" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,5,0,5"/>
-                            <UniformGrid Columns="2" Margin="0,0,0,2">
-                                <Button x:Name="btnAvatar7" Content="Casual E-boy" Height="36" Margin="2" Click="Avatar_Click" Tag="6"/>
-                                <Button x:Name="btnAvatar8" Content="Casual Rocker" Height="36" Margin="2" Click="Avatar_Click" Tag="7"/>
-                                <Button x:Name="btnAvatar9" Content="Casual Cyberpunk" Height="36" Margin="2" Click="Avatar_Click" Tag="8"/>
-                                <Button x:Name="btnAvatar10" Content="Casual Contemporâneo" Height="36" Margin="2" Click="Avatar_Click" Tag="9"/>
-                                <Button x:Name="btnAvatar12" Content="Casual Cachos" Height="36" Margin="2" Click="Avatar_Click" Tag="11"/>
-                                <Button x:Name="btnAvatar13" Content="Casual Bigode" Height="36" Margin="2" Click="Avatar_Click" Tag="12"/>
-                                <Button x:Name="btnAvatar14" Content="Casual Óculos" Height="36" Margin="2" Click="Avatar_Click" Tag="13"/>
-                                <Button x:Name="btnAvatar15" Content="Casual Jaqueta Couro" Height="36" Margin="2" Click="Avatar_Click" Tag="14"/>
+                            <!-- Grade de Avatares: Casual -->
+                            <UniformGrid x:Name="gridCasualAvatars" Columns="2" Margin="0,0,0,2" Visibility="Collapsed">
+                                <Button x:Name="btnAvatar5" Content="Casual Gamer Boy" Height="36" Margin="2" Click="Avatar_Click" Tag="4"/>
+                                <Button x:Name="btnAvatar6" Content="Casual Indie Girl" Height="36" Margin="2" Click="Avatar_Click" Tag="5"/>
                             </UniformGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- CATEGORY 3: STARTING ORIGIN / PERKS -->
+                    <Border Background="#161616" CornerRadius="12" Padding="14" Margin="0,0,0,12" BorderBrush="#2C2C2C" BorderThickness="1.2">
+                        <StackPanel>
+                            <TextBlock Text="ESCOLHA SUA ORIGEM (PERK INICIAL)" FontSize="14" FontWeight="Black" Foreground="#FF2222" Margin="0,0,0,8"/>
+                            
+                            <StackPanel Margin="0,2,0,5">
+                                <RadioButton x:Name="rbPerkStudent" GroupName="StartingPerks" IsChecked="True" Checked="Perk_Checked">
+                                    <TextBlock Text="🎬 Estudante de Cinema" FontWeight="Bold" Foreground="White"/>
+                                </RadioButton>
+                                <TextBlock Text="Focado em pós-produção. Começa com +20 em Edição (Total 40)." FontSize="11" Foreground="#888888" Margin="18,1,0,8"/>
+
+                                <RadioButton x:Name="rbPerkGamer" GroupName="StartingPerks" Checked="Perk_Checked">
+                                    <TextBlock Text="🎮 Gamer Hardcore" FontWeight="Bold" Foreground="White"/>
+                                </RadioButton>
+                                <TextBlock Text="Mestre na captação. Inicia com +20 em Gravação (Total 50)." FontSize="11" Foreground="#888888" Margin="18,1,0,8"/>
+
+                                <RadioButton x:Name="rbPerkHeir" GroupName="StartingPerks" Checked="Perk_Checked">
+                                    <TextBlock Text="💰 Herdeiro de Startup" FontWeight="Bold" Foreground="White"/>
+                                </RadioButton>
+                                <TextBlock Text="Suporte financeiro. Inicia com +R$ 1.500 no caixa inicial (Total R$ 2.450)." FontSize="11" Foreground="#888888" Margin="18,1,0,8"/>
+
+                                <RadioButton x:Name="rbPerkAnalytic" GroupName="StartingPerks" Checked="Perk_Checked">
+                                    <TextBlock Text="📊 Editor Analítico" FontWeight="Bold" Foreground="White"/>
+                                </RadioButton>
+                                <TextBlock Text="Olhar clínico. Desbloqueia permanentemente ver a qualidade do vídeo antes de publicá-lo." FontSize="11" Foreground="#888888" Margin="18,1,0,2"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
 
                     <!-- Large Prominent Neon Red Button -->
                     <Grid Height="55" Margin="0,8,0,25">
-                        <Border CornerRadius="6" Background="#FF2222" Opacity="0.15" Margin="-2">
+                        <Border CornerRadius="8" Background="#FF2222" Opacity="0.15" Margin="-2">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="20" ShadowDepth="0" Color="#FF2222" Opacity="0.9"/>
                             </Border.Effect>
                         </Border>
-                        <Button x:Name="btnStartGame" Content="INICIAR CARREIRA GAMER" FontSize="16" FontWeight="Black" Background="#FF2222" Foreground="White" BorderThickness="0" Cursor="Hand" Click="BtnStartGame_Click"/>
+                        <Button x:Name="btnStartGame" Content="INICIAR CARREIRA GAMER" FontSize="16" FontWeight="Black" Background="#FF2222" Foreground="White" BorderThickness="0" Cursor="Hand" Click="BtnStartGame_Click">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                     </Grid>
 
                 </StackPanel>
             </ScrollViewer>
 
             <!-- Right Column: Immersive Vector Avatar Customizer Preview -->
-            <Border Grid.Column="1" Background="#121212" CornerRadius="12" BorderBrush="#2E2E2E" BorderThickness="1.5" Margin="8,0,0,25" Padding="15">
+            <Border Grid.Column="1" CornerRadius="16" BorderThickness="1.5" Margin="12,0,0,25" Padding="18">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#161618" Offset="0"/>
+                        <GradientStop Color="#0D0D0E" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#3E3E42" Offset="0"/>
+                        <GradientStop Color="#1E1E1E" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -129,7 +177,7 @@
                         <StackPanel>
                             <TextBlock x:Name="txtSummaryChannel" Text="YOUTUBER: Gamer Pro" FontSize="14" FontWeight="Black" Foreground="#FF2222" HorizontalAlignment="Center" Margin="0,0,0,6"/>
                             <Separator Background="#2A2A2A" Margin="0,0,0,8"/>
-                            <Grid>
+                            <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -141,6 +189,25 @@
                                 <StackPanel Grid.Column="1">
                                     <TextBlock x:Name="txtSummaryAccessory" Text="💍 Acessórios: -" FontSize="11" Foreground="#CCCCCC" Margin="0,2" FontWeight="Bold"/>
                                     <TextBlock x:Name="txtSummaryHair" Text="⚡ Perfil: -" FontSize="11" Foreground="#CCCCCC" Margin="0,2" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Separator Background="#2A2A2A" Margin="0,0,0,8"/>
+                            
+                            <!-- Atributos Iniciais -->
+                            <TextBlock Text="VANTAGENS INICIAIS DA ORIGEM" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,0,0,6" HorizontalAlignment="Center"/>
+                            <Grid SnapsToDevicePixels="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock x:Name="txtSummaryMoney" Text="💵 Dinheiro: R$ 950" FontSize="11" Foreground="#FF2ECC71" Margin="0,1" FontWeight="Bold"/>
+                                    <TextBlock x:Name="txtSummaryShooting" Text="🎥 Gravação: 30" FontSize="11" Foreground="#CCCCCC" Margin="0,1" FontWeight="Bold"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock x:Name="txtSummaryEditing" Text="✂️ Edição: 20" FontSize="11" Foreground="#CCCCCC" Margin="0,1" FontWeight="Bold"/>
+                                    <TextBlock x:Name="txtSummarySpecial" Text="🔍 Analítico: Não" FontSize="11" Foreground="#CCCCCC" Margin="0,1" FontWeight="Bold"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>

@@ -114,6 +114,18 @@ namespace TubeStar
                 iterationViews = (int)(iterationViews * 1.5);
             }
 
+            if (Player.Current != null)
+            {
+                if (Player.Current.SharesSTB > 500)
+                {
+                    iterationViews = (int)(iterationViews * 1.15);
+                }
+                if (Player.Current.HasAIEnhancedTitles)
+                {
+                    iterationViews = (int)(iterationViews * 1.05);
+                }
+            }
+
             if (iterationViews > 0)
             {
                 ViewVideo(channel, video, ref dailyIncome, ref dailyExpenses, iterationViews);

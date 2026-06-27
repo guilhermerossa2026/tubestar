@@ -1,0 +1,89 @@
+<xctk:ChildWindow x:Class="TubeStar.ChannelStaffDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:TubeStar" 
+        Caption="Quadro de Funcionários"
+        WindowStartupLocation="Center"
+        Width="550" Height="480">
+
+    <Grid Background="#121212" Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Title -->
+            <RowDefinition Height="*"/>    <!-- Staff Cards Scroll -->
+            <RowDefinition Height="Auto"/> <!-- Footer Button -->
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+            <TextBlock x:Name="txtChannelNameTitle" Text="EQUIPE DO CANAL" FontSize="18" FontWeight="Bold" Foreground="#FF2222"/>
+            <TextBlock Text="Gerencie a equipe de automação deste canal. Funcionários cobram comissões sobre os lucros diários." FontSize="10" Foreground="Gray" Margin="0,2,0,0"/>
+            <Separator Background="#222222" Margin="0,8,0,0"/>
+        </StackPanel>
+
+        <!-- Content (Scrollable for safety) -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Editor Card -->
+                <Border Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="../Resources/StoreItems/Consultant.jpg" Height="70" Width="70" Stretch="UniformToFill" VerticalAlignment="Top" Margin="0,0,10,0"/>
+                        <StackPanel Grid.Column="1">
+                            <Grid>
+                                <TextBlock Text="EDITOR DE VÍDEO PROFISSIONAL" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                <TextBlock x:Name="txtEditorLevel" Text="Nível 1" FontSize="11" FontWeight="Bold" Foreground="#FFCC00" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <TextBlock Text="Automatiza totalmente a edição. Não requer horas de planejamento na agenda diária." FontSize="10" Foreground="#888888" TextWrapping="Wrap" Margin="0,4,0,2"/>
+                            <TextBlock x:Name="txtEditorQualityDesc" Text="Qualidade de Edição: Determina a qualidade final do vídeo (+10% bônus)." FontSize="10" Foreground="#3498DB" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="Custo Diário: " FontSize="11" Foreground="#888888"/>
+                                    <TextBlock x:Name="txtEditorCost" Text="$200 + 5%" FontSize="12" FontWeight="Bold" Foreground="#00FF00"/>
+                                </StackPanel>
+                                <Button x:Name="btnToggleEditor" Content="Contratar" HorizontalAlignment="Right" Width="100" Height="26" Click="BtnToggleEditor_Click"/>
+                            </Grid>
+                            <!-- Progress Bar to next level -->
+                            <StackPanel Margin="0,8,0,0">
+                                <Grid>
+                                    <TextBlock x:Name="txtEditorXPText" Text="XP: 0/100" FontSize="9" Foreground="Gray"/>
+                                </Grid>
+                                <ProgressBar x:Name="pbEditorXP" Height="4" Background="#121212" Foreground="#FFCC00" Minimum="0" Maximum="100" Value="0" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Manager Card -->
+                <Border Background="#1A1A1A" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="../Resources/StoreItems/Lawyer.jpg" Height="70" Width="70" Stretch="UniformToFill" VerticalAlignment="Top" Margin="0,0,10,0"/>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="GESTOR DE CANAL (PRODUTOR)" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Automatiza totalmente as gravações. A gravação é concluída automaticamente no final do dia sem consumir horas da agenda." FontSize="10" Foreground="#888888" TextWrapping="Wrap" Margin="0,4,0,8"/>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="Custo Diário: " FontSize="11" Foreground="#888888"/>
+                                    <TextBlock x:Name="txtManagerCost" Text="$2.000 + 10%" FontSize="12" FontWeight="Bold" Foreground="#00FF00"/>
+                                </StackPanel>
+                                <Button x:Name="btnToggleManager" Content="Contratar" HorizontalAlignment="Right" Width="100" Height="26" Click="BtnToggleManager_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button x:Name="btnOk" IsDefault="True" IsCancel="True" Width="100" Height="30" Content="OK" Click="OKButton_Click"/>
+        </StackPanel>
+    </Grid>
+</xctk:ChildWindow>

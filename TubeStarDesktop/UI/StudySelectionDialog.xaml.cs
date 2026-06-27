@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -68,6 +68,21 @@ namespace TubeStar
                 {
                     button.IsEnabled = false;
                     button.Content = CreateButtonContent(study.Name, EnglishStrings.PrerequisitesNotMet.Translate());
+                }
+
+                //University restriction
+                else if (!string.IsNullOrEmpty(Player.Current.EnrolledUniversityId))
+                {
+                    var uni = UniversityCatalog.GetUniversityById(Player.Current.EnrolledUniversityId);
+                    if (uni != null && uni.AllowedStudies != null && uni.AllowedStudies.Count > 0)
+                    {
+                        string studyTypeName = study.GetType().Name;
+                        if (!uni.AllowedStudies.Contains(studyTypeName))
+                        {
+                            button.IsEnabled = false;
+                            button.Content = CreateButtonContent(study.Name, "Não oferecido por esta faculdade");
+                        }
+                    }
                 }
 
                 //In progresss

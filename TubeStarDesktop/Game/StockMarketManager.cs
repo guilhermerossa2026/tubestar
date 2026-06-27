@@ -11,6 +11,7 @@ namespace TubeStar
         public double CurrentPrice { get; set; }
         public double ChangePercentage { get; set; }
         public double BaseVolatility { get; set; }
+        public double DividendYield { get; set; }
         public List<double> PriceHistory { get; set; }
         public string DailyNews { get; set; }
 
@@ -107,11 +108,11 @@ namespace TubeStar
             // Create initial state
             Companies = new List<StockCompany>
             {
-                new StockCompany { Ticker = "STB", Name = "StarTube Corp.", CurrentPrice = 100.0, BaseVolatility = 0.12, DailyNews = "Mercado estável na plataforma de vídeos." },
-                new StockCompany { Ticker = "PEAR", Name = "Pear Corp.", CurrentPrice = 150.0, BaseVolatility = 0.04, DailyNews = "Pear Corp consolida liderança em computadores premium." },
-                new StockCompany { Ticker = "RVG", Name = "Rivalry Games", CurrentPrice = 60.0, BaseVolatility = 0.10, DailyNews = "Rivalry Games mantém ritmo estável no mercado." },
-                new StockCompany { Ticker = "GDR", Name = "GamerDrink", CurrentPrice = 35.0, BaseVolatility = 0.07, DailyNews = "GamerDrink consolida marca entre público jovem." },
-                new StockCompany { Ticker = "WHP", Name = "WebHosting Pro", CurrentPrice = 80.0, BaseVolatility = 0.03, DailyNews = "Hospedagem segura e estável para a Web gamer." }
+                new StockCompany { Ticker = "STB", Name = "StarTube Corp.", CurrentPrice = 100.0, BaseVolatility = 0.12, DividendYield = 0.015, DailyNews = "Mercado estável na plataforma de vídeos." },
+                new StockCompany { Ticker = "PEAR", Name = "Pear Corp.", CurrentPrice = 150.0, BaseVolatility = 0.04, DividendYield = 0.02, DailyNews = "Pear Corp consolida liderança em computadores premium." },
+                new StockCompany { Ticker = "RVG", Name = "Rivalry Games", CurrentPrice = 60.0, BaseVolatility = 0.10, DividendYield = 0.01, DailyNews = "Rivalry Games mantém ritmo estável no mercado." },
+                new StockCompany { Ticker = "GDR", Name = "GamerDrink", CurrentPrice = 35.0, BaseVolatility = 0.07, DividendYield = 0.012, DailyNews = "GamerDrink consolida marca entre público jovem." },
+                new StockCompany { Ticker = "WHP", Name = "WebHosting Pro", CurrentPrice = 80.0, BaseVolatility = 0.03, DividendYield = 0.025, DailyNews = "Hospedagem segura e estável para a Web gamer." }
             };
 
             // Pre-populate 7 days history retrospectively
@@ -145,6 +146,33 @@ namespace TubeStar
             if (Companies == null)
             {
                 InitializeOrLoad();
+            }
+
+            // Payout Dividends
+            if (Player.Current != null)
+            {
+                double totalDividends = 0;
+                foreach (var comp in Companies)
+                {
+                    int shares = 0;
+                    if (comp.Ticker == "STB") shares = Player.Current.SharesSTB;
+                    else if (comp.Ticker == "PEAR") shares = Player.Current.SharesPEAR;
+                    else if (comp.Ticker == "RVG") shares = Player.Current.SharesRVG;
+                    else if (comp.Ticker == "GDR") shares = Player.Current.SharesGDR;
+                    else if (comp.Ticker == "WHP") shares = Player.Current.SharesWHP;
+
+                    if (shares > 0)
+                    {
+                        double payout = Math.Round(shares * comp.CurrentPrice * comp.DividendYield, 2);
+                        totalDividends += payout;
+                    }
+                }
+
+                if (totalDividends > 0)
+                {
+                    Player.Current.Money += totalDividends;
+                    CustomMessageBox.ShowDialog("Dividendos Pagos! 📈", string.Format("Seu portfólio de ações pagou um total de {0} em dividendos recorrentes hoje!", totalDividends.ToCurrencyString()), MessagePicture.Money);
+                }
             }
 
             // Decrement remaining days

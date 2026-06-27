@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -109,14 +109,33 @@ namespace TubeStar
         {
             if (TaskClick != null)
             {
-                StudySelectionDialog studyDialog = new StudySelectionDialog();
-                studyDialog.ShowDialog(() =>
+                if (string.IsNullOrEmpty(Player.Current.EnrolledUniversityId))
+                {
+                    UniversitySelectionDialog uniDialog = new UniversitySelectionDialog();
+                    uniDialog.ShowDialog(() =>
                     {
-                        if (studyDialog.ChosenStudy != null)
-                            TaskClick(studyDialog.ChosenStudy);
+                        if (uniDialog.DialogResult == true && !string.IsNullOrEmpty(Player.Current.EnrolledUniversityId))
+                        {
+                            OpenStudySelection();
+                        }
                     });
+                }
+                else
+                {
+                    OpenStudySelection();
+                }
             }
             DialogResult = true;
+        }
+
+        private void OpenStudySelection()
+        {
+            StudySelectionDialog studyDialog = new StudySelectionDialog();
+            studyDialog.ShowDialog(() =>
+            {
+                if (studyDialog.ChosenStudy != null)
+                    TaskClick(studyDialog.ChosenStudy);
+            });
         }
     }
 }

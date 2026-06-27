@@ -83,17 +83,11 @@ namespace TubeStar
                 if (stockMarket != null && stockMarket.Visibility == System.Windows.Visibility.Visible)
                     stockMarket.Update();
 
-                if (realEstate != null && realEstate.Visibility == System.Windows.Visibility.Visible)
-                    realEstate.Update();
-
-                if (vehicles != null && vehicles.Visibility == System.Windows.Visibility.Visible)
-                    vehicles.Update();
-
-                if (companies != null && companies.Visibility == System.Windows.Visibility.Visible)
-                    companies.Update();
-
                 if (careerControl != null && careerControl.Visibility == System.Windows.Visibility.Visible)
                     careerControl.Update();
+
+                if (governmentControl != null && governmentControl.Visibility == System.Windows.Visibility.Visible)
+                    governmentControl.Update();
 
                 txtNewDay.Text = String.Format("{0} {1}!", EnglishStrings.StartDay.Translate(), Player.Current.Iterations + 1);
 
@@ -101,6 +95,18 @@ namespace TubeStar
                 UpdateYoutuberProfile();
                 UpdateSummaryStats();
                 GenerateDaySocialComments();
+
+                // InstaFans Organic Growth & Day Count
+                int totalInstaSubs = Player.Current.Channels.Sum(c => c.Subscribers);
+                double targetInstaFollowers = totalInstaSubs * 0.40;
+                if (Player.Current.InstaFollowers < targetInstaFollowers)
+                {
+                    int organicGrowth = (int)((targetInstaFollowers - Player.Current.InstaFollowers) * 0.05);
+                    organicGrowth = Math.Max(1, organicGrowth);
+                    Player.Current.InstaFollowers += organicGrowth;
+                }
+                Player.Current.InstaDaysSinceLastAd++;
+                UpdateInstaFansUI();
 
                 if (Player.Current.Iterations > 1 && Player.Current.Iterations % 3 == 0)
                 {
@@ -140,10 +146,6 @@ namespace TubeStar
             txtRivals.Text = EnglishStrings.TopTubeStars.Translate();
             if (txtStockMarket != null)
                 txtStockMarket.Text = "Bolsa de Valores";
-            if (txtRealEstate != null)
-                txtRealEstate.Text = "Imóveis";
-            if (txtVehicles != null)
-                txtVehicles.Text = "Veículos";
         }
 
         private void UpdateYoutuberProfile()
@@ -196,6 +198,7 @@ namespace TubeStar
 
                 txtCareerDays.Text = "Dia " + (Player.Current.Iterations + 1);
                 txtMoney.Text = Player.Current.Money.ToCurrencyString();
+                UpdateInstaFansUI();
             }
             catch
             {
@@ -579,6 +582,7 @@ namespace TubeStar
             btnDailyPlanner.IsChecked = true;
             HideAllViews();
             dailyPlanner.Visibility = Visibility.Visible;
+            SetRightPanelVisibility(true);
         }
 
         private void btnVideoPlanner_Click(object sender, RoutedEventArgs e)
@@ -608,29 +612,7 @@ namespace TubeStar
             rivalViewer.Update();
         }
 
-        private void btnRealEstate_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAllButtons();
-            if (btnRealEstate != null) btnRealEstate.IsChecked = true;
-            HideAllViews();
-            if (realEstate != null)
-            {
-                realEstate.Visibility = Visibility.Visible;
-                realEstate.Update();
-            }
-        }
 
-        private void btnVehicles_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAllButtons();
-            if (btnVehicles != null) btnVehicles.IsChecked = true;
-            HideAllViews();
-            if (vehicles != null)
-            {
-                vehicles.Visibility = Visibility.Visible;
-                vehicles.Update();
-            }
-        }
 
         private void UncheckAllButtons()
         {
@@ -639,10 +621,8 @@ namespace TubeStar
             btnOnlineStore.IsChecked = false;
             btnRivals.IsChecked = false;
             if (btnStockMarket != null) btnStockMarket.IsChecked = false;
-            if (btnRealEstate != null) btnRealEstate.IsChecked = false;
-            if (btnVehicles != null) btnVehicles.IsChecked = false;
-            if (btnCompanies != null) btnCompanies.IsChecked = false;
             if (btnCareer != null) btnCareer.IsChecked = false;
+            if (btnGovernment != null) btnGovernment.IsChecked = false;
         }
 
         private void HideAllViews()
@@ -652,10 +632,9 @@ namespace TubeStar
             onlineStore.Visibility = Visibility.Collapsed;
             rivalViewer.Visibility = Visibility.Collapsed;
             if (stockMarket != null) stockMarket.Visibility = Visibility.Collapsed;
-            if (realEstate != null) realEstate.Visibility = Visibility.Collapsed;
-            if (vehicles != null) vehicles.Visibility = Visibility.Collapsed;
-            if (companies != null) companies.Visibility = Visibility.Collapsed;
             if (careerControl != null) careerControl.Visibility = Visibility.Collapsed;
+            if (governmentControl != null) governmentControl.Visibility = Visibility.Collapsed;
+            SetRightPanelVisibility(false);
         }
 
         private void btnNewDay_Click(object sender, RoutedEventArgs e)
@@ -757,17 +736,7 @@ namespace TubeStar
             }
         }
 
-        private void btnCompanies_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAllButtons();
-            if (btnCompanies != null) btnCompanies.IsChecked = true;
-            HideAllViews();
-            if (companies != null)
-            {
-                companies.Visibility = Visibility.Visible;
-                companies.Update();
-            }
-        }
+
 
         private void btnCareer_Click(object sender, RoutedEventArgs e)
         {
@@ -778,6 +747,549 @@ namespace TubeStar
             {
                 careerControl.Visibility = Visibility.Visible;
                 careerControl.Update();
+            }
+        }
+
+        private void btnGovernment_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAllButtons();
+            if (btnGovernment != null) btnGovernment.IsChecked = true;
+            HideAllViews();
+            if (governmentControl != null)
+            {
+                governmentControl.Visibility = Visibility.Visible;
+                governmentControl.Update();
+            }
+        }
+
+        private void btnNavAnalyzer_Click(object sender, RoutedEventArgs e)
+        {
+            if (btnNavAnalyzer == null || btnNavInstaFans == null || appAnalyzer == null || appInstaFans == null) return;
+            btnNavAnalyzer.IsChecked = true;
+            btnNavInstaFans.IsChecked = false;
+            btnNavAnalyzer.Foreground = new SolidColorBrush(Colors.White);
+            btnNavInstaFans.Foreground = new SolidColorBrush(ColorConverter.ConvertFromString("#888888") as Color? ?? Colors.Gray);
+            appAnalyzer.Visibility = Visibility.Visible;
+            appInstaFans.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnNavInstaFans_Click(object sender, RoutedEventArgs e)
+        {
+            if (btnNavAnalyzer == null || btnNavInstaFans == null || appAnalyzer == null || appInstaFans == null) return;
+            btnNavAnalyzer.IsChecked = false;
+            btnNavInstaFans.IsChecked = true;
+            btnNavAnalyzer.Foreground = new SolidColorBrush(ColorConverter.ConvertFromString("#888888") as Color? ?? Colors.Gray);
+            btnNavInstaFans.Foreground = new SolidColorBrush(Colors.White);
+            appAnalyzer.Visibility = Visibility.Collapsed;
+            appInstaFans.Visibility = Visibility.Visible;
+            UpdateInstaFansUI();
+        }
+
+        private void UpdatePhoneStatus()
+        {
+            try
+            {
+                if (txtPhoneTime == null || txtPhoneBattery == null) return;
+
+                // Relógio simulado integrado com as rodadas
+                int baseHour = 9;
+                int currentDay = Player.Current.Iterations;
+                if (currentDay < 0) currentDay = 0;
+                int hour = (baseHour + (currentDay * 2)) % 24;
+                txtPhoneTime.Text = string.Format("{0:D2}:41", hour);
+
+                // Bateria simulada integrada com a energia
+                int batteryPct = 100;
+                if (Player.Current.Overtime)
+                {
+                    batteryPct = 15;
+                }
+                else
+                {
+                    int taskCount = Player.Current.TasksInProgress != null ? Player.Current.TasksInProgress.Count : 0;
+                    batteryPct = Math.Max(20, 100 - (taskCount * 15));
+                }
+
+                txtPhoneBattery.Text = string.Format("🔋 {0}%", batteryPct);
+
+                // Cor da bateria
+                if (batteryPct <= 20)
+                {
+                    txtPhoneBattery.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3333"));
+                }
+                else if (batteryPct <= 50)
+                {
+                    txtPhoneBattery.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
+                }
+                else
+                {
+                    txtPhoneBattery.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00FF00"));
+                }
+            }
+            catch { }
+        }
+
+        private void UpdateInstaFansUI()
+        {
+            try
+            {
+                UpdatePhoneStatus();
+
+                if (txtInstaFollowers == null || txtInstaPosts == null) return;
+
+                // Sincronizar contadores
+                txtInstaFollowers.Text = Player.Current.InstaFollowers.ToString("N0");
+                txtInstaPosts.Text = Player.Current.InstaPosts.ToString();
+
+                // Sincronizar Avatar
+                if (imgInstaAvatar != null && imgProfileAvatarMini != null)
+                {
+                    imgInstaAvatar.Source = imgProfileAvatarMini.Source;
+                }
+
+                // Renderizar posts no Feed do Smartphone
+                if (instaPostsContainer != null)
+                {
+                    instaPostsContainer.Children.Clear();
+                    if (Player.Current.InstaPostsList != null)
+                    {
+                        foreach (var post in Player.Current.InstaPostsList)
+                        {
+                            RenderInstaPostInUI(post);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private void RenderInstaPostInUI(InstaPost post)
+        {
+            Border card = new Border
+            {
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E1E1E")),
+                CornerRadius = new CornerRadius(12),
+                Padding = new Thickness(10),
+                Margin = new Thickness(0, 0, 0, 12),
+                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2E2E32")),
+                BorderThickness = new Thickness(1)
+            };
+
+            card.Effect = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                BlurRadius = 8,
+                ShadowDepth = 1,
+                Opacity = 0.2,
+                Color = Colors.Black
+            };
+
+            StackPanel stack = new StackPanel();
+
+            // Header: Usuário, Avatar circular e Tag
+            Grid header = new Grid();
+            header.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Avatar
+            header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Nome do Usuário
+            header.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Badge / Ganho
+
+            // Avatar circular pequeno com borda
+            Border avatarBorder = new Border
+            {
+                Width = 26,
+                Height = 26,
+                CornerRadius = new CornerRadius(13),
+                BorderThickness = new Thickness(1.5),
+                BorderBrush = new LinearGradientBrush(
+                    new GradientStopCollection
+                    {
+                        new GradientStop((Color)ColorConverter.ConvertFromString("#833AB4"), 0.0),
+                        new GradientStop((Color)ColorConverter.ConvertFromString("#FD1D1D"), 0.5),
+                        new GradientStop((Color)ColorConverter.ConvertFromString("#FCAF45"), 1.0)
+                    },
+                    new Point(0, 0),
+                    new Point(1, 1)
+                ),
+                Padding = new Thickness(0.5),
+                Margin = new Thickness(0, 0, 6, 0)
+            };
+
+            Border avatarInner = new Border
+            {
+                CornerRadius = new CornerRadius(13),
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#282828")),
+                ClipToBounds = true
+            };
+            Image avatarImg = new Image
+            {
+                Source = imgInstaAvatar != null ? imgInstaAvatar.Source : null,
+                Stretch = Stretch.UniformToFill,
+                Margin = new Thickness(-1)
+            };
+            avatarInner.Child = avatarImg;
+            avatarBorder.Child = avatarInner;
+            Grid.SetColumn(avatarBorder, 0);
+            header.Children.Add(avatarBorder);
+
+            TextBlock txtUser = new TextBlock
+            {
+                Text = "@" + (string.IsNullOrEmpty(Player.Current.YoutuberName) ? "GamerPro" : Player.Current.YoutuberName),
+                FontSize = 11,
+                FontWeight = FontWeights.Bold,
+                Foreground = Brushes.White,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            Grid.SetColumn(txtUser, 1);
+            header.Children.Add(txtUser);
+
+            if (post.IsAd)
+            {
+                TextBlock txtAdBadge = new TextBlock
+                {
+                    Text = "Parceria Paga",
+                    FontSize = 9,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD700")),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                Grid.SetColumn(txtAdBadge, 2);
+                header.Children.Add(txtAdBadge);
+            }
+            else
+            {
+                string sign = post.FollowersChange >= 0 ? "+" : "";
+                TextBlock txtGain = new TextBlock
+                {
+                    Text = sign + post.FollowersChange.ToString("N0") + " segs",
+                    FontSize = 9,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = new SolidColorBrush(post.FollowersChange >= 0 ? Colors.LightGreen : Colors.Red),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                Grid.SetColumn(txtGain, 2);
+                header.Children.Add(txtGain);
+            }
+
+            stack.Children.Add(header);
+
+            // Imagem do Post
+            try
+            {
+                Image img = new Image
+                {
+                    Source = new BitmapImage(new Uri(post.ImagePath, UriKind.Absolute)),
+                    Height = 120,
+                    Stretch = Stretch.UniformToFill,
+                    Margin = new Thickness(0, 6, 0, 6)
+                };
+
+                Border imgBorder = new Border
+                {
+                    CornerRadius = new CornerRadius(8),
+                    ClipToBounds = true,
+                    Child = img
+                };
+                stack.Children.Add(imgBorder);
+            }
+            catch
+            {
+            }
+
+            // Barra de Ação de Feedback (Like Button + Counter)
+            Grid interactionGrid = new Grid();
+            interactionGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Heart Icon
+            interactionGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Likes Text
+
+            Button btnLike = new Button
+            {
+                Content = "🤍",
+                FontSize = 14,
+                Background = Brushes.Transparent,
+                BorderThickness = new Thickness(0),
+                Foreground = Brushes.White,
+                Cursor = Cursors.Hand,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(0, 0, 6, 0)
+            };
+
+            TextBlock txtLikes = new TextBlock
+            {
+                Text = post.Likes.ToString("N0") + " curtidas",
+                FontSize = 10,
+                FontWeight = FontWeights.Bold,
+                Foreground = Brushes.White,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            bool isLiked = false;
+            btnLike.Click += (sender, ev) =>
+            {
+                ScaleTransform scale = new ScaleTransform(1.0, 1.0);
+                btnLike.RenderTransform = scale;
+                btnLike.RenderTransformOrigin = new Point(0.5, 0.5);
+
+                var animX = new System.Windows.Media.Animation.DoubleAnimation(1.0, 1.4, TimeSpan.FromMilliseconds(100)) { AutoReverse = true };
+                var animY = new System.Windows.Media.Animation.DoubleAnimation(1.0, 1.4, TimeSpan.FromMilliseconds(100)) { AutoReverse = true };
+                scale.BeginAnimation(ScaleTransform.ScaleXProperty, animX);
+                scale.BeginAnimation(ScaleTransform.ScaleYProperty, animY);
+
+                if (!isLiked)
+                {
+                    btnLike.Content = "❤️";
+                    btnLike.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF2255"));
+                    post.Likes++;
+                    txtLikes.Text = post.Likes.ToString("N0") + " curtidas";
+                    isLiked = true;
+                }
+                else
+                {
+                    btnLike.Content = "🤍";
+                    btnLike.Foreground = Brushes.White;
+                    post.Likes--;
+                    txtLikes.Text = post.Likes.ToString("N0") + " curtidas";
+                    isLiked = false;
+                }
+            };
+
+            Grid.SetColumn(btnLike, 0);
+            Grid.SetColumn(txtLikes, 1);
+            interactionGrid.Children.Add(btnLike);
+            interactionGrid.Children.Add(txtLikes);
+            stack.Children.Add(interactionGrid);
+
+            // Legenda
+            TextBlock txtCaption = new TextBlock
+            {
+                Text = post.Caption,
+                FontSize = 11,
+                Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DDDDDD")),
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 4, 0, 0)
+            };
+            stack.Children.Add(txtCaption);
+
+            if (post.IsAd)
+            {
+                TextBlock txtAdEarnings = new TextBlock
+                {
+                    Text = "+ " + post.AdEarnings.ToCurrencyString() + " de receita!",
+                    FontSize = 10,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = new SolidColorBrush(Colors.LightGreen),
+                    Margin = new Thickness(0, 4, 0, 0)
+                };
+                stack.Children.Add(txtAdEarnings);
+            }
+
+            card.Child = stack;
+            instaPostsContainer.Children.Insert(0, card); // Adiciona no topo
+        }
+
+        private void btnPostInsta_Click(object sender, RoutedEventArgs e)
+        {
+            Xceed.Wpf.Toolkit.ChildWindow dialog = new Xceed.Wpf.Toolkit.ChildWindow
+            {
+                Caption = "Publicar no InstaFans 📸",
+                Width = 360,
+                Height = 360,
+                WindowStartupLocation = Xceed.Wpf.Toolkit.WindowStartupLocation.Center,
+                Background = new SolidColorBrush(ColorConverter.ConvertFromString("#121212") as Color? ?? Colors.Black),
+                BorderBrush = new SolidColorBrush(ColorConverter.ConvertFromString("#E1306C") as Color? ?? Colors.DeepPink),
+                BorderThickness = new Thickness(1.5)
+            };
+
+            StackPanel panel = new StackPanel { Margin = new Thickness(15) };
+
+            TextBlock lblTitle = new TextBlock 
+            { 
+                Text = "ESCOLHA O TIPO DE POSTAGEM", 
+                FontSize = 13, 
+                FontWeight = FontWeights.Bold, 
+                Foreground = new SolidColorBrush(ColorConverter.ConvertFromString("#E1306C") as Color? ?? Colors.DeepPink), 
+                Margin = new Thickness(0, 0, 0, 15) 
+            };
+            panel.Children.Add(lblTitle);
+
+            // Botão Setup
+            Button btnSetup = new Button
+            {
+                Content = "🖥️ SETUP GAMER\n(Ganha seguidores baseado no canal)",
+                Height = 45,
+                Margin = new Thickness(0, 0, 0, 10),
+                Background = new SolidColorBrush(ColorConverter.ConvertFromString("#1C1C1C") as Color? ?? Colors.DarkGray),
+                Foreground = new SolidColorBrush(Colors.White),
+                FontWeight = FontWeights.Bold,
+                HorizontalContentAlignment = HorizontalAlignment.Center
+            };
+            btnSetup.Click += (s, ev) =>
+            {
+                PostToInstaFans(0);
+                dialog.Close();
+            };
+            panel.Children.Add(btnSetup);
+
+            // Botão Selfie
+            Button btnSelfie = new Button
+            {
+                Content = "🤳 SELFIE / VLOG DO DIA\n(Ganha seguidores baseado no canal)",
+                Height = 45,
+                Margin = new Thickness(0, 0, 0, 10),
+                Background = new SolidColorBrush(ColorConverter.ConvertFromString("#1C1C1C") as Color? ?? Colors.DarkGray),
+                Foreground = new SolidColorBrush(Colors.White),
+                FontWeight = FontWeights.Bold,
+                HorizontalContentAlignment = HorizontalAlignment.Center
+            };
+            btnSelfie.Click += (s, ev) =>
+            {
+                PostToInstaFans(1);
+                dialog.Close();
+            };
+            panel.Children.Add(btnSelfie);
+
+            // Botão Publi
+            bool canAd = Player.Current.InstaFollowers >= 5000 && Player.Current.InstaDaysSinceLastAd >= 3;
+            double adPayout = Math.Round(Player.Current.InstaFollowers * 0.03, 2);
+            string adButtonText = string.Format("💰 PARCERIA PATROCINADA (PUBLI)\n(Ganha {0} | Perde alguns seguidores)", adPayout.ToCurrencyString());
+            if (Player.Current.InstaFollowers < 5000)
+            {
+                adButtonText = "💰 PARCERIA PATROCINADA (PUBLI)\n(Bloqueado: Requer 5.000 seguidores)";
+            }
+            else if (Player.Current.InstaDaysSinceLastAd < 3)
+            {
+                adButtonText = string.Format("💰 PARCERIA PATROCINADA (PUBLI)\n(Aguarde {0} dias para postar nova publi)", 3 - Player.Current.InstaDaysSinceLastAd);
+            }
+
+            Button btnAd = new Button
+            {
+                Content = adButtonText,
+                Height = 45,
+                Margin = new Thickness(0, 0, 0, 15),
+                Background = new SolidColorBrush(canAd ? ColorConverter.ConvertFromString("#FFD700") as Color? ?? Colors.Gold : ColorConverter.ConvertFromString("#2E2E2E") as Color? ?? Colors.Gray),
+                Foreground = new SolidColorBrush(canAd ? Colors.Black : Colors.Gray),
+                FontWeight = FontWeights.Bold,
+                IsEnabled = canAd,
+                HorizontalContentAlignment = HorizontalAlignment.Center
+            };
+            btnAd.Click += (s, ev) =>
+            {
+                PostToInstaFans(2);
+                dialog.Close();
+            };
+            panel.Children.Add(btnAd);
+
+            Button btnCancel = new Button
+            {
+                Content = "CANCELAR",
+                Height = 30,
+                Background = new SolidColorBrush(Colors.Transparent),
+                Foreground = new SolidColorBrush(Colors.Gray),
+                BorderBrush = new SolidColorBrush(Colors.Gray),
+                BorderThickness = new Thickness(1)
+            };
+            btnCancel.Click += (s, ev) => dialog.Close();
+            panel.Children.Add(btnCancel);
+
+            dialog.Content = panel;
+            dialog.ShowDialog();
+        }
+
+        private void PostToInstaFans(int postType)
+        {
+            try
+            {
+                Random rand = new Random();
+                int totalSubs = Player.Current.Channels.Sum(c => c.Subscribers);
+                double baseGain = rand.Next(100, 500);
+                double influenceMultiplier = 1.0 + (totalSubs / 10000.0);
+                int followersGained = (int)(baseGain * influenceMultiplier);
+
+                string imagePath = "";
+                string caption = "";
+                bool isAd = false;
+                double adEarnings = 0;
+
+                if (postType == 0)
+                {
+                    imagePath = "pack://application:,,,/TubeStar;component/Resources/Shoot.jpg";
+                    string[] setupCaptions = new string[] {
+                        "Setup gamer atualizado! Rumo ao topo! 🖥️🔥",
+                        "Luzes RGB ligadas, pronto para a próxima gravação! 🎮⚡",
+                        "Minha estação de batalha atual. O que acharam? 👾"
+                    };
+                    caption = setupCaptions[rand.Next(setupCaptions.Length)];
+                }
+                else if (postType == 1)
+                {
+                    imagePath = "pack://application:,,,/TubeStar;component/Resources/Study.jpg";
+                    string[] selfieCaptions = new string[] {
+                        "Mais um dia de muito foco e gravação! 🤳✨",
+                        "Preparando novidades pro canal... fiquem ligados! 😉",
+                        "Cafezinho e roteiro, melhor combinação. ☕📖"
+                    };
+                    caption = selfieCaptions[rand.Next(selfieCaptions.Length)];
+                }
+                else if (postType == 2)
+                {
+                    isAd = true;
+                    imagePath = "pack://application:,,,/TubeStar;component/Resources/Ultra.jpg";
+                    adEarnings = Math.Round(Player.Current.InstaFollowers * 0.03, 2);
+                    
+                    followersGained = (int)(-50 - (Player.Current.InstaFollowers * 0.005));
+
+                    string[] adCaptions = new string[] {
+                        "Parceria de respeito com a DevCorp! Qualidade garantida! 💰⌨️",
+                        "Equipamento novo patrocinado pela PEAR. Incrível! 🍎🎧",
+                        "Joguem o novo RPG da RVG, tá sensacional! Cupom: STAR 🚀"
+                    };
+                    caption = adCaptions[rand.Next(adCaptions.Length)];
+
+                    Player.Current.Money += adEarnings;
+                    Player.Current.InstaDaysSinceLastAd = 0;
+                }
+
+                Player.Current.InstaPosts++;
+                Player.Current.InstaFollowers += followersGained;
+                if (Player.Current.InstaFollowers < 0) Player.Current.InstaFollowers = 0;
+
+                InstaPost newPost = new InstaPost
+                {
+                    ImagePath = imagePath,
+                    Caption = caption,
+                    Likes = (int)(Player.Current.InstaFollowers * (rand.Next(5, 15) / 100.0)) + rand.Next(10, 50),
+                    FollowersChange = followersGained,
+                    IsAd = isAd,
+                    AdEarnings = adEarnings
+                };
+
+                if (Player.Current.InstaPostsList == null)
+                {
+                    Player.Current.InstaPostsList = new List<InstaPost>();
+                }
+                Player.Current.InstaPostsList.Add(newPost);
+
+                UpdateInstaFansUI();
+            }
+            catch
+            {
+            }
+        }
+
+        private void SetRightPanelVisibility(bool isVisible)
+        {
+            if (colRight != null && borderRight != null)
+            {
+                if (isVisible)
+                {
+                    colRight.Width = new GridLength(300);
+                    borderRight.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    colRight.Width = new GridLength(0);
+                    borderRight.Visibility = Visibility.Collapsed;
+                }
             }
         }
     }

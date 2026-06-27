@@ -44,6 +44,7 @@ namespace TubeStar
 
         public string SponsorTicker { get; set; }
         public string PromotedCompanyId { get; set; }
+        public string ChannelId { get; set; }
 
         public Video()
             : base()

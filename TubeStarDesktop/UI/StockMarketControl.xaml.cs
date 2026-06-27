@@ -271,15 +271,30 @@ namespace TubeStar
             txtTradeQty.Text = string.Format("{0} cota{1}", currentTradeQty, currentTradeQty > 1 ? "s" : "");
 
             // Habilitar / desabilitar botões
-            btnBuy.IsEnabled = (Player.Current.Money >= (_selectedComp.CurrentPrice * currentTradeQty));
+            btnBuy.IsEnabled = (Player.Current.Money >= (_selectedComp.CurrentPrice * currentTradeQty)) && (Player.Current.TaxDebtAmount <= 0);
             btnSell.IsEnabled = (qty >= currentTradeQty);
             btnBuy.Opacity = btnBuy.IsEnabled ? 1.0 : 0.4;
             btnSell.Opacity = btnSell.IsEnabled ? 1.0 : 0.4;
+
+            if (Player.Current.TaxDebtAmount > 0)
+            {
+                btnBuy.Content = "Nome Sujo";
+            }
+            else
+            {
+                btnBuy.Content = "Comprar";
+            }
         }
 
         private void btnBuy_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedComp == null) return;
+
+            if (Player.Current.TaxDebtAmount > 0)
+            {
+                CustomMessageBox.ShowDialog("Operação Bloqueada!", "Você possui pendências na Dívida Ativa governamental e não pode comprar ações. Regularize seu CPF no Portal do Governo!", MessagePicture.Axe);
+                return;
+            }
 
             int qtyToBuy = (int)tradeSlider.Value;
             double totalCost = qtyToBuy * _selectedComp.CurrentPrice;

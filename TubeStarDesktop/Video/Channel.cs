@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -41,6 +41,28 @@ namespace TubeStar
 
         public bool IsSuspended { get; set; }
 
+        // Staff Properties
+        public bool HiredEditor { get; set; }
+        public bool HiredManager { get; set; }
+        public double EditorBaseSalary { get; set; }
+        public double ManagerBaseSalary { get; set; }
+        public int EditorXP { get; set; }
+
+        public int EditorLevel
+        {
+            get { return 1 + EditorXP / 100; }
+        }
+
+        public double EditorCurrentSalary
+        {
+            get { return EditorBaseSalary * (1 + (EditorLevel - 1) * 0.15); }
+        }
+
+        public double ManagerCurrentSalary
+        {
+            get { return ManagerBaseSalary; }
+        }
+
         //Stats
         public List<double> IncomeOverTime { get; set; }
         public List<double> ExpensesOverTime { get; set; }
@@ -54,6 +76,12 @@ namespace TubeStar
             IncomeOverTime = new List<double>();
             ExpensesOverTime = new List<double>();
             SubscribersOverTime = new List<double>();
+
+            HiredEditor = false;
+            HiredManager = false;
+            EditorBaseSalary = 200.0;
+            ManagerBaseSalary = 2000.0;
+            EditorXP = 0;
         }
 
         private static Channel _unreleasedVideos;

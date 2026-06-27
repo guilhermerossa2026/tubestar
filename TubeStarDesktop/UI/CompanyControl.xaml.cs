@@ -50,7 +50,15 @@ namespace TubeStar
                     : System.Windows.Media.Brushes.Red;
 
                 // Enable/Disable fund button
-                btnFundCompany.IsEnabled = totalSubs >= 100000 && Player.Current.Money >= 300000;
+                btnFundCompany.IsEnabled = totalSubs >= 100000 && Player.Current.Money >= 300000 && Player.Current.TaxDebtAmount <= 0;
+                if (Player.Current.TaxDebtAmount > 0)
+                {
+                    btnFundCompany.Content = "Nome Sujo na Dívida Ativa";
+                }
+                else
+                {
+                    btnFundCompany.Content = "Fundar Nova Empresa";
+                }
 
                 // Repopulate active company combo if list changed
                 var ownedCount = Player.Current.OwnedCompanies != null ? Player.Current.OwnedCompanies.Count : 0;
@@ -450,6 +458,12 @@ namespace TubeStar
 
         private void BtnFundCompany_Click(object sender, RoutedEventArgs e)
         {
+            if (Player.Current.TaxDebtAmount > 0)
+            {
+                CustomMessageBox.ShowDialog("Operação Bloqueada!", "Você possui pendências na Dívida Ativa governamental e não pode fundar empresas. Regularize seu CPF no Portal do Governo!", MessagePicture.Axe);
+                return;
+            }
+
             string name = txtNewCompanyName.Text.Trim();
             if (string.IsNullOrEmpty(name))
             {
@@ -500,6 +514,13 @@ namespace TubeStar
         private void BtnInvest10k_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedCompany == null) return;
+
+            if (Player.Current.TaxDebtAmount > 0)
+            {
+                CustomMessageBox.ShowDialog("Operação Bloqueada!", "Você possui pendências na Dívida Ativa governamental e não pode realizar investimentos pessoais. Regularize seu CPF no Portal do Governo!", MessagePicture.Axe);
+                return;
+            }
+
             if (Player.Current.Money >= 10000)
             {
                 Player.Current.Money -= 10000;
@@ -515,6 +536,13 @@ namespace TubeStar
         private void BtnInvest50k_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedCompany == null) return;
+
+            if (Player.Current.TaxDebtAmount > 0)
+            {
+                CustomMessageBox.ShowDialog("Operação Bloqueada!", "Você possui pendências na Dívida Ativa governamental e não pode realizar investimentos pessoais. Regularize seu CPF no Portal do Governo!", MessagePicture.Axe);
+                return;
+            }
+
             if (Player.Current.Money >= 50000)
             {
                 Player.Current.Money -= 50000;

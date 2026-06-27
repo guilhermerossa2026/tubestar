@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -102,6 +102,7 @@ namespace TubeStar
                 EnglishStrings.NotApplicable.Translate() :
                 channel.IsSuspended ? EnglishStrings.Suspended.Translate().ToUpper() : String.Format("{0}: {1}  {2}: {3}", EnglishStrings.Subscribers.Translate(), channel.Subscribers.ToNumberString(), EnglishStrings.ChannelIncome.Translate(), channel.Income.ToCurrencyString());
             btnStats.Visibility = (channel == Channel.UnreleasedVideos) ? Visibility.Collapsed : Visibility.Visible;
+            btnStaff.Visibility = (channel == Channel.UnreleasedVideos) ? Visibility.Collapsed : Visibility.Visible;
 
             if (channel.Videos.Count >= 100)
                 TrophyManager.UnlockTrophy(Trophy.OCD);
@@ -243,6 +244,15 @@ namespace TubeStar
         {
             ChannelStatsDialog dialog = new ChannelStatsDialog(_currentChannel);
             dialog.ShowDialog();
+        }
+
+        private void btnStaff_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentChannel != null && _currentChannel != Channel.UnreleasedVideos)
+            {
+                ChannelStaffDialog dialog = new ChannelStaffDialog(_currentChannel);
+                dialog.ShowDialog();
+            }
         }
 
         private void btnGrid_Click(object sender, RoutedEventArgs e)

@@ -208,23 +208,43 @@ namespace TubeStar
                     var studyTask = task as Study;
                     if (studyTask != null)
                     {
+                        double skillGainBonusMultiplier = 1.0;
+                        if (!string.IsNullOrEmpty(Player.Current.EnrolledUniversityId))
+                        {
+                            var uni = UniversityCatalog.GetUniversityById(Player.Current.EnrolledUniversityId);
+                            if (uni != null)
+                            {
+                                skillGainBonusMultiplier = uni.SkillGainBonusMultiplier;
+                            }
+                        }
+
                         switch (studyTask.SkillModifierType)
                         {
                             case (SkillModifierType.Shooting):
-                                Player.Current.ShootingSkill += studyTask.SkillModifier;
+                                Player.Current.ShootingSkill += (int)Math.Round(studyTask.SkillModifier * skillGainBonusMultiplier);
                                 break;
 
                             case (SkillModifierType.PostProduction):
-                                Player.Current.PostProductionSkill += studyTask.SkillModifier;
+                                Player.Current.PostProductionSkill += (int)Math.Round(studyTask.SkillModifier * skillGainBonusMultiplier);
                                 break;
 
                             case (SkillModifierType.VideoAttribute):
-                                Player.Current.VideoAttributePoints += studyTask.SkillModifier;
+                                Player.Current.VideoAttributePoints += (int)Math.Round(studyTask.SkillModifier * skillGainBonusMultiplier);
                                 break;
 
                             case (SkillModifierType.ViewQuality):
                                 Player.Current.CanViewQualityBeforeUpload = true;
+                                if (!string.IsNullOrEmpty(Player.Current.EnrolledUniversityId) && Player.Current.EnrolledUniversityId == "mit_insper")
+                                {
+                                    Player.Current.CanViewQualityBreakdown = true;
+                                }
                                 break;
+                        }
+                        
+                        if (!string.IsNullOrEmpty(Player.Current.EnrolledUniversityId) && Player.Current.EnrolledUniversityId == "faculdade_ia" && !Player.Current.HasAIEnhancedTitles)
+                        {
+                            Player.Current.HasAIEnhancedTitles = true;
+                            CustomMessageBox.ShowDialog("Formatura em IA! 🤖", "Você completou seu estudo na Faculdade de Inteligência Artificial! O bônus permanente de Automação de Títulos e SEO (+5% de CTR) foi ativado para todos os seus vídeos!", MessagePicture.Study);
                         }
                     }
 
@@ -249,9 +269,321 @@ namespace TubeStar
         {
             _moneyAtStartOfDay = Player.Current.Money;
 
+            // A1. Automação de Gravação (Gestor de Canal)
+            if (Player.Current.TasksInProgress != null && Player.Current.Channels != null)
+            {
+                foreach (var task in Player.Current.TasksInProgress)
+                {
+                    var shootTask = task as ShootVideo;
+                    if (shootTask != null && shootTask.Video != null && !string.IsNullOrEmpty(shootTask.Video.ChannelId))
+                    {
+                        var chan = Player.Current.Channels.FirstOrDefault(c => c.Id.ToString() == shootTask.Video.ChannelId);
+                        if (chan != null && chan.HiredManager)
+                        {
+                            shootTask.HoursPutIn = shootTask.HoursToComplete + shootTask.ExtraHours;
+                        }
+                    }
+                }
+            }
+
+            // A1.5 Eventos de Negociação de Equipe do Canal
+            if (Player.Current.Channels != null)
+            {
+                foreach (var channel in Player.Current.Channels)
+                {
+                    if (channel != Channel.UnreleasedVideos && !channel.IsRivalChannel)
+                    {
+                        if (channel.HiredEditor && RandomHelpers.Chance(5))
+                        {
+                            string msgText = string.Format(
+                                "Seu Editor do canal '{0}' está pedindo um aumento salarial devido ao volume de trabalho!\n\nSalário Base Atual: {1}\nProposta de Aumento: {2} (+15%)\n\nSe recusar, há 30% de chance de ele se demitir. Aceitar o aumento?",
+                                channel.Name,
+                                channel.EditorCurrentSalary.ToCurrencyString(),
+                                (channel.EditorCurrentSalary * 1.15).ToCurrencyString()
+                            );
+                            CustomMessageBox.ShowDialog(
+                                "Pedido de Aumento (Editor)",
+                                msgText,
+                                MessagePicture.Work,
+                                (result) =>
+                                {
+                                    if (result == true)
+                                    {
+                                        channel.EditorBaseSalary = Math.Round(channel.EditorBaseSalary * 1.15, 2);
+                                        CustomMessageBox.ShowDialog("Aumento Concedido!", "Seu editor agradece e continuará com excelente desempenho.", MessagePicture.Happy);
+                                    }
+                                    else
+                                    {
+                                        if (RandomHelpers.Chance(30))
+                                        {
+                                            channel.HiredEditor = false;
+                                            CustomMessageBox.ShowDialog("Demissão!", "O seu Editor de Vídeo pediu demissão do canal " + channel.Name + "!", MessagePicture.Sad);
+                                        }
+                                        else
+                                        {
+                                            CustomMessageBox.ShowDialog("Aumento Negado", "O editor aceitou continuar trabalhando com o salário atual, mas ficou descontente.", MessagePicture.Sad);
+                                        }
+                                    }
+                                }
+                            );
+                        }
+
+                        if (channel.HiredManager && RandomHelpers.Chance(5))
+                        {
+                            string msgText = string.Format(
+                                "Seu Gestor do canal '{0}' está pedindo um aumento salarial para gerenciar as gravações!\n\nSalário Base Atual: {1}\nProposta de Aumento: {2} (+15%)\n\nSe recusar, há 30% de chance de ele se demitir. Aceitar o aumento?",
+                                channel.Name,
+                                channel.ManagerCurrentSalary.ToCurrencyString(),
+                                (channel.ManagerCurrentSalary * 1.15).ToCurrencyString()
+                            );
+                            CustomMessageBox.ShowDialog(
+                                "Pedido de Aumento (Gestor)",
+                                msgText,
+                                MessagePicture.Work,
+                                (result) =>
+                                {
+                                    if (result == true)
+                                    {
+                                        channel.ManagerBaseSalary = Math.Round(channel.ManagerBaseSalary * 1.15, 2);
+                                        CustomMessageBox.ShowDialog("Aumento Concedido!", "Seu gestor agradece e continuará mantendo a gravação automatizada.", MessagePicture.Happy);
+                                    }
+                                    else
+                                    {
+                                        if (RandomHelpers.Chance(30))
+                                        {
+                                            channel.HiredManager = false;
+                                            CustomMessageBox.ShowDialog("Demissão!", "O seu Gestor de Canal pediu demissão do canal " + channel.Name + "!", MessagePicture.Sad);
+                                        }
+                                        else
+                                        {
+                                            CustomMessageBox.ShowDialog("Aumento Negado", "O gestor aceitou continuar trabalhando com o salário atual, mas ficou descontente.", MessagePicture.Sad);
+                                        }
+                                    }
+                                }
+                            );
+                        }
+                    }
+                }
+            }
+
+            // 1. Cobrar Imposto de Renda Pessoa Física (IRPF) com Sonegação e Deduções
+            double yesterdayRev = Player.Current.YesterdayRevenue;
+            
+            // Deduções do Contador se contratado
+            double accountantDeduction = 0;
+            if (Player.Current.IsAccountantHired)
+            {
+                accountantDeduction += 30.0; // Depreciação de estúdio
+                if (!string.IsNullOrEmpty(Player.Current.EnrolledUniversityId))
+                {
+                    var uni = UniversityCatalog.GetUniversityById(Player.Current.EnrolledUniversityId);
+                    if (uni != null)
+                    {
+                        accountantDeduction += uni.DailyTuition * 0.5; // 50% da faculdade
+                    }
+                }
+            }
+
+            // Cálculo do imposto REAL (o que deveria pagar)
+            double realTaxableRevenue = Math.Max(0, yesterdayRev - accountantDeduction);
+            double fullTax = 0;
+            if (realTaxableRevenue > 100)
+            {
+                if (realTaxableRevenue <= 500)
+                    fullTax = (realTaxableRevenue - 100) * 0.10;
+                else if (realTaxableRevenue <= 2000)
+                    fullTax = (500 - 100) * 0.10 + (realTaxableRevenue - 500) * 0.20;
+                else
+                    fullTax = (500 - 100) * 0.10 + (2000 - 500) * 0.20 + (realTaxableRevenue - 2000) * 0.35;
+            }
+
+            // Cálculo do imposto DECLARADO (o que de fato vai pagar)
+            double declaredRevenue = yesterdayRev * Player.Current.TaxDeclarationRate;
+            double declaredTaxableRevenue = Math.Max(0, declaredRevenue - accountantDeduction);
+            double paidTax = 0;
+            if (declaredTaxableRevenue > 100)
+            {
+                if (declaredTaxableRevenue <= 500)
+                    paidTax = (declaredTaxableRevenue - 100) * 0.10;
+                else if (declaredTaxableRevenue <= 2000)
+                    paidTax = (500 - 100) * 0.10 + (declaredTaxableRevenue - 500) * 0.20;
+                else
+                    paidTax = (500 - 100) * 0.10 + (2000 - 500) * 0.20 + (declaredTaxableRevenue - 2000) * 0.35;
+            }
+
+            // Pagar o imposto declarado
+            if (paidTax > 0)
+            {
+                Player.Current.Money -= paidTax;
+                CustomMessageBox.ShowDialog(
+                    "Impostos Coletados (Receita Federal)",
+                    string.Format("O governo recolheu {0} de imposto de renda (IRPF) sobre a receita declarada de {1} (Faturamento total de ontem: {2}).", paidTax.ToCurrencyString(), declaredRevenue.ToCurrencyString(), yesterdayRev.ToCurrencyString()),
+                    MessagePicture.Money
+                );
+            }
+
+            // Salvar para estatísticas
+            Player.Current.YesterdayDeclaredRevenue = declaredRevenue;
+            Player.Current.YesterdayTaxPaid = paidTax;
+
+            // Acumular o que foi sonegado
+            double evadedTaxToday = Math.Max(0, fullTax - paidTax);
+            Player.Current.UnpaidEvadedTaxes += evadedTaxToday;
+
+            Player.Current.YesterdayRevenue = 0; // Reset para o novo dia
+
+            // 1.2 Auditoria Fiscal (Malha Fina)
+            if (Player.Current.TaxDeclarationRate < 1.0 && Player.Current.UnpaidEvadedTaxes > 0)
+            {
+                double auditChance = (1.0 - Player.Current.TaxDeclarationRate) * 0.40;
+                if (Player.Current.IsAccountantHired)
+                {
+                    auditChance /= 2.0;
+                }
+
+                if (RandomHelpers.Chance((int)Math.Round(auditChance * 100.0)))
+                {
+                    double unpaid = Player.Current.UnpaidEvadedTaxes;
+                    double fineRate = Player.Current.IsTaxAttorneyHired ? 0.5 : 1.5;
+                    double fine = unpaid * fineRate;
+                    double totalDue = unpaid + fine;
+
+                    if (Player.Current.Money >= totalDue)
+                    {
+                        Player.Current.Money -= totalDue;
+                        Player.Current.UnpaidEvadedTaxes = 0.0;
+                        CustomMessageBox.ShowDialog(
+                            "🚨 CAIU NA MALHA FINA!",
+                            string.Format("A Receita Federal auditou suas contas e detectou {0} em impostos não declarados. Você pagou os impostos pendentes mais uma multa de {1} (Total: {2}).", unpaid.ToCurrencyString(), fine.ToCurrencyString(), totalDue.ToCurrencyString()),
+                            MessagePicture.Legal
+                        );
+                    }
+                    else
+                    {
+                        double diff = totalDue - Player.Current.Money;
+                        Player.Current.Money = 0;
+                        Player.Current.TaxDebtAmount += diff;
+                        Player.Current.UnpaidEvadedTaxes = 0.0;
+                        CustomMessageBox.ShowDialog(
+                            "🚨 MALHA FINA: DÍVIDA ATIVA!",
+                            string.Format("A Receita Federal detectou sonegação fiscal! O valor total cobrado foi de {0}. Seu saldo foi zerado e o restante de {1} foi inscrito na DÍVIDA ATIVA. Regularize-se no Portal do Governo!", totalDue.ToCurrencyString(), diff.ToCurrencyString()),
+                            MessagePicture.Axe
+                        );
+                    }
+                }
+            }
+
+            // 1.3 Custos de Assessoria Diária
+            if (Player.Current.IsAccountantHired)
+            {
+                Player.Current.Money -= 40.0;
+            }
+            if (Player.Current.IsTaxAttorneyHired)
+            {
+                Player.Current.Money -= 80.0;
+            }
+
+            // 1.4 Subsídios Ativos
+            if (!string.IsNullOrEmpty(Player.Current.ActiveSubsidyId))
+            {
+                Player.Current.SubsidyDaysLeft--;
+                if (Player.Current.ActiveSubsidyId == "edu")
+                {
+                    Player.Current.Money += 200.0;
+                    if (Player.Current.SubsidyDaysLeft <= 0)
+                    {
+                        Player.Current.ActiveSubsidyId = null;
+                        CustomMessageBox.ShowDialog(
+                            "Subsídio de Educação Concluído!",
+                            "Seu contrato de 30 dias de Subsídio de Educação chegou ao fim. Parabéns por ajudar na divulgação científica!",
+                            MessagePicture.Study
+                        );
+                    }
+                }
+                else if (Player.Current.ActiveSubsidyId == "rouanet")
+                {
+                    if (Player.Current.SubsidyDaysLeft <= 0)
+                    {
+                        Player.Current.ActiveSubsidyId = null;
+                        if (Player.Current.SubsidyVideosUploaded >= 3)
+                        {
+                            CustomMessageBox.ShowDialog(
+                                "Fomento Rouanet Concluído!",
+                                "Você atingiu a meta de 3 vídeos de alta qualidade dentro do prazo! O subsídio Rouanet foi finalizado com sucesso.",
+                                MessagePicture.Study
+                            );
+                        }
+                        else
+                        {
+                            // Fracassou! Devolver 15k
+                            if (Player.Current.Money >= 15000)
+                            {
+                                Player.Current.Money -= 15000;
+                                CustomMessageBox.ShowDialog(
+                                    "Rouanet: Meta Não Cumprida!",
+                                    "O prazo de 10 dias expirou e você não enviou os 3 vídeos com qualidade > 80. O governo recolheu os $15.000 da sua conta.",
+                                    MessagePicture.Axe
+                                );
+                            }
+                            else
+                            {
+                                double diff = 15000 - Player.Current.Money;
+                                Player.Current.Money = 0;
+                                Player.Current.TaxDebtAmount += diff;
+                                CustomMessageBox.ShowDialog(
+                                    "Rouanet: Multa e Nome Sujo!",
+                                    string.Format("O prazo expirou sem cumprir a meta de vídeos. Como você não tinha $15.000 para reembolsar, o restante de {0} foi inscrito na Dívida Ativa!", diff.ToCurrencyString()),
+                                    MessagePicture.Axe
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 2. Mensalidade da Faculdade
+            if (!string.IsNullOrEmpty(Player.Current.EnrolledUniversityId))
+            {
+                var uni = UniversityCatalog.GetUniversityById(Player.Current.EnrolledUniversityId);
+                if (uni != null)
+                {
+                    if (Player.Current.Money >= uni.DailyTuition)
+                    {
+                        Player.Current.Money -= uni.DailyTuition;
+                    }
+                    else
+                    {
+                        Player.Current.EnrolledUniversityId = null;
+                        Player.Current.TasksInProgress.RemoveAll(t => t is Study);
+                        CustomMessageBox.ShowDialog(
+                            "Matrícula Cancelada!",
+                            string.Format("Você foi desligado da {0} por inadimplência! Para voltar a estudar lá, terá de pagar uma nova taxa de matrícula de {1}.", uni.Name, uni.EnrollmentFee.ToCurrencyString()),
+                            MessagePicture.Money
+                        );
+                    }
+                }
+            }
+
             Player.Current.Money -= 50; //Living Expenses
             Player.Current.CostOfLivingExtra = Math.Min(150, Player.Current.CostOfLivingExtra);
             Player.Current.Money -= Math.Max(0, Player.Current.CostOfLivingExtra);
+
+            // Logarithmic Server Costs
+            double serverCost = 0;
+            if (Player.Current.Videos != null && Player.Current.Videos.Count > 0)
+            {
+                long totalViews = Player.Current.Videos.Sum(v => (long)v.Views);
+                if (totalViews > 0)
+                {
+                    serverCost = Math.Round(250.0 * Math.Log(totalViews / 10000.0 + 1.0), 2);
+                }
+            }
+
+            if (serverCost > 0)
+            {
+                Player.Current.Money -= serverCost;
+                CustomMessageBox.ShowDialog("Hospedagem & Servidores 🌐", string.Format("Seu canal consumiu {0} em infraestrutura de servidores e transferência de dados na nuvem hoje (Visualizações totais: {1}).", serverCost.ToCurrencyString(), Player.Current.Videos.Sum(v => v.Views).ToString("N0")), MessagePicture.Money);
+            }
 
             // Calculate and process Real Estate and Vehicle taxes / rent
             double totalTax = 0;
@@ -436,12 +768,18 @@ namespace TubeStar
                         totalSales += salesQuantity;
                     }
 
-                    // Apply to company balance
-                    company.Balance += (totalRevenue - totalCOGS - dailyCosts);
+                    // Apply corporate tax (IRPJ) of 20% on positive net profit
+                    double netProfit = totalRevenue - totalCOGS - dailyCosts;
+                    double corporateTax = 0;
+                    if (netProfit > 0)
+                    {
+                        corporateTax = netProfit * 0.20;
+                    }
+                    company.Balance += (netProfit - corporateTax);
 
                     // Store metrics for yesterday
                     company.YesterdayRevenue = totalRevenue;
-                    company.YesterdayCosts = totalCOGS + dailyCosts;
+                    company.YesterdayCosts = totalCOGS + dailyCosts + corporateTax;
                     company.YesterdaySales = totalSales;
                 }
             }
@@ -479,23 +817,30 @@ namespace TubeStar
                     {
                         salary = jobDef.BaseSalary * 0.7 * Player.Current.SalaryBonusMultiplier;
                         hours = Math.Max(1, jobDef.BaseHours - 1);
-                        perfChange = -5.0;
+                        perfChange = -3.0;
                     }
                     else if (effort == "Máximo")
                     {
                         salary = jobDef.BaseSalary * 1.3 * Player.Current.SalaryBonusMultiplier;
                         hours = jobDef.BaseHours + 2;
-                        perfChange = 6.0;
+                        perfChange = 2.0;
                     }
                     else
                     {
                         salary = jobDef.BaseSalary * 1.0 * Player.Current.SalaryBonusMultiplier;
                         hours = jobDef.BaseHours;
-                        perfChange = 1.0;
+                        perfChange = 0.5;
+                    }
+
+                    int numPromotions = (int)Math.Round((Player.Current.SalaryBonusMultiplier - 1.0) / 0.15);
+                    if (perfChange > 0)
+                    {
+                        perfChange = perfChange / (1.0 + numPromotions * 0.5);
                     }
 
                     Player.Current.JobPerformance = Math.Max(0.0, Math.Min(100.0, Player.Current.JobPerformance + perfChange));
                     Player.Current.Money += salary;
+                    Player.Current.YesterdayRevenue += salary;
 
                     var careerJob = new CareerJob(jobDef.Name);
                     for (int i = 0; i < hours; i++)
@@ -519,6 +864,27 @@ namespace TubeStar
                     }
                 }
             }
+            // A2. Automação de Edição (Editor de Vídeo)
+            if (Player.Current.Videos != null && Player.Current.Channels != null)
+            {
+                foreach (var video in Player.Current.Videos.ToList())
+                {
+                    if (!video.HasBeenEdited && !string.IsNullOrEmpty(video.ChannelId))
+                    {
+                        var chan = Player.Current.Channels.FirstOrDefault(c => c.Id.ToString() == video.ChannelId);
+                        if (chan != null && chan.HiredEditor)
+                        {
+                            video.HasBeenEdited = true;
+                            // Nível do editor escala a qualidade da edição (Nível 1 = 58-69, Nível 10 = 85-96)
+                            video.EditQuality = 55 + (chan.EditorLevel * 3) + RandomHelpers.RandomInt(11);
+                            video.GenerateQuality();
+
+                            chan.EditorXP += 10;
+                        }
+                    }
+                }
+            }
+
             CleanTodoList();
             Update();
 
@@ -530,6 +896,7 @@ namespace TubeStar
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += (s, ea) =>
             {
+                double totalChannelIncome = 0;
                 foreach (var channel in Player.Current.Channels)
                 {
                     if (channel != Channel.UnreleasedVideos)
@@ -546,6 +913,21 @@ namespace TubeStar
                             }
                         }
 
+                        // Custos Salariais Híbridos do Staff do Canal
+                        double staffCost = 0;
+                        if (channel.HiredEditor)
+                        {
+                            staffCost += channel.EditorCurrentSalary + (dailyIncome * 0.05);
+                        }
+                        if (channel.HiredManager)
+                        {
+                            staffCost += channel.ManagerCurrentSalary + (dailyIncome * 0.10);
+                        }
+                        if (staffCost > 0)
+                        {
+                            dailyExpenses += staffCost;
+                        }
+
                         //Channel stats
                         channel.Income += dailyIncome;
                         channel.SubscribersOverTime.Add(channel.Subscribers);
@@ -554,6 +936,7 @@ namespace TubeStar
 
                         //Player costs
                         Player.Current.Money += (dailyIncome - dailyExpenses);
+                        totalChannelIncome += dailyIncome;
                     }
                 }
 
@@ -569,9 +952,15 @@ namespace TubeStar
                         }
                     }
                 }
+                ea.Result = totalChannelIncome;
             };
             worker.RunWorkerCompleted += (s, ea) =>
             {
+                if (ea.Error == null && ea.Result is double)
+                {
+                    Player.Current.YesterdayRevenue += (double)ea.Result;
+                }
+
                 if (Player.Current.Money < 0)
                 {
                     if (GameExit != null)

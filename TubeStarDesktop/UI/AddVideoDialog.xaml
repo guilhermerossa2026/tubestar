@@ -25,21 +25,33 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock x:Name="lblName" Grid.Row="0" Text="Name: " Style="{StaticResource DialogLabelStyle}" />
-                <TextBox x:Name="txtName" Grid.Row="1" FontSize="16" VerticalAlignment="Center" Margin="5,0,5,5" />
+                <Grid Grid.Row="1" Margin="5,0,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="txtName" Grid.Column="0" FontSize="16" VerticalAlignment="Center"/>
+                    <Button x:Name="btnGenerateAITitle" Grid.Column="1" Content="🤖 Gerar com IA" Padding="6,2" Margin="5,0,0,0" FontSize="12" FontWeight="Bold" Background="#2E1A47" BorderBrush="#8B5CF6" Foreground="#FFFFFF" Visibility="Collapsed" Click="btnGenerateAITitle_Click"/>
+                </Grid>
 
                 <TextBlock x:Name="lblCategory" Grid.Row="2" Text="Category: " Style="{StaticResource DialogLabelStyle}" />
                 <ComboBox x:Name="cmbCategory" Grid.Row="3" FontSize="16" VerticalAlignment="Center" Margin="5,0,5,5" />
 
-                <TextBlock x:Name="lblHourSelect" Grid.Row="4" Text="Hours: " Style="{StaticResource DialogLabelStyle}" />
-                <Slider x:Name="sldrHours" Grid.Row="5" Minimum="2" Maximum="4" Value="2" TickFrequency="1" Margin="5,10,100,10" Height="12" ValueChanged="sldrHours_ValueChanged" Style="{StaticResource FlatSlider}" />
-                <TextBlock x:Name="lblHours" Grid.Row="5" FontSize="14" Text="2 hours" HorizontalAlignment="Right" Margin="0,0,5,0" />
+                <TextBlock x:Name="lblChannel" Grid.Row="4" Text="Target Channel: " Style="{StaticResource DialogLabelStyle}" />
+                <ComboBox x:Name="cmbChannel" Grid.Row="5" FontSize="16" VerticalAlignment="Center" Margin="5,0,5,5" />
 
-                <TextBlock x:Name="lblCost" Grid.Row="6" Text="Cost: " Style="{StaticResource DialogLabelStyle}" />
-                <Slider x:Name="sldrMoney" Grid.Row="7" Minimum="0" Maximum="4" TickFrequency="1" Value="0" Margin="5,10,100,10" Height="12" ValueChanged="sldrMoney_ValueChanged" Style="{StaticResource FlatSlider}" />
-                <TextBlock x:Name="lblMoney" Grid.Row="7" FontSize="14" Text="$0" HorizontalAlignment="Right" Margin="0,0,5,0" />
+                <TextBlock x:Name="lblHourSelect" Grid.Row="6" Text="Hours: " Style="{StaticResource DialogLabelStyle}" />
+                <Slider x:Name="sldrHours" Grid.Row="7" Minimum="2" Maximum="4" Value="2" TickFrequency="1" Margin="5,10,100,10" Height="12" ValueChanged="sldrHours_ValueChanged" Style="{StaticResource FlatSlider}" />
+                <TextBlock x:Name="lblHours" Grid.Row="7" FontSize="14" Text="2 hours" HorizontalAlignment="Right" Margin="0,0,5,0" />
+
+                <TextBlock x:Name="lblCost" Grid.Row="8" Text="Cost: " Style="{StaticResource DialogLabelStyle}" />
+                <Slider x:Name="sldrMoney" Grid.Row="9" Minimum="0" Maximum="4" TickFrequency="1" Value="0" Margin="5,10,100,10" Height="12" ValueChanged="sldrMoney_ValueChanged" Style="{StaticResource FlatSlider}" />
+                <TextBlock x:Name="lblMoney" Grid.Row="9" FontSize="14" Text="$0" HorizontalAlignment="Right" Margin="0,0,5,0" />
             </Grid>
 
             <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">

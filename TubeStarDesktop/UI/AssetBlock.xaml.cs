@@ -146,7 +146,13 @@ namespace TubeStar
                 btnBuy.Visibility = Visibility.Visible;
 
                 bool canAfford = Player.Current.Money >= cost;
-                if (canAfford)
+                if (Player.Current.TaxDebtAmount > 0)
+                {
+                    txtPrice.Foreground = new SolidColorBrush(ColorConverter.ConvertFromString("#FFE74C3C") as Color? ?? Colors.Red);
+                    btnBuy.IsEnabled = false;
+                    btnBuy.Content = "Nome Sujo";
+                }
+                else if (canAfford)
                 {
                     txtPrice.Foreground = new SolidColorBrush(ColorConverter.ConvertFromString("#FF2ECC71") as Color? ?? Colors.Green);
                     btnBuy.IsEnabled = true;
@@ -177,6 +183,16 @@ namespace TubeStar
         private void TryBuyAsset()
         {
             if (IsPurchased) return;
+
+            if (Player.Current.TaxDebtAmount > 0)
+            {
+                CustomMessageBox.ShowDialog(
+                    "Operação Bloqueada!",
+                    "Você possui pendências na Dívida Ativa governamental e não pode adquirir novos bens. Regularize seu CPF no Portal do Governo!",
+                    MessagePicture.Axe
+                );
+                return;
+            }
 
             this.PlayAnimation(() =>
             {

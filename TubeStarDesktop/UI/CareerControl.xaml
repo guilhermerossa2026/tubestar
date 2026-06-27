@@ -99,6 +99,21 @@
                                 <Button x:Name="btnResign" Content="Pedir Demissão" Height="32" FontSize="12" FontWeight="Bold" Background="#FF2222" Foreground="White" Click="BtnResign_Click"/>
                             </StackPanel>
                         </Grid>
+
+                        <!-- Novo: Seção de Habilidades do Youtuber (Sempre visível) -->
+                        <TextBlock Text="HABILIDADES DO YOUTUBER" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,15,0,8" />
+                        <Border Background="#121212" BorderBrush="#2E2E2E" BorderThickness="1" CornerRadius="6" Padding="12,10">
+                            <StackPanel>
+                                <Grid Margin="0,3">
+                                    <TextBlock Text="🎬 Gravação / Câmera:" FontSize="12" Foreground="#888888"/>
+                                    <TextBlock x:Name="txtShootingSkill" Text="30" FontSize="12" FontWeight="Bold" Foreground="#FF2222" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,3">
+                                    <TextBlock Text="✂️ Edição / Pós-Prod:" FontSize="12" Foreground="#888888"/>
+                                    <TextBlock x:Name="txtPostProdSkill" Text="20" FontSize="12" FontWeight="Bold" Foreground="#FF2222" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </Border>

@@ -46,6 +46,7 @@ namespace TubeStar
         public int PostProductionSkill { get; set; }
         public int VideoAttributePoints { get; set; }
         public bool CanViewQualityBeforeUpload { get; set; }
+        public bool HasAIEnhancedTitles { get; set; }
 
         public int Iterations { get; set; }
 
@@ -103,6 +104,27 @@ namespace TubeStar
         public string JobEffortLevel { get; set; }
         public double SalaryBonusMultiplier { get; set; }
 
+        public string EnrolledUniversityId { get; set; }
+        public bool CanViewQualityBreakdown { get; set; }
+        public double YesterdayRevenue { get; set; }
+
+        public double TaxDeclarationRate { get; set; }
+        public double UnpaidEvadedTaxes { get; set; }
+        public bool IsAccountantHired { get; set; }
+        public bool IsTaxAttorneyHired { get; set; }
+        public double TaxDebtAmount { get; set; }
+        public string ActiveSubsidyId { get; set; }
+        public int SubsidyDaysLeft { get; set; }
+        public int SubsidyVideosUploaded { get; set; }
+        public double YesterdayDeclaredRevenue { get; set; }
+        public double YesterdayTaxPaid { get; set; }
+
+        // InstaFans Properties
+        public int InstaFollowers { get; set; }
+        public int InstaPosts { get; set; }
+        public int InstaDaysSinceLastAd { get; set; }
+        public List<InstaPost> InstaPostsList { get; set; }
+
         public Player()
         {
             Reset();
@@ -110,6 +132,20 @@ namespace TubeStar
 
         public void Reset()
         {
+            TaxDeclarationRate = 1.0;
+            UnpaidEvadedTaxes = 0.0;
+            IsAccountantHired = false;
+            IsTaxAttorneyHired = false;
+            TaxDebtAmount = 0.0;
+            ActiveSubsidyId = null;
+            SubsidyDaysLeft = 0;
+            SubsidyVideosUploaded = 0;
+            YesterdayDeclaredRevenue = 0.0;
+            YesterdayTaxPaid = 0.0;
+
+            EnrolledUniversityId = null;
+            CanViewQualityBreakdown = false;
+            YesterdayRevenue = 0.0;
             RobotRulers = false;
             Iterations = -1;
             Money = 950;
@@ -118,6 +154,7 @@ namespace TubeStar
             PostProductionSkill = 20;
             VideoAttributePoints = 2;
             CanViewQualityBeforeUpload = false;
+            HasAIEnhancedTitles = false;
             CostOfLivingExtra = 0;
             Overtime = false;
             HasPromotion = false;
@@ -173,6 +210,21 @@ namespace TubeStar
             Studies.Current = null;
             StoreItems.Current = null;
             Rivals.Current = null;
+
+            InstaFollowers = 0;
+            InstaPosts = 0;
+            InstaDaysSinceLastAd = 3;
+            InstaPostsList = new List<InstaPost>();
         }
+    }
+
+    public class InstaPost
+    {
+        public string ImagePath { get; set; }
+        public string Caption { get; set; }
+        public int Likes { get; set; }
+        public int FollowersChange { get; set; }
+        public bool IsAd { get; set; }
+        public double AdEarnings { get; set; }
     }
 }

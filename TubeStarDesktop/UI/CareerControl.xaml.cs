@@ -27,6 +27,12 @@ namespace TubeStar
                 // Personal Money
                 txtPersonalMoney.Text = Player.Current.Money.ToCurrencyString();
 
+                // Personal Skills
+                if (txtShootingSkill != null)
+                    txtShootingSkill.Text = Player.Current.ShootingSkill.ToString();
+                if (txtPostProdSkill != null)
+                    txtPostProdSkill.Text = Player.Current.PostProductionSkill.ToString();
+
                 var currentJob = JobCatalog.GetJobById(Player.Current.CurrentJobId);
                 if (currentJob == null)
                 {
@@ -72,7 +78,7 @@ namespace TubeStar
                     if (effort == "Mínimo")
                     {
                         txtEffortDescription.Text = string.Format(
-                            "Dedicação Mínima: Consome apenas {0} horas de trabalho/dia. Salário reduzido para {1} (-30%). Perda diária de -5% de desempenho.",
+                            "Dedicação Mínima: Consome apenas {0} horas de trabalho/dia. Salário reduzido para {1} (-30%). Perda diária de -3.0% de desempenho.",
                             Math.Max(1, currentJob.BaseHours - 1),
                             (currentSalary * 0.7).ToCurrencyString()
                         );
@@ -80,7 +86,7 @@ namespace TubeStar
                     else if (effort == "Máximo")
                     {
                         txtEffortDescription.Text = string.Format(
-                            "Dedicação Máxima: Consome {0} horas de trabalho/dia. Salário aumentado para {1} (+30%). Ganho diário de +6% de desempenho corporativo.",
+                            "Dedicação Máxima: Consome {0} horas de trabalho/dia. Salário aumentado para {1} (+30%). Ganho diário de +2.0% de desempenho corporativo (reduzido por promoções).",
                             currentJob.BaseHours + 2,
                             (currentSalary * 1.3).ToCurrencyString()
                         );
@@ -88,7 +94,7 @@ namespace TubeStar
                     else
                     {
                         txtEffortDescription.Text = string.Format(
-                            "Dedicação Normal: Consome as {0} horas padrão/dia. Salário de {1}. Ganho diário de +1% de desempenho corporativo.",
+                            "Dedicação Normal: Consome as {0} horas padrão/dia. Salário de {1}. Ganho diário de +0.5% de desempenho corporativo (reduzido por promoções).",
                             currentJob.BaseHours,
                             currentSalary.ToCurrencyString()
                         );
